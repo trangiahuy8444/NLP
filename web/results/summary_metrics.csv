@@ -1,0 +1,5 @@
+Phương pháp,Accuracy,Precision,Recall,F1-Score
+TF-IDF + Logistic Regression (Baseline),100.00%,100.00%,100.00%,100.00%
+Average Word2Vec + Logistic Regression,100.00%,100.00%,100.00%,100.00%
+LSTM Classifier (Học từ đầu),99.69%,99.69%,99.69%,99.69%
+LSTM Classifier (Tích hợp Pretrained Word2Vec),100.00%,100.00%,100.00%,100.00%

@@ -1,0 +1,7 @@
+Mô hình,UIT-VSFC Acc,UIT-VSFC F1,E-Commerce Acc,E-Commerce F1
+TF-IDF + Logistic Regression (Baseline),89.83%,89.80%,70.33%,69.65%
+Average Word2Vec + Logistic Regression,87.50%,87.49%,67.33%,66.80%
+BiLSTM Classifier (Học từ đầu),89.17%,89.16%,69.17%,68.75%
+BiLSTM Classifier (Pre-trained Word2Vec),91.00%,91.00%,67.17%,67.05%
+BiLSTM + Self-Attention (Đề xuất),91.83%,91.83%,72.50%,72.40%
+PhoBERT Base v2 (Transformer SOTA),95.50%,95.50%,86.17%,86.16%

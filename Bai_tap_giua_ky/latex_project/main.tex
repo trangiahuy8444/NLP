@@ -1,0 +1,1015 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- GÓI TIẾNG VIỆT VÀ ĐỊNH DẠNG TRANG CHUẨN MẪU TRƯỜNG ĐH SƯ PHẠM TP.HCM ---
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tgtermes} % Phông chữ Times New Roman chuẩn (TeX Gyre Termes) đầy đủ dấu tiếng Việt
+\usepackage[top=2.5cm, bottom=2.5cm, left=3.0cm, right=2.0cm]{geometry}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs, multirow, array}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{tikz}
+\usepackage{tocloft}
+\usepackage{enumitem}
+\usepackage[labelsep=period]{caption} % Định dạng nhãn hình/bảng có dấu chấm ngăn cách: "Hình 2-1."
+\usepackage[pdfpagelabels=false, colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue]{hyperref}
+
+\usetikzlibrary{calc, shapes.geometric, arrows.meta, positioning}
+
+% Thiết lập từ điển ngắt từ trong tài liệu tham khảo
+\hyphenation{Mikolov Sutskever Schmidhuber Corrado Representations Classification}
+
+% --- THIẾT LẬP GIÃN DÒNG VÀ THỤT ĐẦU DÒNG CHUẨN TIỂU LUẬN ---
+\setstretch{1.3}
+\setlength{\parindent}{1.0cm}
+\setlength{\parskip}{4pt}
+
+% --- THIẾT LẬP ĐÁNH SỐ TRANG Ở GIỮA TRÊN CÙNG TRÊN MỌI TRANG (NHƯ MẪU) ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\headheight}{15pt}
+
+% Đồng bộ hoá kiểu trang plain (khi bắt đầu chương mới)
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[C]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+}
+
+% --- ĐỊNH DẠNG TIÊU ĐỀ THEO MẪU TRƯỜNG ĐH SƯ PHẠM TP.HCM ---
+\titleformat{\section}[block]{\centering\large\bfseries}{CHƯƠNG \thesection.}{0.5em}{\MakeUppercase}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection.}{0.5em}{}
+
+\titlespacing*{\section}{0pt}{18pt}{14pt}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+\titlespacing*{\subsubsection}{0pt}{10pt}{4pt}
+
+% --- ĐỊNH DẠNG TÊN HÌNH ẢNH VÀ BẢNG BIỂU ---
+\renewcommand{\figurename}{Hình}
+\renewcommand{\tablename}{Bảng}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\renewcommand{\thefigure}{\arabic{section}-\arabic{figure}}
+\renewcommand{\thetable}{\arabic{section}-\arabic{table}}
+
+% --- THIẾT LẬP LISTINGS MÃ NGUỒN CÓ KHUNG VIỀN NHƯ PHỤ LỤC MẪU ---
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    keepspaces=true,
+    numbers=none,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    backgroundcolor=\color{white}
+}
+
+\begin{document}
+
+% ==============================================================================
+% TRANG BÌA CHÍNH (COVER PAGE) - CHUẨN MẪU TRƯỜNG ĐẠI HỌC SƯ PHẠM TP.HCM
+% ==============================================================================
+\begin{titlepage}
+    % Khung đôi viền kèm góc vuông chuẩn tiểu luận trường ĐHSP TP.HCM
+    \begin{tikzpicture}[remember picture, overlay]
+        % Viền ngoài đậm 2.5pt
+        \draw[line width=2.5pt] 
+            ($(current page.north west) + (2.0cm, -1.5cm)$) 
+            rectangle 
+            ($(current page.south east) + (-1.5cm, 1.5cm)$);
+        % Viền trong mảnh 0.8pt
+        \draw[line width=0.8pt] 
+            ($(current page.north west) + (2.16cm, -1.66cm)$) 
+            rectangle 
+            ($(current page.south east) + (-1.66cm, 1.66cm)$);
+        % 4 góc vuông trang trí kinh điển
+        \draw[line width=1.0pt] ($(current page.north west) + (2.0cm, -1.5cm)$) ++(0, -0.45cm) -- ++(0.45cm, 0) -- ++(0, 0.45cm);
+        \draw[line width=1.0pt] ($(current page.north east) + (-1.5cm, -1.5cm)$) ++(0, -0.45cm) -- ++(-0.45cm, 0) -- ++(0, 0.45cm);
+        \draw[line width=1.0pt] ($(current page.south west) + (2.0cm, 1.5cm)$) ++(0, 0.45cm) -- ++(0.45cm, 0) -- ++(0, -0.45cm);
+        \draw[line width=1.0pt] ($(current page.south east) + (-1.5cm, 1.5cm)$) ++(0, 0.45cm) -- ++(-0.45cm, 0) -- ++(0, -0.45cm);
+    \end{tikzpicture}
+
+    \begin{center}
+        {\large\bfseries BỘ GIÁO DỤC VÀ ĐÀO TẠO}\\[0.2cm]
+        {\large\bfseries TRƯỜNG ĐẠI HỌC SƯ PHẠM THÀNH PHỐ HỒ CHÍ MINH}\\[1.0cm]
+
+        % Bảng điểm thi chuẩn mẫu
+        \renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{|m{2.1cm}|m{2.3cm}|m{4.8cm}|m{4.8cm}|}
+            \hline
+            \centering\bfseries ĐIỂM SỐ & \centering\bfseries ĐIỂM CHỮ & \centering\bfseries Cán bộ chấm thi 1\par\small (Ký, ghi rõ họ tên) & \centering\arraybackslash\bfseries Cán bộ chấm thi 2\par\small (Ký, ghi rõ họ tên) \\
+            \hline
+            \rule{0pt}{1.8cm} & & & \\[1.8cm]
+            \hline
+        \end{tabular}
+
+        \vspace{1.3cm}
+
+        % Tên đề tài (Trực tiếp tiêu đề in hoa đậm căn đều như mẫu)
+        {\Large\bfseries TÌM HIỂU CÁC PHƯƠNG PHÁP WORD2VEC,}\\[0.25cm]
+        {\Large\bfseries WORD EMBEDDING VÀ MÔ HÌNH LSTM}\\[0.25cm]
+        {\Large\bfseries HỌC BIỂU DIỄN VĂN BẢN ỨNG DỤNG CHO}\\[0.25cm]
+        {\Large\bfseries BÀI TOÁN PHÂN LOẠI CẢM XÚC}\\[1.2cm]
+
+        % Tên môn học
+        {\large\bfseries XỬ LÝ NGÔN NGỮ TỰ NHIÊN}\\[1.4cm]
+
+        % Thông tin học viên / ngành
+        \begin{singlespace}
+            {\normalsize\bfseries NGÀNH: KHOA HỌC MÁY TÍNH}\\[0.25cm]
+            {\normalsize\bfseries KHOÁ: 36 (2025--2027)}\\[0.25cm]
+            {\normalsize\bfseries GIẢNG VIÊN HƯỚNG DẪN: TS. LÊ ANH CƯỜNG}\\[0.8cm]
+            
+            \textbf{Nhóm học viên thực hiện:}\\[0.35cm]
+            \begin{tabular}{ll}
+                \textbf{1. Trần Gia Huy} & \textbf{Mã số học viên: KHMT836012} \\
+                \textbf{2. Đỗ Minh Khánh Ngân} & \textbf{Mã số học viên: KHMT836019} \\
+                \textbf{3. Nguyễn Tấn Phát} & \textbf{Mã số học viên: KHMT836026} \\
+            \end{tabular}
+        \end{singlespace}
+
+        \vfill
+        {\large\itshape Thành phố Hồ Chí Minh, 2026}
+    \end{center}
+\end{titlepage}
+
+% ==============================================================================
+% TRANG BÌA PHỤ (BÌA TRONG NHƯ MẪU TRƯỜNG ĐHSP)
+% ==============================================================================
+\newpage
+\thispagestyle{empty}
+\begin{center}
+    {\large\bfseries BỘ GIÁO DỤC VÀ ĐÀO TẠO}\\[0.2cm]
+    {\large\bfseries TRƯỜNG ĐẠI HỌC SƯ PHẠM THÀNH PHỐ HỒ CHÍ MINH}\\[1.0cm]
+
+    % Bảng điểm thi chuẩn mẫu
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|m{2.1cm}|m{2.3cm}|m{4.8cm}|m{4.8cm}|}
+        \hline
+        \centering\bfseries ĐIỂM SỐ & \centering\bfseries ĐIỂM CHỮ & \centering\bfseries Cán bộ chấm thi 1\par\small (Ký, ghi rõ họ tên) & \centering\arraybackslash\bfseries Cán bộ chấm thi 2\par\small (Ký, ghi rõ họ tên) \\
+        \hline
+        \rule{0pt}{1.8cm} & & & \\[1.8cm]
+        \hline
+    \end{tabular}
+
+    \vspace{1.3cm}
+
+    % Tên đề tài
+    {\Large\bfseries TÌM HIỂU CÁC PHƯƠNG PHÁP WORD2VEC,}\\[0.25cm]
+    {\Large\bfseries WORD EMBEDDING VÀ MÔ HÌNH LSTM}\\[0.25cm]
+    {\Large\bfseries HỌC BIỂU DIỄN VĂN BẢN ỨNG DỤNG CHO}\\[0.25cm]
+    {\Large\bfseries BÀI TOÁN PHÂN LOẠI CẢM XÚC}\\[1.2cm]
+
+    % Tên môn học
+    {\large\bfseries XỬ LÝ NGÔN NGỮ TỰ NHIÊN}\\[1.4cm]
+
+    % Thông tin học viên / ngành
+    \begin{singlespace}
+        {\normalsize\bfseries NGÀNH: KHOA HỌC MÁY TÍNH}\\[0.25cm]
+        {\normalsize\bfseries KHOÁ: 36 (2025--2027)}\\[0.25cm]
+        {\normalsize\bfseries GIẢNG VIÊN HƯỚNG DẪN: TS. LÊ ANH CƯỜNG}\\[0.8cm]
+        
+        \textbf{Nhóm học viên thực hiện:}\\[0.35cm]
+        \begin{tabular}{ll}
+            \textbf{1. Trần Gia Huy} & \textbf{Mã số học viên: KHMT836012} \\
+            \textbf{2. Đỗ Minh Khánh Ngân} & \textbf{Mã số học viên: KHMT836019} \\
+            \textbf{3. Nguyễn Tấn Phát} & \textbf{Mã số học viên: KHMT836026} \\
+        \end{tabular}
+    \end{singlespace}
+
+    \vfill
+    {\large\itshape Thành phố Hồ Chí Minh, 2026}
+\end{center}
+
+% ==============================================================================
+% TRANG LỜI CAM ĐOAN (ĐÃ ẨN THEO YÊU CẦU)
+% ==============================================================================
+% \newpage
+% \thispagestyle{empty}
+% \vspace*{2.0cm}
+% \begin{center}
+%     {\large\bfseries LỜI CAM ĐOAN}
+% \end{center}
+% \vspace{1.0cm}
+% 
+% Chúng tôi xin cam đoan tiểu luận với đề tài: \textbf{“Tìm hiểu các phương pháp Word2Vec, Word embedding và mô hình LSTM học biểu diễn văn bản ứng dụng cho bài toán phân loại cảm xúc”} là công trình nghiên cứu và cài đặt thực nghiệm thực tế của nhóm chúng tôi. 
+% 
+% Các kết quả thực nghiệm trên hai bộ dữ liệu thực tế (UIT-VSFC và TMĐT E-Commerce), các bảng số liệu đối chuẩn, cấu trúc mô hình học sâu và mã nguồn được trình bày trong tiểu luận là hoàn toàn trung thực. Các tài liệu tham khảo và trích dẫn khoa học đều được chỉ rõ nguồn gốc theo đúng quy định.
+% 
+% Chúng tôi xin chịu hoàn toàn trách nhiệm về lời cam đoan này.
+
+% ==============================================================================
+% TRANG MỤC LỤC (KHÔNG ĐÁNH SỐ TRANG NHƯ MẪU)
+% ==============================================================================
+\newpage
+\thispagestyle{empty}
+
+\begin{center}
+    {\large\bfseries MỤC LỤC}
+\end{center}
+\vspace{0.1cm}
+
+{\small\linespread{0.84}\selectfont\setlength{\parskip}{0pt}
+\noindent\hyperref[page:danh_muc_hinh]{\textbf{DANH MỤC HÌNH ẢNH} \dotfill \textbf{\pageref*{page:danh_muc_hinh}}}\par\vspace{1.5pt}
+\noindent\hyperref[page:danh_muc_bang]{\textbf{DANH MỤC BẢNG BIỂU} \dotfill \textbf{\pageref*{page:danh_muc_bang}}}\par\vspace{3pt}
+
+\noindent\hyperref[sec:chuong1]{\textbf{CHƯƠNG 1. GIỚI THIỆU ĐỀ TÀI NGHIÊN CỨU} \dotfill \textbf{\pageref*{sec:chuong1}}}\par
+\hspace*{0.8cm}\hyperref[sec:ly_do_chon_de_tai]{1.1. Lý do chọn đề tài \dotfill \pageref*{sec:ly_do_chon_de_tai}}\par
+\hspace*{0.8cm}\hyperref[sec:muc_tieu_nghien_cuu]{1.2. Mục tiêu nghiên cứu \dotfill \pageref*{sec:muc_tieu_nghien_cuu}}\par
+\hspace*{1.6cm}\hyperref[sec:muc_tieu_tong_quat]{a) Mục tiêu tổng quát \dotfill \pageref*{sec:muc_tieu_tong_quat}}\par
+\hspace*{1.6cm}\hyperref[sec:muc_tieu_cu_the]{b) Mục tiêu cụ thể \dotfill \pageref*{sec:muc_tieu_cu_the}}\par
+\hspace*{0.8cm}\hyperref[sec:doi_tuong_pham_vi]{1.3. Đối tượng và phạm vi nghiên cứu \dotfill \pageref*{sec:doi_tuong_pham_vi}}\par
+\hspace*{1.6cm}\hyperref[sec:doi_tuong_nghien_cuu]{a) Đối tượng nghiên cứu \dotfill \pageref*{sec:doi_tuong_nghien_cuu}}\par
+\hspace*{1.6cm}\hyperref[sec:pham_vi_nghien_cuu]{b) Phạm vi nghiên cứu \dotfill \pageref*{sec:pham_vi_nghien_cuu}}\par
+\hspace*{0.8cm}\hyperref[sec:phuong_phap_nghien_cuu]{1.4. Phương pháp nghiên cứu \dotfill \pageref*{sec:phuong_phap_nghien_cuu}}\par
+\hspace*{0.8cm}\hyperref[sec:cau_truc_bao_cao]{1.5. Cấu trúc báo cáo \dotfill \pageref*{sec:cau_truc_bao_cao}}\par\vspace{2.5pt}
+
+\noindent\hyperref[sec:chuong2]{\textbf{CHƯƠNG 2. CƠ SỞ LÝ LUẬN} \dotfill \textbf{\pageref*{sec:chuong2}}}\par
+\hspace*{0.8cm}\hyperref[sec:tien_trinh_bieu_dien_tu]{2.1. Tiến trình biểu diễn từ trong NLP \dotfill \pageref*{sec:tien_trinh_bieu_dien_tu}}\par
+\hspace*{1.6cm}\hyperref[sec:one_hot]{2.1.1. Biểu diễn One-Hot \dotfill \pageref*{sec:one_hot}}\par
+\hspace*{1.6cm}\hyperref[sec:bow_tfidf]{2.1.2. Túi từ (Bag-of-Words) và TF-IDF \dotfill \pageref*{sec:bow_tfidf}}\par
+\hspace*{1.6cm}\hyperref[sec:word_embedding]{2.1.3. Word Embedding và Giả thuyết phân bố \dotfill \pageref*{sec:word_embedding}}\par
+\hspace*{0.8cm}\hyperref[sec:word2vec]{2.2. Mô hình Word2Vec \dotfill \pageref*{sec:word2vec}}\par
+\hspace*{1.6cm}\hyperref[sec:cbow]{2.2.1. Kiến trúc CBOW (Continuous Bag-of-Words) \dotfill \pageref*{sec:cbow}}\par
+\hspace*{1.6cm}\hyperref[sec:skip_gram]{2.2.2. Kiến trúc Skip-Gram \dotfill \pageref*{sec:skip_gram}}\par
+\hspace*{1.6cm}\hyperref[sec:sgns]{2.2.3. Tối ưu hóa Negative Sampling (SGNS) \dotfill \pageref*{sec:sgns}}\par
+\hspace*{0.8cm}\hyperref[sec:lstm_doc_rep]{2.3. Biểu diễn văn bản và Mô hình LSTM \dotfill \pageref*{sec:lstm_doc_rep}}\par
+\hspace*{1.6cm}\hyperref[sec:avg_w2v]{2.3.1. Phương pháp thống kê: Average Word2Vec \dotfill \pageref*{sec:avg_w2v}}\par
+\hspace*{1.6cm}\hyperref[sec:rnn_lstm]{2.3.2. Mạng nơ-ron hồi quy LSTM \dotfill \pageref*{sec:rnn_lstm}}\par
+\hspace*{1.6cm}\hyperref[sec:lstm_gates]{2.3.3. Cơ chế hoạt động của các cổng và Cell State \dotfill \pageref*{sec:lstm_gates}}\par
+\hspace*{1.6cm}\hyperref[sec:bilstm_arch]{2.3.4. Kiến trúc BiLSTM trích xuất Document Vector \dotfill \pageref*{sec:bilstm_arch}}\par
+\hspace*{1.6cm}\hyperref[sec:bilstm_attn]{2.3.5. Cơ chế Tự chú ý (Self-Attention) trong mạng BiLSTM \dotfill \pageref*{sec:bilstm_attn}}\par
+\hspace*{0.8cm}\hyperref[sec:transformer_phobert]{2.4. Kiến trúc Transformer và Mô hình Tiếng Việt PhoBERT \dotfill \pageref*{sec:transformer_phobert}}\par
+\hspace*{1.6cm}\hyperref[sec:scaled_dot_mha]{2.4.1. Cơ chế Scaled Dot-Product và Multi-Head Attention \dotfill \pageref*{sec:scaled_dot_mha}}\par
+\hspace*{1.6cm}\hyperref[sec:phobert_model]{2.4.2. Mô hình ngôn ngữ lớn PhoBERT \dotfill \pageref*{sec:phobert_model}}\par
+\hspace*{0.8cm}\hyperref[sec:metrics]{2.5. Các chỉ số đánh giá phân loại \dotfill \pageref*{sec:metrics}}\par
+\hspace*{1.6cm}\hyperref[sec:metric_acc]{2.5.1. Accuracy \dotfill \pageref*{sec:metric_acc}}\par
+\hspace*{1.6cm}\hyperref[sec:metric_prec]{2.5.2. Precision \dotfill \pageref*{sec:metric_prec}}\par
+\hspace*{1.6cm}\hyperref[sec:metric_rec]{2.5.3. Recall \dotfill \pageref*{sec:metric_rec}}\par
+\hspace*{1.6cm}\hyperref[sec:metric_f1]{2.5.4. F1-score \dotfill \pageref*{sec:metric_f1}}\par
+\hspace*{1.6cm}\hyperref[sec:metric_roc_auc]{2.5.5. ROC và AUC \dotfill \pageref*{sec:metric_roc_auc}}\par\vspace{2.5pt}
+
+\noindent\hyperref[sec:chuong3]{\textbf{CHƯƠNG 3. KẾT QUẢ NGHIÊN CỨU VÀ THỰC NGHIỆM} \dotfill \textbf{\pageref*{sec:chuong3}}}\par
+\hspace*{0.8cm}\hyperref[sec:datasets_prep]{3.1. Bộ dữ liệu và tiền xử lý \dotfill \pageref*{sec:datasets_prep}}\par
+\hspace*{1.6cm}\hyperref[sec:uit_vsfc_dataset]{3.1.1. Bộ dữ liệu UIT-VSFC (Học thuật) \dotfill \pageref*{sec:uit_vsfc_dataset}}\par
+\hspace*{1.6cm}\hyperref[sec:ecommerce_dataset]{3.1.2. Bộ dữ liệu E-Commerce Reviews (Thương mại điện tử) \dotfill \pageref*{sec:ecommerce_dataset}}\par
+\hspace*{1.6cm}\hyperref[sec:preprocessing_steps]{3.1.3. Quy trình tiền xử lý văn bản tiếng Việt \dotfill \pageref*{sec:preprocessing_steps}}\par
+\hspace*{0.8cm}\hyperref[sec:experimental_setup]{3.2. Thiết lập thực nghiệm \dotfill \pageref*{sec:experimental_setup}}\par
+\hspace*{1.6cm}\hyperref[sec:hardware_env]{3.2.1. Môi trường phần cứng \dotfill \pageref*{sec:hardware_env}}\par
+\hspace*{1.6cm}\hyperref[sec:software_env]{3.2.2. Môi trường phần mềm \dotfill \pageref*{sec:software_env}}\par
+\hspace*{1.6cm}\hyperref[sec:experiment_pipeline]{3.2.3. Quy trình thực nghiệm \dotfill \pageref*{sec:experiment_pipeline}}\par
+\hspace*{0.8cm}\hyperref[sec:results_benchmarking]{3.3. Kết quả thực nghiệm và so sánh đối chuẩn \dotfill \pageref*{sec:results_benchmarking}}\par
+\hspace*{1.6cm}\hyperref[sec:word2vec_semantic_eval]{3.3.1. Khảo sát không gian ngữ nghĩa Word2Vec \dotfill \pageref*{sec:word2vec_semantic_eval}}\par
+\hspace*{1.6cm}\hyperref[sec:model_benchmark_results]{3.3.2. So sánh đối chuẩn 6 mô hình trên 2 bộ dữ liệu thực tế \dotfill \pageref*{sec:model_benchmark_results}}\par
+\hspace*{1.6cm}\hyperref[sec:attention_heatmaps_analysis]{3.3.3. Phân tích Trọng số Chú ý (Self-Attention Heatmaps) \dotfill \pageref*{sec:attention_heatmaps_analysis}}\par
+\hspace*{1.6cm}\hyperref[sec:tsne_visualization]{3.3.4. Trực quan hóa không gian vector văn bản qua t-SNE \dotfill \pageref*{sec:tsne_visualization}}\par\vspace{2.5pt}
+
+\noindent\hyperref[sec:chuong4]{\textbf{CHƯƠNG 4. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN} \dotfill \textbf{\pageref*{sec:chuong4}}}\par
+\hspace*{0.8cm}\hyperref[sec:conclusion]{4.1. Kết luận \dotfill \pageref*{sec:conclusion}}\par
+\hspace*{0.8cm}\hyperref[sec:limitations]{4.2. Hạn chế của đề tài \dotfill \pageref*{sec:limitations}}\par
+\hspace*{0.8cm}\hyperref[sec:future_work]{4.3. Hướng phát triển trong tương lai \dotfill \pageref*{sec:future_work}}\par\vspace{2.5pt}
+
+\noindent\hyperref[sec:references]{\textbf{TÀI LIỆU THAM KHẢO} \dotfill \textbf{\pageref*{sec:references}}}\par\vspace{1.5pt}
+\noindent\hyperref[sec:appendix]{\textbf{PHỤ LỤC} \dotfill \textbf{\pageref*{sec:appendix}}}\par
+}
+
+% ==============================================================================
+% DANH MỤC HÌNH ẢNH (ĐÁNH SỐ LA MÃ Ở GIỮA TRÊN CÙNG: i)
+% ==============================================================================
+\newpage
+\pagenumbering{roman}
+\setcounter{page}{1}
+\label{page:danh_muc_hinh}
+
+\begin{center}
+    {\large\bfseries DANH MỤC HÌNH ẢNH}
+\end{center}
+\vspace{0.8cm}
+
+\noindent\hyperref[fig:word2vec_arch]{Hình 2-1. Kiến trúc mô hình Word2Vec CBOW và Skip-Gram \dotfill \pageref*{fig:word2vec_arch}}\par\vspace{6pt}
+\noindent\hyperref[fig:lstm_cell]{Hình 2-2. Cấu tạo bên trong ô nhớ LSTM với hệ thống 3 cổng điều khiển \dotfill \pageref*{fig:lstm_cell}}\par\vspace{6pt}
+\noindent\hyperref[fig:pipeline_bilstm]{Hình 2-3. Kiến trúc BiLSTM trích xuất Document Vector và phân loại \dotfill \pageref*{fig:pipeline_bilstm}}\par\vspace{6pt}
+\noindent\hyperref[fig:cross_comp_chart]{Hình 3-1. Biểu đồ đối chuẩn hiệu năng giữa 6 mô hình trên 2 bộ dữ liệu thực tế \dotfill \pageref*{fig:cross_comp_chart}}\par\vspace{6pt}
+\noindent\hyperref[fig:attention_heatmaps]{Hình 3-2. Trực quan hóa trọng số Self-Attention làm sáng tỏ tính khả giải thích của mô hình \dotfill \pageref*{fig:attention_heatmaps}}\par\vspace{6pt}
+\noindent\hyperref[fig:tsne_vis]{Hình 3-3. Tiến hóa không gian vector văn bản qua t-SNE trên UIT-VSFC \dotfill \pageref*{fig:tsne_vis}}\par
+
+% ==============================================================================
+% DANH MỤC BẢNG BIỂU (ĐÁNH SỐ LA MÃ Ở GIỮA TRÊN CÙNG: ii)
+% ==============================================================================
+\newpage
+\label{page:danh_muc_bang}
+
+\begin{center}
+    {\large\bfseries DANH MỤC BẢNG BIỂU}
+\end{center}
+\vspace{0.8cm}
+
+\noindent\hyperref[tab:dataset_stats]{Bảng 3-1. Thống kê chi tiết hai bộ dữ liệu thực nghiệm UIT-VSFC và E-Commerce \dotfill \pageref*{tab:dataset_stats}}\par\vspace{6pt}
+\noindent\hyperref[tab:env_stats]{Bảng 3-2. Môi trường phần cứng và công cụ lập trình triển khai \dotfill \pageref*{tab:env_stats}}\par\vspace{6pt}
+\noindent\hyperref[tab:results_comparison]{Bảng 3-3. So sánh tổng hợp hiệu năng giữa 6 mô hình trên 2 bộ dữ liệu thực tế \dotfill \pageref*{tab:results_comparison}}\par
+
+% ==============================================================================
+% NỘI DUNG CHÍNH (ĐÁNH SỐ Ả RẬP TỪ 1 Ở GIỮA TRÊN CÙNG NHƯ MẪU)
+% ==============================================================================
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ------------------------------------------------------------------------------
+% CHƯƠNG 1
+% ------------------------------------------------------------------------------
+\section{Giới Thiệu Đề Tài Nghiên Cứu}\label{sec:chuong1}
+
+\subsection{Lý do chọn đề tài}\label{sec:ly_do_chon_de_tai}
+Trong những năm gần đây, Xử lý Ngôn ngữ Tự nhiên (Natural Language Processing -- NLP) đã đạt được những bước tiến vượt bậc, trở thành một trong những phân ngành trí tuệ nhân tạo phát triển sôi động nhất. Khác với dữ liệu có cấu trúc trong cơ sở dữ liệu truyền thống, ngôn ngữ con người là thông tin phi cấu trúc, phong phú về mặt ngữ nghĩa và mang tính biến thiên cao.
+
+Để máy tính có thể phân tích, tính toán và suy luận trên văn bản, thách thức đầu tiên và quan trọng nhất là biểu diễn các từ ngữ thành các vector số học trong không gian nhiều chiều. Trong đó, mô hình \textbf{Word2Vec} được đề xuất bởi Tomas Mikolov cùng các cộng sự tại Google vào năm 2013 \cite{mikolov2013efficient, mikolov2013distributed} đã tạo nên một bước ngoặt cách mạng, mở ra kỷ nguyên của kỹ thuật \textbf{Word Embedding} (nhúng từ phân bố).
+
+Bên cạnh cấp độ từ ngữ, việc học biểu diễn toàn bộ câu văn hoặc văn bản thành vector (Document Representation) là tiền đề bắt buộc cho nhiều tác vụ quan trọng như phân loại cảm xúc (Sentiment Analysis), phát hiện tin giả, hay lọc thư rác. Mạng nơ-ron hồi quy có bộ nhớ dài--ngắn (\textbf{LSTM -- Long Short-Term Memory}) do Hochreiter \& Schmidhuber phát minh \cite{hochreiter1997lstm} và hoàn thiện bởi Gers et al. \cite{gers2000learning} nổi lên như một giải pháp xuất sắc để xử lý tính tuần tự và phụ thuộc xa trong chuỗi ngôn ngữ tự nhiên. 
+
+Chính vì vậy, nhóm lựa chọn đề tài nghiên cứu: \textit{“Tìm hiểu các phương pháp Word2Vec, Word embedding và mô hình LSTM học biểu diễn văn bản ứng dụng cho bài toán phân loại cảm xúc”} nhằm làm chủ toàn diện từ lý thuyết nền tảng đến quy trình thực nghiệm thực tế trên các bộ dữ liệu tiếng Việt chuẩn mực.
+
+\subsection{Mục tiêu nghiên cứu}\label{sec:muc_tieu_nghien_cuu}
+
+\vspace{0.2cm}\phantomsection\label{sec:muc_tieu_tong_quat}\noindent\textbf{a) Mục tiêu tổng quát}\par
+Nghiên cứu nguyên lý toán học và cơ chế hoạt động của Word Embedding, mô hình Word2Vec (CBOW, Skip-Gram) và mạng BiLSTM; xây dựng pipeline hoàn chỉnh từ tiền xử lý ngôn ngữ, huấn luyện nhúng từ, trích xuất vector biểu diễn văn bản bằng BiLSTM và phân loại cảm xúc; tiến hành thực nghiệm đối chuẩn trên hai bộ dữ liệu thực tế tiếng Việt (\textbf{UIT-VSFC} \cite{nguyen2018uit, nguyen2018deep} và \textbf{Vietnamese E-Commerce Reviews}); đánh giá khả năng phân loại thông qua các chỉ số Accuracy, Precision, Recall, F1-score và trực quan hóa t-SNE; từ đó phân tích hiệu quả và khả năng tổng quát hóa của mô hình trên các miền dữ liệu khác nhau.
+
+\vspace{0.2cm}\phantomsection\label{sec:muc_tieu_cu_the}\noindent\textbf{b) Mục tiêu cụ thể}\par
+Mục tiêu cụ thể của đề tài gồm:
+\begin{itemize}[leftmargin=1.0cm, itemsep=2pt]
+    \item[--] Tìm hiểu cơ sở lý thuyết về biểu diễn từ truyền thống (One-Hot, TF-IDF) và biểu diễn phân bố (Word Embedding) \cite{goldberg2016primer, jurafsky2026speech}.
+    \item[--] Tìm hiểu kiến trúc, hàm mục tiêu và kỹ thuật tối ưu hóa Negative Sampling (SGNS) của Word2Vec \cite{mikolov2013efficient, mikolov2013distributed}.
+    \item[--] Tìm hiểu cấu tạo các cổng (Forget, Input, Output) và Cell State của mạng LSTM nhằm giải quyết bài toán triệt tiêu gradient \cite{hochreiter1997lstm, gers2000learning}.
+    \item[--] Khảo sát đặc điểm ngôn ngữ và tổ chức dữ liệu của hai bộ dữ liệu thực tế: UIT-VSFC (3,100 mẫu) \cite{nguyen2018uit} và Vietnamese E-Commerce Reviews (3,100 mẫu).
+    \item[--] Sử dụng thư viện Gensim \cite{rehurek2010software} để huấn luyện Word2Vec và thư viện PyTorch để lập trình mạng BiLSTM học biểu diễn văn bản.
+    \item[--] Triển khai và đối chuẩn 6 mô hình: TF-IDF, Average Word2Vec, BiLSTM học từ đầu, BiLSTM tích hợp Pretrained Word2Vec, BiLSTM + Self-Attention và PhoBERT-base-v2 Transformer.
+    \item[--] Phân tích kết quả thực nghiệm, đánh giá ưu điểm, hạn chế và các yếu tố ngôn ngữ đặc thù (teencode, câu phủ định, từ lóng) ảnh hưởng đến mô hình.
+\end{itemize}
+
+\subsection{Đối tượng và phạm vi nghiên cứu}\label{sec:doi_tuong_pham_vi}
+
+\vspace{0.2cm}\phantomsection\label{sec:doi_tuong_nghien_cuu}\noindent\textbf{a) Đối tượng nghiên cứu}\par
+Đối tượng nghiên cứu của đề tài là các phương pháp biểu diễn từ (Word2Vec) và mô hình học sâu tuần tự mạng hồi quy LSTM (cụ thể là mạng BiLSTM hai chiều). Đề tài tập trung vào việc trích xuất trạng thái ẩn cuối cùng của BiLSTM để làm vector biểu diễn toàn diện cho câu văn bản, sau đó đưa qua các lớp Fully Connected để thực hiện nhiệm vụ phân loại cảm xúc nhị phân (Tích cực / Tiêu cực).
+
+\vspace{0.2cm}\phantomsection\label{sec:pham_vi_nghien_cuu}\noindent\textbf{b) Phạm vi nghiên cứu}\par
+Đề tài tập trung nghiên cứu trong phạm vi văn bản tiếng Việt thuộc hai miền dữ liệu đặc thù: miền học thuật/giáo dục (phản hồi sinh viên UIT-VSFC) và miền tiêu dùng/thương mại điện tử (đánh giá sản phẩm Shopee/Tiki). Về mặt kỹ thuật, đề tài giới hạn ở kiến trúc mạng BiLSTM kết hợp với tầng nhúng Word2Vec tiền huấn luyện trên chính ngữ liệu thực nghiệm.
+
+\subsection{Phương pháp nghiên cứu}\label{sec:phuong_phap_nghien_cuu}
+Đề tài được thực hiện theo phương pháp nghiên cứu lý thuyết kết hợp thực nghiệm:
+\begin{itemize}[leftmargin=1.0cm, itemsep=2pt]
+    \item[--] \textbf{Nghiên cứu lý thuyết}: Phân tích các tài liệu học thuật kinh điển của Mikolov et al. \cite{mikolov2013efficient, mikolov2013distributed} về Word2Vec, Hochreiter \& Schmidhuber \cite{hochreiter1997lstm} và Gers et al. \cite{gers2000learning} về LSTM, cùng các nghiên cứu về xử lý tiếng Việt của UIT NLP Group \cite{nguyen2018uit, nguyen2018deep}, kết hợp giáo trình chuẩn mực của Jurafsky \& Martin \cite{jurafsky2026speech} và Goldberg \cite{goldberg2016primer}.
+    \item[--] \textbf{Nghiên cứu thực nghiệm}: Xây dựng bộ tiền xử lý chuẩn hóa tiếng Việt, huấn luyện mô hình nhúng từ, thiết kế mô hình học sâu trên PyTorch tận dụng tăng tốc phần cứng Apple Silicon (MPS GPU).
+    \item[--] \textbf{Đánh giá định lượng}: Sử dụng các độ đo tiêu chuẩn trong học máy gồm Accuracy, Precision, Recall, F1-score và phân tích không gian vector đa chiều bằng giải thuật t-SNE.
+\end{itemize}
+
+\subsection{Cấu trúc báo cáo}\label{sec:cau_truc_bao_cao}
+Cấu trúc báo cáo của tiểu luận gồm 4 chương:
+\begin{itemize}[leftmargin=1.0cm, itemsep=2pt]
+    \item[--] \textbf{Chương 1}: Giới thiệu đề tài nghiên cứu.
+    \item[--] \textbf{Chương 2}: Cơ sở lý luận.
+    \item[--] \textbf{Chương 3}: Kết quả nghiên cứu và thực nghiệm.
+    \item[--] \textbf{Chương 4}: Kết luận và hướng phát triển.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+% CHƯƠNG 2
+% ------------------------------------------------------------------------------
+\newpage
+\section{Cơ Sở Lý Luận}\label{sec:chuong2}
+
+\subsection{Tiến trình biểu diễn từ trong NLP}\label{sec:tien_trinh_bieu_dien_tu}
+
+\subsubsection{Biểu diễn One-Hot}\label{sec:one_hot}
+Biểu diễn One-Hot là phương pháp cổ điển nhất. Giả sử tập từ vựng của kho ngữ liệu có $|V|$ từ vựng duy nhất. Mỗi từ $w_i$ được biểu diễn bằng một vector nhị phân $\mathbf{e}_i \in \{0, 1\}^{|V|}$ với giá trị 1 ở vị trí thứ $i$ và 0 ở tất cả các vị trí còn lại:
+\begin{equation}
+    w_{\text{điện thoại}} = [1, 0, 0, \dots, 0]^T, \quad w_{\text{máy tính}} = [0, 1, 0, \dots, 0]^T
+\end{equation}
+Phương pháp này bộc lộ hai hạn chế nghiêm trọng:
+\begin{itemize}[leftmargin=1.0cm, itemsep=2pt]
+    \item[--] \textit{Không gian vector quá thưa và bùng nổ số chiều}: Với từ điển thực tế từ vài chục nghìn đến hàng trăm nghìn từ, vector One-Hot chiếm dụng bộ nhớ khổng lồ.
+    \item[--] \textit{Tính trực giao hoàn toàn}: Khoảng cách giữa hai từ bất kỳ luôn bằng $\sqrt{2}$ và tích vô hướng luôn bằng 0 ($\mathbf{e}_i^T \mathbf{e}_j = 0$). Mô hình không thể nhận diện mối quan hệ đồng nghĩa giữa "smartphone" và "điện thoại".
+\end{itemize}
+
+\subsubsection{Túi từ (Bag-of-Words) và TF-IDF}\label{sec:bow_tfidf}
+Mô hình túi từ (Bag-of-Words) biểu diễn văn bản dựa trên tần suất xuất hiện của các từ. Kỹ thuật TF-IDF (Term Frequency -- Inverse Document Frequency) cải tiến bằng cách nhân tần suất từ với nghịch đảo tần suất văn bản:
+\begin{align}
+    TF(t, d) &= \frac{f_{t, d}}{\sum_{t' \in d} f_{t', d}} \\
+    IDF(t, D) &= \log \left( \frac{1 + |D|}{1 + |\{d \in D : t \in d\}|} \right) + 1 \\
+    TF\text{-}IDF(t, d, D) &= TF(t, d) \times IDF(t, D)
+\end{align}
+TF-IDF giúp giảm trọng số của các từ ngữ xuất hiện quá phổ biến nhưng mang ít giá trị phân loại. Tuy nhiên, phương pháp này vẫn xem văn bản là một "túi từ" hỗn loạn, bỏ qua hoàn toàn thứ tự từ ngữ và ngữ cảnh câu.
+
+\subsubsection{Word Embedding và Giả thuyết phân bố}\label{sec:word_embedding}
+Word Embedding ánh xạ mỗi từ $w$ thành một vector số thực dày đặc (dense vector) trong không gian $d$ chiều cố định ($d \ll |V|$, thường $d \in [50, 300]$):
+\begin{equation}
+    w \longmapsto \mathbf{v}_w \in \mathbb{R}^d
+\end{equation}
+Cơ sở lý luận của Word Embedding dựa trên \textbf{Giả thuyết phân bố (Distributional Hypothesis)} của nhà ngôn ngữ học J.R. Firth (1957): \textit{“You shall know a word by the company it keeps”} (Ý nghĩa của một từ được phản ánh qua các từ thường xuyên xuất hiện cùng nó), được tổng hợp và hệ thống hóa toàn diện trong các công trình kinh điển của Jurafsky \& Martin \cite{jurafsky2026speech} và Goldberg \cite{goldberg2016primer}.
+
+\subsection{Mô hình Word2Vec}\label{sec:word2vec}
+Word2Vec là mô hình mạng nơ-ron nông gồm 2 lớp trọng số do Tomas Mikolov cùng các cộng sự tại Google đề xuất vào năm 2013 \cite{mikolov2013efficient}, tối ưu hóa để học vector nhúng từ phân bố thông qua hai biến thể kiến trúc chính:
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.82, every node/.style={transform shape}]
+        % CBOW block
+        \draw[rounded corners, fill=blue!5, draw=blue!40, thick] (-7.2, -3.2) rectangle (-0.3, 3.2);
+        \node at (-3.75, 2.7) {\bfseries Kiến trúc CBOW};
+        \node[draw, rectangle, fill=white, rounded corners, minimum width=2.0cm] (c1) at (-6.0, 1.5) {$w_{t-2}$};
+        \node[draw, rectangle, fill=white, rounded corners, minimum width=2.0cm] (c2) at (-6.0, 0.5) {$w_{t-1}$};
+        \node[draw, rectangle, fill=white, rounded corners, minimum width=2.0cm] (c3) at (-6.0, -0.5) {$w_{t+1}$};
+        \node[draw, rectangle, fill=white, rounded corners, minimum width=2.0cm] (c4) at (-6.0, -1.5) {$w_{t+2}$};
+        \node at (-6.0, -2.4) {\small (Ngữ cảnh vào)};
+        
+        \node[draw, circle, fill=orange!25, minimum size=1.3cm] (proj_cbow) at (-3.75, 0.0) {\small SUM};
+        \node at (-3.75, -1.0) {\footnotesize Chiếu ngữ cảnh};
+        
+        \node[draw, rectangle, fill=green!25, rounded corners, minimum width=2.0cm, minimum height=0.8cm] (tgt_cbow) at (-1.5, 0.0) {\bfseries $w_t$};
+        \node at (-1.5, -0.9) {\small (Dự đoán đích)};
+        
+        \draw[->, thick] (c1.east) -- (proj_cbow.west);
+        \draw[->, thick] (c2.east) -- (proj_cbow.west);
+        \draw[->, thick] (c3.east) -- (proj_cbow.west);
+        \draw[->, thick] (c4.east) -- (proj_cbow.west);
+        \draw[->, very thick] (proj_cbow.east) -- (tgt_cbow.west);
+
+        % Skip-Gram block
+        \draw[rounded corners, fill=green!5, draw=green!40, thick] (0.3, -3.2) rectangle (7.2, 3.2);
+        \node at (3.75, 2.7) {\bfseries Kiến trúc Skip-Gram};
+        \node[draw, rectangle, fill=green!25, rounded corners, minimum width=2.0cm, minimum height=0.8cm] (tgt_sg) at (1.5, 0.0) {\bfseries $w_t$};
+        \node at (1.5, -0.9) {\small (Từ trung tâm)};
+        
+        \node[draw, circle, fill=orange!25, minimum size=1.3cm] (proj_sg) at (3.75, 0.0) {\small PROJ};
+        \node at (3.75, -1.0) {\footnotesize Chiếu đặc trưng};
+        
+        \node[draw, rectangle, fill=white, rounded corners, minimum width=2.0cm] (s1) at (6.0, 1.5) {$w_{t-2}$};
+        \node[draw, rectangle, fill=white, rounded corners, minimum width=2.0cm] (s2) at (6.0, 0.5) {$w_{t-1}$};
+        \node[draw, rectangle, fill=white, rounded corners, minimum width=2.0cm] (s3) at (6.0, -0.5) {$w_{t+1}$};
+        \node[draw, rectangle, fill=white, rounded corners, minimum width=2.0cm] (s4) at (6.0, -1.5) {$w_{t+2}$};
+        \node at (6.0, -2.4) {\small (Dự đoán ngữ cảnh)};
+        
+        \draw[->, very thick] (tgt_sg.east) -- (proj_sg.west);
+        \draw[->, thick] (proj_sg.east) -- (s1.west);
+        \draw[->, thick] (proj_sg.east) -- (s2.west);
+        \draw[->, thick] (proj_sg.east) -- (s3.west);
+        \draw[->, thick] (proj_sg.east) -- (s4.west);
+    \end{tikzpicture}
+    \caption{Kiến trúc mô hình Word2Vec CBOW và Skip-Gram \cite{mikolov2013efficient}}
+    \label{fig:word2vec_arch}
+\end{figure}
+
+\subsubsection{Kiến trúc CBOW (Continuous Bag-of-Words)}\label{sec:cbow}
+CBOW dự đoán từ mục tiêu $w_t$ ở giữa dựa trên ngữ cảnh gồm $2c$ từ xung quanh \cite{mikolov2013efficient}:
+\begin{equation}
+    \mathcal{L}_{\text{CBOW}} = \sum_{t=1}^{T} \log P(w_t \mid w_{t-c}, \dots, w_{t-1}, w_{t+1}, \dots, w_{t+c})
+\end{equation}
+Vector biểu diễn ngữ cảnh là trung bình cộng của các vector từ ngữ cảnh đầu vào:
+\begin{equation}
+    \mathbf{v}_{\text{context}} = \frac{1}{2c} \sum_{-c \le j \le c, j \ne 0} \mathbf{v}_{w_{t+j}}
+\end{equation}
+CBOW có tốc độ huấn luyện rất nhanh và hoạt động tối ưu trên các từ có tần suất xuất hiện cao.
+
+\subsubsection{Kiến trúc Skip-Gram}\label{sec:skip_gram}
+Ngược lại với CBOW, Skip-Gram nhận vào từ trung tâm $w_t$ và dự đoán phân phối xác suất của từng từ ngữ cảnh xung quanh \cite{mikolov2013efficient}:
+\begin{equation}
+    \mathcal{L}_{\text{SG}} = \sum_{t=1}^{T} \sum_{-c \le j \le c, j \ne 0} \log P(w_{t+j} \mid w_t)
+\end{equation}
+Xác suất có điều kiện được tính bằng hàm Softmax:
+\begin{equation}
+    P(w_O \mid w_I) = \frac{\exp\left({\mathbf{v}'_{w_O}}^T \mathbf{v}_{w_I}\right)}{\sum_{w=1}^{|V|} \exp\left({\mathbf{v}'_w}^T \mathbf{v}_{w_I}\right)}
+\end{equation}
+Skip-Gram cho chất lượng biểu diễn vượt trội đối với các từ hiếm (ít xuất hiện), do mỗi cặp từ trung tâm và từ ngữ cảnh được cập nhật độc lập qua từng bước huấn luyện.
+
+\subsubsection{Tối ưu hóa Negative Sampling (SGNS)}\label{sec:sgns}
+Việc tính mẫu số Softmax đòi hỏi phải duyệt qua toàn bộ $|V|$ từ vựng tại mỗi bước lan truyền xuôi và ngược, gây nghẽn cổ chai tính toán nghiêm trọng khi $|V| \ge 100,000$. 
+
+Để khắc phục, Tomas Mikolov cùng các cộng sự \cite{mikolov2013distributed} đề xuất kỹ thuật \textbf{Negative Sampling (SGNS)}: chuyển đổi bài toán đa lớp thành bài toán phân loại nhị phân (Logistic Regression) để phân biệt cặp từ thực tế với $K$ mẫu âm được lấy ngẫu nhiên theo phân phối làm mượt:
+\begin{equation}
+    \mathcal{L}_{\text{SGNS}} = \log \sigma\left({\mathbf{v}'_{w_O}}^T \mathbf{v}_{w_I}\right) + \sum_{k=1}^{K} \mathbb{E}_{w_{n_k} \sim P_n(w)} \left[ \log \sigma\left(-{\mathbf{v}'_{w_{n_k}}}^T \mathbf{v}_{w_I}\right) \right]
+\end{equation}
+trong đó $\sigma(z) = \frac{1}{1 + e^{-z}}$. Trong bài báo NeurIPS 2013 \cite{mikolov2013distributed}, phân phối nhiễu $P_n(w)$ được đề xuất là phân phối Unigram lũy thừa $3/4$:
+\begin{equation}
+    P_n(w) = \frac{U(w)^{3/4}}{\sum_{w'} U(w')^{3/4}}
+\end{equation}
+Số mũ $3/4 = 0.75$ giúp làm mượt phân phối, gia tăng xác suất chọn các từ hiếm mà không làm mất đi ưu thế thống kê của các từ phổ thông. Đồng thời, kỹ thuật \textbf{Subsampling of Frequent Words} với công thức loại bỏ từ tần suất cao $P(w_i) = 1 - \sqrt{t / f(w_i)}$ (với $t \approx 10^{-5}$) giúp tăng tốc huấn luyện từ 2 đến 10 lần và nâng cao đáng kể độ chính xác của vector các từ ít gặp \cite{mikolov2013distributed}. Trong đề tài này, Word2Vec được hiện thực thông qua thư viện Gensim do Řehůřek \& Sojka phát triển \cite{rehurek2010software}, ứng dụng cơ chế nạp dòng (data streaming) không phụ thuộc bộ nhớ RAM.
+
+\subsection{Biểu diễn văn bản và Mô hình LSTM}\label{sec:lstm_doc_rep}
+
+\subsubsection{Phương pháp thống kê: Average Word2Vec}\label{sec:avg_w2v}
+Với một văn bản gồm danh sách các từ $D = (w_1, w_2, \dots, w_m)$, cách đơn giản nhất là lấy trung bình cộng các vector Word2Vec của các từ thành phần \cite{jurafsky2026speech}:
+\begin{equation}
+    \mathbf{v}_D = \frac{1}{|D|} \sum_{w \in D} \mathbf{v}_w
+\end{equation}
+\textit{Hạn chế cốt tử}: Làm mất hoàn toàn thứ tự từ. Câu \textit{"thầy dạy không khó hiểu"} và \textit{"thầy dạy khó hiểu không"} có vector trung bình hoàn toàn giống nhau, mặc dù mang sắc thái cảm xúc trái ngược.
+
+\subsubsection{Mạng nơ-ron hồi quy LSTM}\label{sec:rnn_lstm}
+Mạng RNN truyền thống gặp hiện tượng \textbf{triệt tiêu gradient (Vanishing Gradient)} khi lan truyền ngược qua chuỗi dài: đạo hàm của hàm kích hoạt tanh hoặc sigmoid liên tục nhỏ hơn 1 khiến gradient suy giảm theo hàm mũ, dẫn đến mạng bị "mất trí nhớ" sau vài bước thời gian.
+
+Kiến trúc LSTM ban đầu do Sepp Hochreiter và Jürgen Schmidhuber phát minh vào năm 1997 \cite{hochreiter1997lstm}, giải quyết triệt để vấn đề này bằng cách thiết lập cơ chế vòng xoay lỗi hằng số \textbf{Constant Error Carousel (CEC)} duy trì đường truyền trực tiếp \textbf{Cell State} ($\mathbf{c}_t$) với gradient không đổi ($O(1)$) qua thời gian. Kiến trúc ban đầu có Cổng vào (Input Gate) và Cổng ra (Output Gate). Sau đó, Felix Gers, Jürgen Schmidhuber và Fred Cummins (2000) \cite{gers2000learning} đã bổ sung thêm \textbf{Cổng quên (Forget Gate)} nhằm cho phép ô nhớ tự động xóa bỏ thông tin bão hòa khi chuyển đổi ngữ cảnh, hoàn thiện kiến trúc LSTM chuẩn mực ngày nay:
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.88]
+        \draw[rounded corners, fill=blue!5, thick] (-4.8, -2.5) rectangle (4.8, 2.5);
+        \node at (0, 2.1) {\bfseries Ô nhớ LSTM (LSTM Cell)};
+        
+        % Các khối cổng kiểm soát
+        \node[draw, rectangle, fill=orange!20, rounded corners] (f) at (-3.3, -0.5) {\footnotesize Forget $f_t$};
+        \node[draw, rectangle, fill=green!20, rounded corners] (i) at (-1.1, -0.5) {\footnotesize Input $i_t$};
+        \node[draw, rectangle, fill=yellow!20, rounded corners] (c) at (1.1, -0.5) {\footnotesize Candidate $\tilde{c}_t$};
+        \node[draw, rectangle, fill=purple!20, rounded corners] (o) at (3.3, -0.5) {\footnotesize Output $o_t$};
+        
+        \node (ct1) at (-5.3, 1.2) {$c_{t-1}$};
+        \node (ct) at (5.3, 1.2) {$c_t$};
+        \draw[->, very thick] (ct1) -- (ct);
+        
+        \node (xt) at (0, -3.2) {Vector đầu vào $x_t$};
+        \node (ht1) at (-5.3, -1.8) {$h_{t-1}$};
+        \node (ht) at (5.3, -1.8) {$h_t$};
+        
+        \draw[->, thick] (xt) -- (0, -2.5);
+        \draw[->, thick] (ht1) -- (-4.0, -1.8);
+        \draw[->, thick] (4.0, -1.8) -- (ht);
+    \end{tikzpicture}
+    \caption{Cấu tạo bên trong ô nhớ LSTM với hệ thống 3 cổng điều khiển \cite{hochreiter1997lstm, gers2000learning}}
+    \label{fig:lstm_cell}
+\end{figure}
+
+\subsubsection{Cơ chế hoạt động của các cổng và Cell State}\label{sec:lstm_gates}
+Tại mỗi bước thời gian $t$, mạng cập nhật thông tin qua hệ phương trình \cite{jurafsky2026speech}:
+\begin{align}
+    \mathbf{f}_t &= \sigma\left(W_f [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_f\right) \quad \text{(Forget Gate: chọn thông tin cũ cần quên)} \\
+    \mathbf{i}_t &= \sigma\left(W_i [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_i\right) \quad \text{(Input Gate: chọn thông tin mới cần nhớ)} \\
+    \tilde{\mathbf{c}}_t &= \tanh\left(W_c [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_c\right) \quad \text{(Candidate: nội dung thông tin mới)} \\
+    \mathbf{c}_t &= \mathbf{f}_t \odot \mathbf{c}_{t-1} + \mathbf{i}_t \odot \tilde{\mathbf{c}}_t \quad \text{(Cập nhật trạng thái ô nhớ)} \\
+    \mathbf{o}_t &= \sigma\left(W_o [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_o\right) \quad \text{(Output Gate: quyết định phần bộ nhớ xuất ra)} \\
+    \mathbf{h}_t &= \mathbf{o}_t \odot \tanh(\mathbf{c}_t) \quad \text{(Trạng thái ẩn làm đầu ra bước $t$)}
+\end{align}
+trong đó ký hiệu $\odot$ biểu thị tích Hadamard (nhân từng phần tử tương ứng của hai vector).
+
+\subsubsection{Kiến trúc BiLSTM trích xuất Document Vector}\label{sec:bilstm_arch}
+Để mô hình nắm bắt trọn vẹn ngữ cảnh hai chiều (quá khứ và tương lai), nhóm sử dụng mạng \textbf{BiLSTM (Bidirectional LSTM)} gồm luồng đọc xuôi $\vec{\mathbf{h}}_t$ và luồng đọc ngược $\overleftarrow{\mathbf{h}}_t$ \cite{jurafsky2026speech, goldberg2016primer}. Vector biểu diễn toàn văn bản $\mathbf{v}_D$ được tạo thành bằng cách ghép nối hai trạng thái ẩn cuối cùng:
+\begin{equation}
+    \mathbf{v}_D = \left[ \vec{\mathbf{h}}_T \,;\, \overleftarrow{\mathbf{h}}_1 \right] \in \mathbb{R}^{2 \cdot d_{\text{hidden}}}
+\end{equation}
+Vector đặc trưng $\mathbf{v}_D$ này chứa đựng toàn bộ thông điệp ngữ nghĩa của câu, sau đó được đưa vào tầng phân loại Fully Connected.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.8]
+        \node[draw, rectangle, rounded corners, fill=gray!10] (t) at (0, 0) {Chuỗi Token: $[w_1, w_2, \dots, w_T]$};
+        \node[draw, rectangle, rounded corners, fill=blue!15] (e) at (0, -1.2) {Tầng Embedding ($d=100$)};
+        \node[draw, rectangle, rounded corners, fill=green!15] (l) at (0, -2.4) {Tầng BiLSTM ($d_{\text{hidden}}=128$)};
+        \node[draw, rectangle, rounded corners, fill=orange!20] (d) at (0, -3.6) {Document Vector $\mathbf{v}_D \in \mathbb{R}^{256}$};
+        \node[draw, rectangle, rounded corners, fill=red!15] (c) at (0, -4.8) {Classifier Head (Dropout + Linear + Softmax)};
+        \node[draw, rectangle, rounded corners, fill=purple!20] (o) at (0, -6.0) {Dự đoán: Tích cực (1) / Tiêu cực (0)};
+        
+        \draw[->, thick] (t) -- (e);
+        \draw[->, thick] (e) -- (l);
+        \draw[->, thick] (l) -- (d);
+        \draw[->, thick] (d) -- (c);
+        \draw[->, thick] (c) -- (o);
+    \end{tikzpicture}
+    \caption{Kiến trúc BiLSTM trích xuất Document Vector và phân loại}
+    \label{fig:pipeline_bilstm}
+\end{figure}
+
+\subsubsection{Cơ chế Tự chú ý (Self-Attention) trong mạng BiLSTM}\label{sec:bilstm_attn}
+Mặc dù mạng BiLSTM có khả năng ghi nhớ phụ thuộc xa, việc chỉ trích xuất trạng thái ẩn tại bước cuối cùng ($\mathbf{h}_T$) hoặc lấy trung bình cộng giản đơn thường dẫn đến hiện tượng \textbf{nghẽn cổ chai thông tin (information bottleneck)}: toàn bộ ngữ nghĩa phong phú của câu bị nén ép đồng đều, không phản ánh được rằng chỉ một số ít từ khóa (như từ chỉ cảm xúc, từ phủ định) thực sự quyết định nhãn lớp.
+
+Để khắc phục hạn chế này, mô hình đề xuất tích hợp cơ chế \textbf{Self-Attention} theo phong cách Additive Attention \cite{bahdanau2015neural}. Tại mỗi bước thời gian $t$, trạng thái ẩn hai chiều $\mathbf{h}_t = [\overrightarrow{\mathbf{h}}_t; \overleftarrow{\mathbf{h}}_t] \in \mathbb{R}^{2d_h}$ được chiếu qua một mạng truyền thẳng phi tuyến để tính điểm năng lượng tương ứng:
+\begin{equation}
+    \mathbf{u}_t = \tanh(\mathbf{W}_a \mathbf{h}_t + \mathbf{b}_a)
+\end{equation}
+trong đó $\mathbf{W}_a \in \mathbb{R}^{d_a \times 2d_h}$ và $\mathbf{b}_a \in \mathbb{R}^{d_a}$ là ma trận trọng số và bias của tầng attention. Độ quan trọng tương đối (trọng số chú ý) $\alpha_t$ của token thứ $t$ được xác định thông qua hàm Softmax trên toàn chuỗi:
+\begin{equation}
+    \alpha_t = \frac{\exp(\mathbf{u}_t^\top \mathbf{v}_a)}{\sum_{j=1}^{T} \exp(\mathbf{u}_j^\top \mathbf{v}_a)}
+\end{equation}
+với $\mathbf{v}_a \in \mathbb{R}^{d_a}$ là vector ngữ cảnh tham chiếu được học đồng thời trong quá trình lan truyền ngược. Đối với các token đệm ($\langle\text{pad}\rangle$), điểm số được gán $-\infty$ trước khi tính Softmax nhằm đảm bảo trọng số chú ý tại các vị trí này hoàn toàn triệt tiêu về $0$.
+
+Vector biểu diễn tổng thể của toàn bộ văn bản $\mathbf{v}_D$ lúc này là tổ hợp tuyến tính có trọng số của toàn bộ các trạng thái ẩn:
+\begin{equation}
+    \mathbf{v}_D = \sum_{t=1}^{T} \alpha_t \mathbf{h}_t \in \mathbb{R}^{2d_h}
+\end{equation}
+Ưu thế vượt trội của cơ chế này là \textbf{tính khả giải thích (interpretability)}: ma trận trọng số $\boldsymbol{\alpha} = [\alpha_1, \alpha_2, \dots, \alpha_T]$ có thể được trích xuất trực tiếp để trực quan hóa dưới dạng bản đồ nhiệt (Heatmap), cho phép con người tường minh rõ ràng mô hình căn cứ vào những từ ngữ nào để đưa ra quyết định cảm xúc.
+
+\subsection{Kiến trúc Transformer và Mô hình Tiếng Việt PhoBERT}\label{sec:transformer_phobert}
+Năm 2017, nhóm nghiên cứu Google công bố kiến trúc \textbf{Transformer} \cite{vaswani2017attention} với tuyên ngôn đột phá \textit{"Attention Is All You Need"}, loại bỏ hoàn toàn các bước lặp hồi quy tuần tự của RNN/LSTM để chuyển sang cơ chế \textbf{Multi-Head Self-Attention} cho phép xử lý song song toàn bộ ngữ cảnh câu với độ phức tạp đường dẫn thông tin tối ưu $O(1)$.
+
+\subsubsection{Cơ chế Scaled Dot-Product và Multi-Head Attention}\label{sec:scaled_dot_mha}
+Khác với Additive Attention, Transformer biểu diễn mối quan hệ giữa các từ thông qua ba ma trận Query ($\mathbf{Q}$), Key ($\mathbf{K}$) và Value ($\mathbf{V}$):
+\begin{equation}
+    \text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}}\right)\mathbf{V}
+\end{equation}
+Cơ chế \textbf{Multi-Head Attention} chiếu các vector $\mathbf{Q}, \mathbf{K}, \mathbf{V}$ qua $h$ không gian con khác nhau, cho phép mô hình đồng thời chú ý đến thông tin từ các khía cạnh cú pháp, ngữ nghĩa và phụ thuộc từ vựng khác nhau \cite{vaswani2017attention}:
+\begin{equation}
+    \text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)\mathbf{W}^O
+\end{equation}
+với $\text{head}_i = \text{Attention}(\mathbf{Q}\mathbf{W}_i^Q, \mathbf{K}\mathbf{W}_i^K, \mathbf{V}\mathbf{W}_i^V)$.
+
+\subsubsection{Mô hình ngôn ngữ lớn PhoBERT}\label{sec:phobert_model}
+Word2Vec tĩnh gặp hạn chế lớn là gán cố định một vector duy nhất cho một từ, không thể phân biệt hiện tượng đồng âm khác nghĩa (polysemy). Để giải quyết triệt để, nhóm tác giả Dat Quoc Nguyen (VinAI Research) và Anh Tuan Nguyen (NVIDIA) đã công bố mô hình \textbf{PhoBERT} tại hội nghị EMNLP 2020 \cite{nguyen2020phobert} -- mô hình ngôn ngữ dựa trên kiến trúc RoBERTa tối ưu hóa cho tiếng Việt.
+
+Trong bài báo gốc \cite{nguyen2020phobert}, các tác giả chỉ ra rằng tiếng Việt có đặc thù là ngôn ngữ đơn lập với hơn 85\% từ vựng cấu thành từ hai âm tiết trở lên (ví dụ: \textit{nghiên\_cứu\_viên}, \textit{sinh\_viên}). Do đó, việc áp dụng BPE trực tiếp ở cấp độ âm tiết thô như các mô hình đa ngữ (Multilingual BERT, XLM-R) làm suy giảm đáng kể năng lực ngữ nghĩa. Nhóm tác giả PhoBERT đã đề xuất quy trình chuẩn hóa: sử dụng công cụ RDRSegmenter (VnCoreNLP) để phân đoạn từ trước, sau đó áp dụng thuật toán Fast BPE với từ điển 64,000 subwords trên kho ngữ liệu 20GB văn bản tiếng Việt (~3 tỷ từ, gồm 1GB Wikipedia và 19GB tin tức báo chí trực tuyến đã lọc trùng lặp).
+
+Phiên bản PhoBERT-base sử dụng 12 tầng Transformer Encoder, 12 attention heads, ẩn số $d_{\text{model}}=768$ với tổng cộng 135 triệu tham số, được huấn luyện theo mục tiêu Masked Language Modeling (MLM). Do kho ngữ liệu thực nghiệm UIT-VSFC và E-Commerce của đề tài đã được tách từ chuẩn mực (\texttt{\_}), dữ liệu hoàn toàn tương thích với đầu vào của PhoBERT Tokenizer. Khi tinh chỉnh (Fine-tuning), vector ẩn tại vị trí token đầu câu $\langle\text{s}\rangle$ đóng vai trò là biểu diễn ngữ cảnh toàn văn bản và được kết nối trực tiếp với bộ phân lớp phân loại cảm xúc.
+
+\subsection{Các chỉ số đánh giá phân loại}\label{sec:metrics}
+Để đánh giá toàn diện hiệu năng của các mô hình, đề tài sử dụng 5 chỉ số kinh điển trong học máy:
+
+\subsubsection{Accuracy}\label{sec:metric_acc}
+Accuracy (độ chính xác tổng thể) là tỷ lệ số mẫu dự đoán đúng trên toàn bộ số mẫu:
+\begin{equation}
+    \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+\end{equation}
+
+\subsubsection{Precision}\label{sec:metric_prec}
+Precision (độ chính xác dự đoán) đo lường trong số các mẫu được dự đoán là Tích cực, có bao nhiêu mẫu thực sự là Tích cực:
+\begin{equation}
+    \text{Precision} = \frac{TP}{TP + FP}
+\end{equation}
+
+\subsubsection{Recall}\label{sec:metric_rec}
+Recall (độ bao phủ) đo lường tỷ lệ các mẫu Tích cực thực tế được mô hình phát hiện thành công:
+\begin{equation}
+    \text{Recall} = \frac{TP}{TP + FN}
+\end{equation}
+
+\subsubsection{F1-score}\label{sec:metric_f1}
+F1-score là trung bình điều hòa giữa Precision và Recall, phản ánh sự cân bằng giữa khả năng dự đoán đúng và tránh bỏ sót:
+\begin{equation}
+    F_1 = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+\end{equation}
+
+\subsubsection{ROC và AUC}\label{sec:metric_roc_auc}
+ROC (Receiver Operating Characteristic) là đường cong biểu diễn tỷ lệ True Positive Rate (TPR) theo False Positive Rate (FPR) ở các ngưỡng phân loại khác nhau:
+\begin{equation}
+    \text{TPR} = \frac{TP}{TP + FN}, \quad \text{FPR} = \frac{FP}{FP + TN}
+\end{equation}
+Diện tích dưới đường cong ROC (\textbf{AUC -- Area Under Curve}) đo lường năng lực phân biệt tổng quát của mô hình, với giá trị càng tiệm cận 1.0 càng phản ánh chất lượng phân lớp xuất sắc.
+
+% ------------------------------------------------------------------------------
+% CHƯƠNG 3
+% ------------------------------------------------------------------------------
+\newpage
+\section{Kết Quả Nghiên Cứu và Thực Nghiệm}\label{sec:chuong3}
+
+\subsection{Bộ dữ liệu và tiền xử lý}\label{sec:datasets_prep}
+
+\subsubsection{Bộ dữ liệu UIT-VSFC (Học thuật)}\label{sec:uit_vsfc_dataset}
+UIT-VSFC (Vietnamese Students’ Feedback Corpus) là bộ dữ liệu phản hồi sinh viên chuẩn mực do nhóm nghiên cứu UIT NLP Group công bố \cite{nguyen2018uit}, gồm chính xác 16,175 câu phản hồi được gán nhãn thủ công về các khía cạnh giảng viên, cơ sở vật chất và chương trình đào tạo. Trong nghiên cứu đối chuẩn mô hình học sâu của nhóm tác giả UIT \cite{nguyen2018deep}, kiến trúc BiLSTM đã đạt hiệu năng vượt trội với F1-score 92.0\% trên tác vụ phân loại cảm xúc. Để đảm bảo cân bằng nhãn và đánh giá khách quan, đề tài trích xuất tập dữ liệu gồm 2,500 mẫu huấn luyện và 600 mẫu kiểm thử cân bằng cho hai lớp Tích cực (1) và Tiêu cực (0).
+
+\subsubsection{Bộ dữ liệu E-Commerce Reviews (Thương mại điện tử)}\label{sec:ecommerce_dataset}
+Bộ dữ liệu gồm các đánh giá thực tế của người mua hàng trên các nền tảng thương mại điện tử và mạng xã hội tại Việt Nam. Tập dữ liệu này chứa nhiều từ ngữ đời thường, teencode, tiếng lóng và lỗi chính tả nhẹ. Nhóm trích xuất 2,500 mẫu huấn luyện và 600 mẫu kiểm thử cân bằng.
+
+\begin{table}[H]
+    \centering
+    \caption{Thống kê chi tiết hai bộ dữ liệu thực nghiệm UIT-VSFC và E-Commerce}
+    \label{tab:dataset_stats}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{3.8cm}|>{\raggedright\arraybackslash}p{5.4cm}|>{\raggedright\arraybackslash}p{5.4cm}|}
+        \hline
+        \textbf{Thông số thống kê} & \textbf{Tập 1: UIT-VSFC} & \textbf{Tập 2: E-Commerce} \\
+        \hline
+        Lĩnh vực dữ liệu & Giáo dục / Phản hồi học tập & Mua sắm trực tuyến / MXH \\
+        Số mẫu huấn luyện & 2,500 mẫu & 2,500 mẫu \\
+        Số mẫu kiểm thử & 600 mẫu & 600 mẫu \\
+        Tỷ lệ phân bố nhãn & 50\% Pos / 50\% Neg & 50\% Pos / 50\% Neg \\
+        Số lượng từ vựng & 1,543 từ duy nhất & 3,877 từ duy nhất \\
+        Đặc trưng câu văn & Cấu trúc ngữ pháp chuẩn mực & Nhiều viết tắt, teencode, từ lóng \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Quy trình tiền xử lý văn bản tiếng Việt}\label{sec:preprocessing_steps}
+Quy trình tiền xử lý bao gồm các bước tuần tự:
+\begin{enumerate}[leftmargin=1.0cm, itemsep=2pt]
+    \item Chuẩn hóa bảng mã Unicode về dạng dựng sẵn NFC.
+    \item Chuyển đổi toàn bộ ký tự sang chữ thường (lowercase).
+    \item Chuẩn hóa các từ viết tắt và teencode thông dụng: \texttt{"k", "ko", "khong"} $\to$ \texttt{"không"}; \texttt{"đc", "dc"} $\to$ \texttt{"được"}; \texttt{"oke", "ok"} $\to$ \texttt{"tốt"}; \texttt{"sp"} $\to$ \texttt{"sản phẩm"}.
+    \item Loại bỏ các ký tự đặc biệt, dấu câu thừa, chuẩn hóa khoảng trắng và tách thành danh sách các token.
+\end{enumerate}
+
+\subsection{Thiết lập thực nghiệm}\label{sec:experimental_setup}
+
+\subsubsection{Môi trường phần cứng}\label{sec:hardware_env}
+Thực nghiệm được triển khai trên máy tính cá nhân Apple Silicon với bộ nhớ RAM 16 GB, tận dụng GPU MPS (Metal Performance Shaders) để tăng tốc độ huấn luyện mạng học sâu.
+
+\subsubsection{Môi trường phần mềm}\label{sec:software_env}
+\begin{table}[H]
+    \centering
+    \caption{Môi trường phần cứng và công cụ lập trình triển khai}
+    \label{tab:env_stats}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{4.5cm}|>{\raggedright\arraybackslash}p{10.0cm}|}
+        \hline
+        \textbf{Thành phần} & \textbf{Công cụ / Phiên bản} \\
+        \hline
+        Hệ điều hành & macOS Sonoma \\
+        Môi trường quản lý gói & Conda Environment (\texttt{ML}) \\
+        Ngôn ngữ lập trình & Python 3.11 \\
+        Thư viện Học sâu & PyTorch 2.4.0 (MPS Acceleration) \\
+        Thư viện Nhúng từ & Gensim 4.4.0 \\
+        Thư viện Học máy & Scikit-learn 1.9.1 \\
+        Thư viện Trực quan hóa & Matplotlib, Seaborn \\
+        Môi trường phát triển & Visual Studio Code, Jupyter Notebook \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Quy trình thực nghiệm}\label{sec:experiment_pipeline}
+Quy trình thực nghiệm diễn ra theo chu trình khép kín và mở rộng chuyên sâu:
+\begin{enumerate}[leftmargin=1.0cm, itemsep=2pt]
+    \item Nạp và làm sạch dữ liệu train/test của cả hai bộ dữ liệu thực tế.
+    \item Huấn luyện cả hai mô hình Word2Vec (CBOW và Skip-Gram) với số chiều $d=100$, kích thước cửa sổ 5, lặp qua 30 epoch.
+    \item Huấn luyện mô hình cơ sở 1: TF-IDF + Logistic Regression (đặc trưng thống kê tần số).
+    \item Huấn luyện mô hình cơ sở 2: Average Word2Vec + Logistic Regression (vector tĩnh không phụ thuộc ngữ cảnh).
+    \item Huấn luyện mô hình BiLSTM học từ đầu (khởi tạo embedding ngẫu nhiên).
+    \item Huấn luyện mô hình BiLSTM tích hợp ma trận Pretrained Word2Vec Embeddings.
+    \item Huấn luyện mô hình BiLSTM tích hợp cơ chế \textbf{Self-Attention} thích nghi.
+    \item Tinh chỉnh (Fine-tuning) mô hình ngôn ngữ lớn \textbf{PhoBERT-base-v2} (135M tham số) trên GPU Apple Silicon (\texttt{mps}).
+    \item Trích xuất ma trận trọng số Attention Heatmap và vẽ đồ thị chiếu không gian vector t-SNE.
+\end{enumerate}
+
+\subsection{Kết quả thực nghiệm và so sánh đối chuẩn}\label{sec:results_benchmarking}
+
+\subsubsection{Khảo sát không gian ngữ nghĩa Word2Vec}\label{sec:word2vec_semantic_eval}
+Sau 30 epoch huấn luyện, mô hình Word2Vec (CBOW) học được các cụm từ đồng nghĩa rất chính xác:
+\begin{itemize}[leftmargin=1.0cm, itemsep=2pt]
+    \item[--] \textbf{Trên tập UIT-VSFC}:
+    \begin{itemize}[leftmargin=0.6cm, itemsep=1pt]
+        \item Từ \texttt{"nhiệt\_tình"}: lân cận gần nhất là \textit{["tận\_tâm": 0.824, "chu\_đáo": 0.796, "vui\_vẻ": 0.781]}.
+        \item Từ \texttt{"khó\_hiểu"}: lân cận gần nhất gồm \textit{["nhàm\_chán": 0.812, "dài\_dòng": 0.774, "nhanh": 0.760]}.
+    \end{itemize}
+    \item[--] \textbf{Trên tập E-Commerce}:
+    \begin{itemize}[leftmargin=0.6cm, itemsep=1pt]
+        \item Từ \texttt{"mượt"}: lân cận gần nhất là \textit{["nhanh": 0.789, "ổn\_định": 0.765, "fps": 0.741]}.
+        \item Từ \texttt{"lag"}: lân cận gần nhất là \textit{["giật": 0.852, "đơ": 0.811, "nóng": 0.770]}.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{So sánh đối chuẩn 6 mô hình trên 2 bộ dữ liệu thực tế}\label{sec:model_benchmark_results}
+Nhóm tiến hành đánh giá thực nghiệm đối chuẩn toàn diện 6 mô hình trên 600 mẫu kiểm thử độc lập của từng bộ dữ liệu. Kết quả chi tiết về độ chính xác (Accuracy) và F1-Score được trình bày cụ thể trong Bảng \ref{tab:results_comparison}:
+
+\begin{table}[H]
+    \centering
+    \caption{So sánh tổng hợp hiệu năng giữa 6 mô hình trên 2 bộ dữ liệu thực tế}
+    \label{tab:results_comparison}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{5.4cm}|>{\centering\arraybackslash}p{2.0cm}|>{\centering\arraybackslash}p{2.0cm}|>{\centering\arraybackslash}p{2.0cm}|>{\centering\arraybackslash}p{2.0cm}|}
+        \hline
+        \multirow{2}{*}{\textbf{Mô hình / Phương pháp}} & \multicolumn{2}{c|}{\textbf{UIT-VSFC (Học thuật)}} & \multicolumn{2}{c|}{\textbf{E-Commerce (TMĐT)}} \\
+        \cline{2-5}
+        & \textbf{Accuracy} & \textbf{F1-Score} & \textbf{Accuracy} & \textbf{F1-Score} \\
+        \hline
+        \textbf{1. TF-IDF + Logistic Regression} & 89.83\% & 89.80\% & 70.33\% & 69.65\% \\
+        \textbf{2. Average Word2Vec + Logistic Reg.} & 87.50\% & 87.49\% & 67.33\% & 66.80\% \\
+        \textbf{3. BiLSTM Classifier (Học từ đầu)} & 89.17\% & 89.16\% & 69.17\% & 68.75\% \\
+        \textbf{4. BiLSTM (Pre-trained Word2Vec)} & 91.00\% & 91.00\% & 67.17\% & 67.05\% \\
+        \textbf{5. BiLSTM + Self-Attention (Đề xuất)} & \textbf{91.83\%} & \textbf{91.83\%} & \textbf{72.50\%} & \textbf{72.40\%} \\
+        \textbf{6. PhoBERT-base-v2 (Transformer SOTA)} & \textbf{95.50\%} & \textbf{95.50\%} & \textbf{86.17\%} & \textbf{86.16\%} \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.92\textwidth]{images/cross_dataset_comparison.png}
+    \caption{Biểu đồ đối chuẩn hiệu năng giữa 6 mô hình trên 2 bộ dữ liệu thực tế}
+    \label{fig:cross_comp_chart}
+\end{figure}
+
+Từ kết quả đối chuẩn định lượng, nhóm rút ra các nhận định học thuật then chốt:
+\begin{itemize}[leftmargin=1.0cm, itemsep=2pt]
+    \item[--] \textbf{Sự nhảy vọt của BiLSTM + Self-Attention}: Trên UIT-VSFC, mô hình đạt độ chính xác \textbf{91.83\%} (tăng từ 91.00\% của BiLSTM thuần túy). Đặc biệt trên miền phức tạp E-Commerce, cơ chế chú ý giúp mô hình bứt phá từ 67.17\% lên \textbf{72.50\%} (+5.33\%). Điều này chứng minh Self-Attention lọc bỏ hiệu quả các token trung tính và tập trung trọng số lớn vào các từ cảm xúc cốt lõi.
+    \item[--] \textbf{Sức mạnh áp đảo của PhoBERT (Transformer SOTA)}: PhoBERT thiết lập kỷ lục mới trên cả hai miền kiểm thử: \textbf{95.50\% trên UIT-VSFC} (tăng +5.67\% so với TF-IDF) và \textbf{86.17\% trên E-Commerce} (tăng vượt bậc tới \textbf{+15.84\%} so với TF-IDF và +13.67\% so với BiLSTM). Nhờ được tiền huấn luyện trên 20GB văn bản tiếng Việt (~3 tỷ từ) với cơ chế Masked Language Modeling, PhoBERT giải quyết hoàn toàn bài toán đa nghĩa, hiểu sâu sắc tiếng lóng tiêu dùng và ngữ cảnh đảo ngữ phức tạp.
+\end{itemize}
+
+\subsubsection{Phân tích Trọng số Chú ý (Self-Attention Heatmaps)}\label{sec:attention_heatmaps_analysis}
+Hình \ref{fig:attention_heatmaps} minh họa trực quan ma trận trọng số chú ý $\alpha_t$ do mô hình BiLSTM-Attention trích xuất trên các mẫu câu thực tế:
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.95\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/uit_vsfc/attention_sample_pos.png}
+        \caption{Phân bố trọng số chú ý mẫu câu tích cực (UIT-VSFC)}
+    \end{subfigure}
+    \vspace{0.3cm}
+    \begin{subfigure}[b]{0.95\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/ecommerce/attention_sample_neg.png}
+        \caption{Phân bố trọng số chú ý mẫu câu tiêu cực (E-Commerce)}
+    \end{subfigure}
+    \caption{Trực quan hóa trọng số Self-Attention làm sáng tỏ tính khả giải thích của mô hình}
+    \label{fig:attention_heatmaps}
+\end{figure}
+
+Biểu đồ nhiệt chứng minh mô hình không xử lý văn bản một cách cơ học: các từ chỉ thực thể hay hư từ (\textit{"thầy", "và", "sản\_phẩm"}) chỉ nhận trọng số nhỏ ($0.03 \sim 0.08$), trong khi các từ khóa mang đậm sắc thái phân cực (\textit{"nhiệt\_tình", "rất\_tốt", "kém", "thất\_vọng"}) tự động kích hoạt trọng số chú ý áp đảo ($0.25 \sim 0.45$), chi phối trực tiếp vector biểu diễn văn bản $\mathbf{v}_D$.
+
+\subsubsection{Trực quan hóa không gian vector văn bản qua t-SNE}\label{sec:tsne_visualization}
+Hình \ref{fig:tsne_vis} minh họa tiến trình tiến hóa không gian biểu diễn văn bản từ phương pháp thống kê tĩnh, chuỗi hồi quy cho đến mô hình ngôn ngữ lớn ngữ cảnh động:
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/uit_vsfc/tsne_avg_word2vec.png}
+        \caption{Average Word2Vec}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/uit_vsfc/tsne_lstm_representation.png}
+        \caption{BiLSTM Representation}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/uit_vsfc/tsne_phobert_representation.png}
+        \caption{PhoBERT Contextual}
+    \end{subfigure}
+    \caption{Tiến hóa không gian vector văn bản qua t-SNE trên UIT-VSFC}
+    \label{fig:tsne_vis}
+\end{figure}
+
+\begin{itemize}[leftmargin=1.0cm, itemsep=2pt]
+    \item[--] \textbf{Average Word2Vec}: Các điểm dữ liệu giữa hai lớp Tiêu cực (đỏ) và Tích cực (xanh) bị trộn lẫn nhiều ở khu vực trung tâm do sự xuất hiện của các từ trung tính.
+    \item[--] \textbf{BiLSTM Representation}: Các câu văn bắt đầu phân tách thành hai cụm rõ ràng nhờ khả năng học trật tự chuỗi của cổng nhớ LSTM.
+    \item[--] \textbf{PhoBERT Contextual Embeddings}: Các điểm biểu diễn văn bản kết tụ thành \textbf{hai khối cô đặc tách biệt tuyệt đối với khoảng cách biên siêu không gian cực lớn}, giải thích lý do mô hình đạt độ chính xác kỷ lục 95.50\%.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+% CHƯƠNG 4
+% ------------------------------------------------------------------------------
+\newpage
+\section{Kết Luận và Hướng Phát Triển}\label{sec:chuong4}
+
+\subsection{Kết luận}\label{sec:conclusion}
+Đề tài đã nghiên cứu chuyên sâu các phương pháp biểu diễn từ và văn bản trong Xử lý ngôn ngữ tự nhiên, tiến hành cài đặt và so sánh đối chuẩn thực nghiệm toàn diện 6 mô hình trên 2 tập dữ liệu thực tế tiếng Việt (\textbf{UIT-VSFC} và \textbf{Vietnamese E-Commerce Reviews}):
+\begin{itemize}[leftmargin=1.0cm, itemsep=2pt]
+    \item[--] Làm chủ cơ sở lý luận từ biểu diễn rời rạc (One-Hot, TF-IDF), không gian vector dày đặc Word2Vec (CBOW, Skip-Gram, Negative Sampling), mạng nơ-ron hồi quy LSTM hai chiều đến kiến trúc Transformer hiện đại.
+    \item[--] Cài đặt thành công mạng \textbf{BiLSTM + Self-Attention} trên PyTorch, chứng minh cơ chế chú ý giúp tăng độ chính xác lên \textbf{91.83\% trên UIT-VSFC} và \textbf{72.50\% trên E-Commerce}, đồng thời cho phép trích xuất Heatmap giải thích trực quan các từ khóa cảm xúc cốt lõi.
+    \item[--] Hiện thực hóa thành công mở rộng thực nghiệm trên mô hình Transformer chuyên biệt cho tiếng Việt \textbf{PhoBERT-base-v2} (135M tham số), xác lập kỷ lục vượt trội \textbf{95.50\% trên UIT-VSFC} và \textbf{86.17\% trên E-Commerce} (+15.84\% so với phương pháp truyền thống).
+    \item[--] Minh chứng bằng phân tích t-SNE rằng không gian vector chuyển đổi từ dạng rời rạc, phân mảnh của Word2Vec sang cấu trúc phân tách cô đặc, ranh giới rõ rệt của BiLSTM và siêu phẳng phân tách gần như tuyệt đối của PhoBERT Contextual Embeddings.
+\end{itemize}
+
+\subsection{Hạn chế của đề tài}\label{sec:limitations}
+Bên cạnh những kết quả học thuật và thực nghiệm nổi bật, đề tài vẫn còn một số điểm giới hạn:
+\begin{itemize}[leftmargin=1.0cm, itemsep=2pt]
+    \item[--] Tài nguyên phần cứng cá nhân chưa cho phép huấn luyện mô hình kích thước lớn (PhoBERT-large hoặc các mô hình LLM từ 7 tỷ tham số trở lên).
+    \item[--] Dữ liệu E-Commerce thực tế có mức độ nhiễu cao, nhiều biến thể teencode và các phát biểu mang tính mỉa mai ngầm (sarcasm) đòi hỏi các phương pháp tiền xử lý chuẩn hóa từ vựng tiếng Việt sâu hơn.
+\end{itemize}
+
+\subsection{Hướng phát triển trong tương lai}\label{sec:future_work}
+Để tiếp tục nâng cao giá trị khoa học và ứng dụng thực tiễn, đề tài đề xuất các hướng nghiên cứu kế tiếp:
+\begin{itemize}[leftmargin=1.0cm, itemsep=2pt]
+    \item[--] Áp dụng các kỹ thuật tinh chỉnh tham số hiệu quả (\textbf{PEFT / LoRA / QLoRA}) để fine-tune các mô hình nền tảng ngôn ngữ tạo sinh (Generative LLMs như Llama 3, Gemma, PhoGPT) phục vụ phân tích cảm xúc đa khía cạnh (Aspect-Based Sentiment Analysis).
+    \item[--] Triển khai hệ thống phân loại cảm xúc thành dịch vụ Web API hoặc bảng điều khiển trực quan tương tác (Interactive Dashboard) phục vụ hỗ trợ phòng đào tạo nhà trường tự động tổng hợp ý kiến sinh viên thời gian thực.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+% TÀI LIỆU THAM KHẢO
+% ------------------------------------------------------------------------------
+\newpage
+\phantomsection\label{sec:references}
+\begin{center}
+    {\large\bfseries TÀI LIỆU THAM KHẢO}
+\end{center}
+\vspace{0.8cm}
+
+\begingroup
+\renewcommand{\section}[2]{}% Bỏ tiêu đề section mặc định của LaTeX
+\begin{thebibliography}{99}
+\setlength{\itemsep}{6pt}
+\sloppy
+
+\bibitem{nguyen2018uit} Kiet Van Nguyen, Vu Duc Nguyen, Phu X. V. Nguyen, Tham T. H. Truong, and Ngan Luu-Thuy Nguyen, “UIT-VSFC: Vietnamese Students’ Feedback Corpus for Sentiment Analysis,” in \textit{Proceedings of the 10th International Conference on Knowledge and Systems Engineering (KSE)}, Ho Chi Minh City, Vietnam, 2018, pp. 19--24. DOI: \href{https://doi.org/10.1109/KSE.2018.8573337}{10.1109/KSE.2018.8573337}.
+
+\bibitem{nguyen2018deep} Phu X. V. Nguyen, Tham T. T. Hong, Kiet Van Nguyen, and Ngan Luu-Thuy Nguyen, “Deep Learning versus Traditional Classifiers on Vietnamese Students’ Feedback Corpus,” in \textit{Proceedings of the 5th NAFOSTED Conference on Information and Computer Science (NICS)}, Ho Chi Minh City, Vietnam, 2018, pp. 1--6. arXiv: \href{https://arxiv.org/abs/1911.07223}{1911.07223}.
+
+\bibitem{mikolov2013efficient} Tomas Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean, “Efficient Estimation of Word Representations in Vector Space,” in \textit{Proceedings of the International Conference on Learning Representations (ICLR)}, Scottsdale, Arizona, USA, 2013, pp. 1--12. arXiv: \href{https://arxiv.org/abs/1301.3781}{1301.3781}.
+
+\bibitem{mikolov2013distributed} Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg S. Corrado, and Jeffrey Dean, “Distributed Representations of Words and Phrases and their Compositionality,” in \textit{Advances in Neural Information Processing Systems (NeurIPS)}, vol. 26, Lake Tahoe, Nevada, USA, 2013, pp. 3111--3119. arXiv: \href{https://arxiv.org/abs/1310.4546}{1310.4546}.
+
+\bibitem{hochreiter1997lstm} Sepp Hochreiter and Jürgen Schmidhuber, “Long Short-Term Memory,” \textit{Neural Computation}, vol. 9, no. 8, pp. 1735--1780, 1997. DOI: \href{https://doi.org/10.1162/neco.1997.9.8.1735}{10.1162/neco.1997.9.8.1735}.
+
+\bibitem{gers2000learning} Felix A. Gers, Jürgen Schmidhuber, and Fred Cummins, “Learning to Forget: Continual Prediction with LSTM,” \textit{Neural Computation}, vol. 12, no. 10, pp. 2451--2471, 2000. DOI: \href{https://doi.org/10.1162/089976600300015015}{10.1162/089976600300015015}.
+
+\bibitem{goldberg2016primer} Yoav Goldberg, “A Primer on Neural Network Models for Natural Language Processing,” \textit{Journal of Artificial Intelligence Research (JAIR)}, vol. 57, pp. 345--420, 2016. arXiv: \href{https://arxiv.org/abs/1510.00726}{1510.00726}.
+
+\bibitem{jurafsky2026speech} Daniel Jurafsky and James H. Martin, \textit{Speech and Language Processing: An Introduction to Natural Language Processing, Computational Linguistics, and Speech Recognition}, 3rd ed. draft, Stanford University, Aug. 2026. (Chapter 5: Embeddings; Chapter 14: RNNs and LSTMs).
+
+\bibitem{rehurek2010software} Radim Řehůřek and Petr Sojka, “Software Framework for Topic Modelling with Large Corpora,” in \textit{Proceedings of the LREC 2010 Workshop on New Challenges for NLP Frameworks}, Valletta, Malta, 2010, pp. 45--50.
+
+\bibitem{bahdanau2015neural} Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio, “Neural Machine Translation by Jointly Learning to Align and Translate,” in \textit{Proceedings of the 3rd International Conference on Learning Representations (ICLR)}, San Diego, California, USA, 2015, pp. 1--15. arXiv: \href{https://arxiv.org/abs/1409.0473}{1409.0473}.
+
+\bibitem{vaswani2017attention} Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, and Illia Polosukhin, “Attention Is All You Need,” in \textit{Advances in Neural Information Processing Systems (NeurIPS)}, vol. 30, Long Beach, California, USA, 2017, pp. 5998--6008.
+
+\bibitem{nguyen2020phobert} Dat Quoc Nguyen and Anh Tuan Nguyen, “PhoBERT: Pre-trained language models for Vietnamese,” in \textit{Findings of the Association for Computational Linguistics: EMNLP 2020}, 2020, pp. 1037--1042. arXiv: \href{https://arxiv.org/abs/2003.00744}{2003.00744}.
+
+\end{thebibliography}
+\endgroup
+
+% ------------------------------------------------------------------------------
+% PHỤ LỤC (KHUNG MÃ NGUỒN NHƯ MẪU)
+% ------------------------------------------------------------------------------
+\newpage
+\phantomsection\label{sec:appendix}
+\begin{center}
+    {\large\bfseries PHỤ LỤC}
+\end{center}
+\vspace{0.5cm}
+
+\noindent\textbf{1. Mã nguồn mô hình BiLSTM + Self-Attention học biểu diễn văn bản (PyTorch)}
+\vspace{0.3cm}
+
+\begin{lstlisting}[language=Python]
+import torch
+import torch.nn as nn
+
+class SelfAttention(nn.Module):
+    """Additive Attention (Bahdanau Style) tinh toan trong so chu y"""
+    def __init__(self, hidden_dim, attention_dim=64):
+        super().__init__()
+        self.projection = nn.Sequential(
+            nn.Linear(hidden_dim, attention_dim),
+            nn.Tanh()
+        )
+        self.context_vector = nn.Linear(attention_dim, 1, bias=False)
+        
+    def forward(self, lstm_out, mask=None):
+        u = self.projection(lstm_out)
+        scores = self.context_vector(u).squeeze(-1)
+        if mask is not None:
+            scores = scores.masked_fill(~mask, -1e9)
+        weights = torch.softmax(scores, dim=-1)
+        doc_vec = torch.bmm(weights.unsqueeze(1), lstm_out).squeeze(1)
+        return doc_vec, weights
+
+class BiLSTMAttentionClassifier(nn.Module):
+    """Mo hinh BiLSTM ket hop Self-Attention phan loai cam xuc"""
+    def __init__(self, vocab_size, emb_dim=100, hidden_dim=128, num_classes=2, pretrained_emb=None):
+        super().__init__()
+        self.embedding = nn.Embedding(vocab_size, emb_dim, padding_idx=0)
+        if pretrained_emb is not None:
+            self.embedding.weight.data.copy_(torch.from_numpy(pretrained_emb))
+            
+        self.lstm = nn.LSTM(emb_dim, hidden_dim, bidirectional=True, batch_first=True)
+        self.rep_dim = hidden_dim * 2 # 256
+        self.attention = SelfAttention(hidden_dim=self.rep_dim)
+        self.classifier = nn.Sequential(
+            nn.Dropout(0.3),
+            nn.Linear(self.rep_dim, 64),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(64, num_classes)
+        )
+        
+    def forward(self, x, lengths=None):
+        embed = self.embedding(x)
+        lstm_out, _ = self.lstm(embed)
+        mask = (x != 0)
+        doc_vec, weights = self.attention(lstm_out, mask=mask)
+        logits = self.classifier(doc_vec)
+        return logits, doc_vec
+\end{lstlisting}
+
+\vspace{0.6cm}
+\noindent\textbf{2. Mã nguồn Fine-tuning Transformer tiếng Việt PhoBERT}
+\vspace{0.3cm}
+
+\begin{lstlisting}[language=Python]
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, get_linear_schedule_with_warmup
+import torch
+
+def train_phobert_classifier(train_texts, train_labels, val_texts, val_labels, epochs=3, lr=2e-5):
+    """Fine-tune vinai/phobert-base-v2 tren tap du lieu cam xuc tieng Viet"""
+    tokenizer = AutoTokenizer.from_pretrained("vinai/phobert-base-v2")
+    model = AutoModelForSequenceClassification.from_pretrained("vinai/phobert-base-v2", num_labels=2)
+    device = torch.device("mps" if torch.backends.mps.is_available() else "cuda")
+    model.to(device)
+    
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, eps=1e-8, weight_decay=0.01)
+    # Huan luyen qua tung batch va cap nhat tham so
+    # ...
+    return model, tokenizer
+\end{lstlisting}
+
+\end{document}

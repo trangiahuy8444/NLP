@@ -1,0 +1,24 @@
+Xử lý ngôn ngữ tự nhiên giúp máy tính hiểu và tạo ra ngôn ngữ của con người.
+Mô hình ngôn ngữ gán xác suất cho một chuỗi từ.
+Mô hình ngôn ngữ cũng dự đoán từ tiếp theo dựa trên ngữ cảnh.
+Mô hình N gram học từ tần suất xuất hiện của các cụm từ trong dữ liệu.
+Mô hình bigram sử dụng một từ đứng trước làm ngữ cảnh.
+Mô hình trigram sử dụng hai từ đứng trước làm ngữ cảnh.
+Dữ liệu huấn luyện càng lớn thì các ước lượng xác suất càng đáng tin cậy.
+Làm trơn giúp mô hình xử lý những cụm từ chưa từng xuất hiện.
+Laplace smoothing cộng một vào số đếm của mỗi khả năng.
+Perplexity được dùng để đánh giá khả năng dự đoán của mô hình ngôn ngữ.
+Perplexity thấp thường cho biết mô hình dự đoán tốt hơn.
+Mô hình có thể sinh văn bản bằng cách dự đoán từng từ tiếp theo.
+Word2Vec biểu diễn mỗi từ bằng một vector liên tục.
+Những từ có ngữ cảnh giống nhau thường có vector gần nhau.
+Skip gram dự đoán các từ ngữ cảnh từ một từ trung tâm.
+CBOW dự đoán từ trung tâm dựa trên các từ ngữ cảnh.
+LSTM sử dụng trạng thái ẩn để lưu thông tin từ các bước trước.
+Các cổng của LSTM điều khiển thông tin cần nhớ và cần quên.
+Transformer sử dụng attention để xử lý ngữ cảnh dài.
+ChatGPT là một mô hình ngôn ngữ lớn dựa trên kiến trúc Transformer.
+ChatGPT tạo câu trả lời bằng cách dự đoán token tiếp theo nhiều lần.
+Ngôn ngữ tự nhiên có nhiều cấu trúc và nhiều cách diễn đạt khác nhau.
+Một corpus phù hợp giúp mô hình học được đặc trưng của lĩnh vực.
+Tập kiểm thử phải tách biệt với tập dữ liệu dùng để huấn luyện.
