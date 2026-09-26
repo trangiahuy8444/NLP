@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NLP Midterm Interactive Studio: Word2Vec, LSTM & SOTA Transformer</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- KaTeX for beautiful math formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+  <!-- Dải màu nhận diện thương hiệu HCMUE (Cerulean #124874 -> Jasper #CF373D) -->
+  <div style="background: linear-gradient(90deg, #124874 0%, #1a629b 60%, #CF373D 100%); height: 4px; width: 100%;"></div>
+
+  <!-- ======================================================================
+       HEADER & HERO BANNER
+       ====================================================================== -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <img src="assets/logo_hcmue_moet_white.png" alt="HCMUE Logo" class="h-11 w-auto object-contain">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#124874]/60 text-sky-200 border border-[#124874]">
+              TRƯỜNG ĐH SƯ PHẠM TP.HCM
+            </span>
+            <span class="text-xs text-slate-400">Khoa Khoa Học Máy Tính • Khóa 36 (2025-2027)</span>
+          </div>
+          <h1 class="text-base md:text-lg font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-200 to-[#CF373D] mt-1">
+            Báo Cáo Giữa Kỳ: Word2Vec, Word Embedding & BiLSTM Cho Phân Loại Cảm Xúc
+          </h1>
+        </div>
+      </div>
+
+      <!-- Thông tin nhóm & Giảng viên -->
+      <div class="text-xs text-slate-300 flex flex-wrap items-center gap-x-4 gap-y-1 bg-slate-800/80 px-3 py-2 rounded-lg border border-slate-700">
+        <div>👨‍🏫 GVHD: <strong class="text-amber-400">TS. LÊ ANH CƯỜNG</strong></div>
+        <div class="hidden sm:inline text-slate-600">|</div>
+        <div>👥 Nhóm SV: <span class="text-indigo-300 font-medium">Gia Huy</span> (K836012), <span class="text-indigo-300 font-medium">Khánh Ngân</span> (K836019), <span class="text-indigo-300 font-medium">Tấn Phát</span> (K836026)</div>
+      </div>
+    </div>
+
+    <!-- Thanh tiến độ học tập toàn diện -->
+    <div class="bg-slate-950/80 border-t border-slate-800/80 px-4 sm:px-6 lg:px-8 py-2">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 text-xs">
+        <div class="flex items-center gap-2 font-medium text-slate-300">
+          <span>🎯 Tiến độ làm chủ kiến thức báo cáo:</span>
+          <span id="total-progress-text" class="text-indigo-400 font-bold">0% Hoàn thành</span>
+        </div>
+        <div class="w-48 sm:w-64 bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700">
+          <div id="total-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-emerald-400 w-0 transition-all duration-300"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       NAVBAR TABS (LỘ TRÌNH TỪ CON SỐ 0 ĐẾN ĐIỂM A+)
+       ====================================================================== -->
+  <nav class="bg-slate-900 border-b border-slate-800 sticky top-[95px] z-30 overflow-x-auto shadow-md">
+    <div class="max-w-7xl mx-auto px-4 flex space-x-1 sm:space-x-2 py-2">
+      <button class="nav-tab active px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:text-white transition" data-target="module-vector">
+        📐 1. Biểu Diễn Từ & Vector
+      </button>
+      <button class="nav-tab px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:text-white transition" data-target="module-word2vec">
+        ⚙️ 2. Word2Vec & Negative Sampling
+      </button>
+      <button class="nav-tab px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:text-white transition" data-target="module-lstm">
+        🧠 3. Biểu Diễn Văn Bản & LSTM
+      </button>
+      <button class="nav-tab px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:text-white transition" data-target="module-attention">
+        🔥 4. Self-Attention & PhoBERT
+      </button>
+      <button class="nav-tab px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:text-white transition" data-target="module-benchmark">
+        📊 5. Thực Nghiệm Đa Miền
+      </button>
+      <button class="nav-tab px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:text-white transition" data-target="module-defense">
+        🎓 6. Giả Lập Vấn Đáp TS. Cường
+      </button>
+      <button class="nav-tab px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:text-white transition" data-target="module-quiz">
+        📝 7. Trắc Nghiệm Tự Đánh Giá
+      </button>
+    </div>
+  </nav>
+
+  <!-- ======================================================================
+       MAIN CONTENT CONTAINER
+       ====================================================================== -->
+  <main id="main-content" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+    <!-- ====================================================================
+         MODULE 1: TẠI SAO CẦN VECTOR & ONE-HOT VS DENSE WORD EMBEDDING
+         ==================================================================== -->
+    <section id="module-vector" class="learning-module block space-y-8">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <span class="text-indigo-400 font-mono text-xs uppercase tracking-wider">Cơ sở lý thuyết nền tảng</span>
+          <h2 class="text-2xl font-bold text-white mt-1">1. Tiến trình phát triển của các phương pháp Biểu diễn Từ</h2>
+        </div>
+        <label class="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:border-slate-700">
+          <input type="checkbox" class="progress-check rounded text-indigo-600 focus:ring-indigo-500">
+          <span class="text-slate-300 font-medium">Đã hiểu rõ phần này</span>
+        </label>
+      </div>
+
+      <!-- Bản chất bình dân từ con số 0 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-panel p-5 space-y-3 border-indigo-900/40">
+          <div class="text-2xl">🤖</div>
+          <h3 class="font-bold text-indigo-300 text-base">Vì sao máy tính cần Vector?</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Máy tính chỉ hiểu các con số, không hiểu chữ cái. Để máy "hiểu" được từ ngữ, ta phải biến mỗi từ thành một tọa độ hình học nhiều chiều. Nếu hai từ có nghĩa gần nhau, tọa độ của chúng phải nằm sát nhau trong không gian!
+          </p>
+        </div>
+
+        <div class="glass-panel p-5 space-y-3 border-rose-900/40">
+          <div class="text-2xl">⚡</div>
+          <h3 class="font-bold text-rose-300 text-base">Cạm bẫy của One-Hot Encoding</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Mỗi từ được gán một vector nhị phân có chiều bằng kích thước từ vựng $|V|$ (ví dụ: 10,000 chiều). Toàn số 0 và duy nhất một số 1. Hai từ bất kỳ luôn vuông góc với nhau (tích vô hướng $= 0$), máy hoàn toàn mù tịt về ngữ nghĩa!
+          </p>
+        </div>
+
+        <div class="glass-panel p-5 space-y-3 border-emerald-900/40">
+          <div class="text-2xl">✨</div>
+          <h3 class="font-bold text-emerald-300 text-base">Giả thuyết phân bố (Firth, 1957)</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            <em>"You shall know a word by the company it keeps"</em>. Một từ được định hình ý nghĩa bởi các từ xung quanh nó. Word Embedding ánh xạ mỗi từ thành vector dày đặc $d=100$ chiều, các từ đồng nghĩa sẽ tự động co cụm cạnh nhau.
+          </p>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE WIDGET 1: VECTOR PLAYGROUND -->
+      <div class="glass-panel p-6 space-y-6 border-slate-800">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded text-xs bg-indigo-500/20 text-indigo-400 font-bold border border-indigo-500/30">INTERACTIVE WIDGET 1</span>
+              <h3 class="text-lg font-bold text-white">Trình Mô Phỏng Không Gian Vector 2D & Máy Tính Cosine Similarity</h3>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Chọn hoặc nhấp chuột vào 2 từ trên đồ thị để so sánh biểu diễn One-Hot vs Word Embedding</p>
+          </div>
+
+          <!-- Bộ chọn từ -->
+          <div class="flex flex-wrap items-center gap-3 text-xs">
+            <div class="flex items-center gap-1.5">
+              <span class="w-3 h-3 rounded-full bg-indigo-500 inline-block"></span>
+              <label class="text-slate-300">Từ 1:</label>
+              <select id="word-select-1" class="bg-slate-900 border border-slate-700 text-white rounded px-2.5 py-1 text-xs focus:ring-1 focus:ring-indigo-500"></select>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-3 h-3 rounded-full bg-pink-500 inline-block"></span>
+              <label class="text-slate-300">Từ 2:</label>
+              <select id="word-select-2" class="bg-slate-900 border border-slate-700 text-white rounded px-2.5 py-1 text-xs focus:ring-1 focus:ring-pink-500"></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <!-- Canvas 2D Plot -->
+          <div class="lg:col-span-6 flex flex-col items-center justify-center bg-slate-950 p-4 rounded-xl border border-slate-800 relative">
+            <canvas id="vector-canvas" width="460" height="420" class="max-w-full cursor-crosshair"></canvas>
+            <div class="text-[11px] text-slate-400 mt-2 text-center">
+              💡 <em>Mẹo: Bạn có thể click trực tiếp vào các chấm trên vòng tròn để chọn từ nhanh!</em>
+            </div>
+          </div>
+
+          <!-- Bảng so sánh trực diện One-Hot vs Dense Vector -->
+          <div class="lg:col-span-6 space-y-4">
+            <!-- Thẻ Word Embedding (Dense) -->
+            <div class="bg-slate-900/90 p-4 rounded-xl border border-indigo-500/40 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Word Embedding (Word2Vec Dense d=100)</span>
+                <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded text-xs font-bold">Nắm bắt ngữ nghĩa</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 pt-1">
+                <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                  <div class="text-xs text-slate-400">Cosine Similarity:</div>
+                  <div id="dense-cos-val" class="text-2xl font-extrabold text-emerald-400 mt-0.5">0.9124</div>
+                  <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div id="dense-cos-bar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 90%;"></div>
+                  </div>
+                </div>
+
+                <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                  <div class="text-xs text-slate-400">Góc lệch hình học θ:</div>
+                  <div id="dense-angle-val" class="text-2xl font-extrabold text-amber-400 mt-0.5">24.1°</div>
+                  <div class="text-[11px] text-slate-400 mt-2">Góc hẹp = Ngữ nghĩa rất gần</div>
+                </div>
+              </div>
+
+              <div class="text-xs space-y-1 font-mono text-slate-400 bg-slate-950 p-2.5 rounded border border-slate-800">
+                <div><span class="text-indigo-400" id="comp-word1-name">Từ 1</span>: <span id="dense-vec-preview-1"></span></div>
+                <div><span class="text-pink-400" id="comp-word2-name">Từ 2</span>: <span id="dense-vec-preview-2"></span></div>
+              </div>
+            </div>
+
+            <!-- Thẻ One-Hot Encoding -->
+            <div class="bg-slate-900/90 p-4 rounded-xl border border-rose-500/40 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-rose-400 uppercase tracking-wider">One-Hot Encoding (|V| = 10,000)</span>
+                <span class="px-2 py-0.5 bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded text-xs font-bold">Thất bại ngữ nghĩa</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 pt-1">
+                <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                  <div class="text-xs text-slate-400">Cosine Similarity:</div>
+                  <div id="onehot-cos-val" class="text-2xl font-extrabold text-rose-400 mt-0.5">0.0000</div>
+                  <div class="text-[11px] text-rose-400 mt-2">Hoàn toàn trực giao (Vuông góc)</div>
+                </div>
+
+                <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                  <div class="text-xs text-slate-400">Góc lệch hình học θ:</div>
+                  <div class="text-2xl font-extrabold text-rose-400 mt-0.5">90.0°</div>
+                  <div class="text-[11px] text-slate-400 mt-2">Mọi cặp từ khác nhau đều 90°</div>
+                </div>
+              </div>
+
+              <div class="text-xs space-y-1 font-mono text-slate-400 bg-slate-950 p-2.5 rounded border border-slate-800">
+                <div><span class="text-indigo-400">Từ 1</span>: <span id="onehot-vec-preview-1"></span></div>
+                <div><span class="text-pink-400">Từ 2</span>: <span id="onehot-vec-preview-2"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mẹo thuyết trình bảo vệ đồ án -->
+        <div class="bg-amber-950/30 border border-amber-500/40 p-4 rounded-xl flex items-start gap-3">
+          <span class="text-xl">🗣️</span>
+          <div class="text-xs text-slate-300 leading-relaxed">
+            <strong class="text-amber-400">Câu nói ghi điểm khi thuyết trình với TS. Lê Anh Cường:</strong>
+            "Thưa thầy, One-Hot Encoding làm vector bị bùng nổ theo kích thước từ điển và triệt tiêu tính tương đồng hình học. Word2Vec giải quyết điều này bằng cách nén vào không gian $d=100$ chiều dày đặc, giúp máy đo được độ tương đồng Cosine giữa các từ như 'thầy_cô' và 'giảng_viên' đạt xấp xỉ 0.91 thay vì bằng 0."
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         MODULE 2: WORD2VEC DEEP-DIVE (CBOW VS SKIP-GRAM & NEGATIVE SAMPLING)
+         ==================================================================== -->
+    <section id="module-word2vec" class="learning-module hidden space-y-8">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <span class="text-indigo-400 font-mono text-xs uppercase tracking-wider">Kiến trúc mạng nơ-ron nông</span>
+          <h2 class="text-2xl font-bold text-white mt-1">2. Mô hình Word2Vec: CBOW, Skip-Gram và Negative Sampling (SGNS)</h2>
+        </div>
+        <label class="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:border-slate-700">
+          <input type="checkbox" class="progress-check rounded text-indigo-600 focus:ring-indigo-500">
+          <span class="text-slate-300 font-medium">Đã hiểu rõ phần này</span>
+        </label>
+      </div>
+
+      <!-- INTERACTIVE WIDGET 2: SLIDING WINDOW SIMULATOR -->
+      <div class="glass-panel p-6 space-y-6 border-slate-800">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded text-xs bg-indigo-500/20 text-indigo-400 font-bold border border-indigo-500/30">INTERACTIVE WIDGET 2</span>
+              <h3 class="text-lg font-bold text-white">Bộ Mô Phỏng Cửa Sổ Trượt (Sliding Window Simulator)</h3>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Trực quan hóa luồng dữ liệu của CBOW và Skip-Gram qua từng bước trượt</p>
+          </div>
+
+          <!-- Chuyển đổi CBOW / Skip-Gram -->
+          <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+            <button id="mode-cbow-btn" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-indigo-600 text-white">
+              CBOW (Đoán từ giữa)
+            </button>
+            <button id="mode-skipgram-btn" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-gray-800 text-gray-300 hover:text-white">
+              Skip-Gram (Đoán xung quanh)
+            </button>
+          </div>
+        </div>
+
+        <!-- Điều khiển câu và tham số -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-slate-950/60 p-4 rounded-xl border border-slate-800 text-xs">
+          <div class="md:col-span-7 flex flex-col sm:flex-row sm:items-center gap-2">
+            <label class="text-slate-400 font-semibold shrink-0">Chọn câu ngữ liệu thực tế:</label>
+            <select id="w2v-sent-select" class="w-full bg-slate-900 border border-slate-700 text-white rounded px-3 py-1.5 focus:ring-1 focus:ring-indigo-500"></select>
+          </div>
+
+          <div class="md:col-span-5 flex items-center justify-end gap-3">
+            <label class="text-slate-400 font-semibold shrink-0">Kích thước cửa sổ (window $c$):</label>
+            <input id="w2v-window-slider" type="range" min="1" max="3" value="2" class="w-24 accent-indigo-500 cursor-pointer">
+            <span id="w2v-window-val" class="font-bold text-indigo-400 text-sm px-2 py-0.5 bg-slate-900 rounded border border-slate-800">2</span>
+          </div>
+        </div>
+
+        <!-- Trực quan hóa câu văn bản và token pills -->
+        <div class="space-y-3">
+          <div class="text-xs text-slate-400 flex items-center justify-between">
+            <span>Bấm vào một từ bất kỳ để chọn làm <strong>Từ trung tâm $w_t$ (Target Word)</strong>:</span>
+            <span class="flex items-center gap-3">
+              <span class="inline-flex items-center gap-1 text-[11px]"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Từ trung tâm $w_t$</span>
+              <span class="inline-flex items-center gap-1 text-[11px]"><span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> Từ ngữ cảnh xung quanh $w_{t \pm c}$</span>
+            </span>
+          </div>
+
+          <div id="w2v-tokens-container" class="flex flex-wrap gap-2.5 p-5 bg-slate-950 rounded-xl border border-slate-800 items-center justify-center min-h-[90px]"></div>
+        </div>
+
+        <!-- Luồng dữ liệu chi tiết của kiến trúc đang chọn -->
+        <div class="bg-slate-900/90 p-5 rounded-xl border border-slate-800 space-y-4">
+          <h4 id="w2v-mode-title" class="text-sm font-bold text-indigo-300"></h4>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+              <div class="text-xs font-semibold text-slate-400">ĐẦU VÀO (INPUT):</div>
+              <div id="w2v-input-list" class="flex flex-wrap gap-1.5 min-h-[32px] items-center"></div>
+            </div>
+
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+              <div class="text-xs font-semibold text-slate-400">ĐẦU RA CẦN DỰ ĐOÁN (TARGET OUTPUT):</div>
+              <div id="w2v-output-list" class="flex flex-wrap gap-1.5 min-h-[32px] items-center"></div>
+            </div>
+          </div>
+
+          <p id="w2v-flow-desc" class="text-xs text-slate-300 leading-relaxed"></p>
+        </div>
+
+        <!-- Kỹ thuật Negative Sampling (SGNS) -->
+        <div class="bg-slate-900/70 p-5 rounded-xl border border-purple-500/30 space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-bold text-purple-300 flex items-center gap-2">
+              <span>🎯</span> Tối Ưu Hóa Bằng Kỹ Thuật Negative Sampling (SGNS)
+            </h4>
+            <span class="px-2 py-0.5 rounded text-xs bg-purple-500/20 text-purple-300 font-mono">Độ phức tạp $O(|V|) \rightarrow O(K)$</span>
+          </div>
+
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Trong Softmax truyền thống, mẫu số bắt buộc phải tính tổng luỹ thừa trên toàn bộ từ vựng $|V| = 50,000$ từ tại MỌI BƯỚC thời gian. Mikolov biến đổi thành bài toán phân loại nhị phân Logistic:
+          </p>
+
+          <div class="bg-slate-950 p-3 rounded font-mono text-xs text-purple-200 overflow-x-auto border border-slate-800">
+            $$\mathcal{L}_{SGNS} = \log \sigma(\mathbf{v}'^T_{w_O} \mathbf{v}_{w_I}) + \sum_{k=1}^{K} \mathbb{E}_{w_{n_k} \sim P_n(w)} \left[ \log \sigma(-\mathbf{v}'^T_{w_{n_k}} \mathbf{v}_{w_I}) \right]$$
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1">
+            <div class="bg-emerald-950/40 p-3 rounded border border-emerald-800/40 text-emerald-300">
+              <strong>1 Mẫu dương (Positive Pair):</strong> Cặp từ thật có mặt trong văn bản (ví dụ: "giáo_viên", "nhiệt_tình") $\rightarrow$ gán nhãn $y=1$.
+            </div>
+            <div class="bg-rose-950/40 p-3 rounded border border-rose-800/40 text-rose-300">
+              <strong>$K$ Mẫu âm (Negative Pairs):</strong> $K=5$ từ ngẫu nhiên rút từ từ điển (ví dụ: "giáo_viên", "nồi_cơm") $\rightarrow$ gán nhãn $y=0$.
+            </div>
+          </div>
+
+          <div class="text-xs text-slate-400 bg-slate-950 p-3 rounded border border-slate-800">
+            💡 <strong>Bí quyết số mũ $3/4$:</strong> Mẫu âm được chọn theo phân phối Unigram mũ $0.75$: $P_n(w) \propto f(w)^{3/4}$. Số mũ này giúp giảm xác suất các từ dừng quá nhiều (như 'và', 'thì') và tăng cơ hội cho các từ hiếm xuất hiện được tối ưu!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         MODULE 3: BIỂU DIỄN VĂN BẢN (AVERAGE WORD2VEC VS LSTM 3 CỔNG & BILSTM)
+         ==================================================================== -->
+    <section id="module-lstm" class="learning-module hidden space-y-8">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <span class="text-indigo-400 font-mono text-xs uppercase tracking-wider">Từ Vector Từ đến Vector Văn Bản</span>
+          <h2 class="text-2xl font-bold text-white mt-1">3. Biểu Diễn Văn Bản: Cạm bẫy Average Word2Vec & Mạng Hồi Quy BiLSTM</h2>
+        </div>
+        <label class="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:border-slate-700">
+          <input type="checkbox" class="progress-check rounded text-indigo-600 focus:ring-indigo-500">
+          <span class="text-slate-300 font-medium">Đã hiểu rõ phần này</span>
+        </label>
+      </div>
+
+      <!-- INTERACTIVE WIDGET 3: AVERAGE WORD2VEC FLAW DEMO -->
+      <div class="glass-panel p-6 space-y-5 border-amber-900/40">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded text-xs bg-amber-500/20 text-amber-400 font-bold border border-amber-500/30">INTERACTIVE WIDGET 3</span>
+            <h3 class="text-base font-bold text-white">Thực Nghiệm Cạm Bẫy Đảo Ngữ Của Average Word2Vec</h3>
+          </div>
+          <select id="flaw-sample-select" class="bg-slate-900 border border-slate-700 text-white rounded px-2.5 py-1 text-xs"></select>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Câu A -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-emerald-500/40 space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-emerald-400 font-bold">CÂU A:</span>
+              <span id="flaw-mean-a" class="px-2 py-0.5 bg-emerald-950 text-emerald-300 rounded text-[11px] font-medium"></span>
+            </div>
+            <div id="flaw-sent-a" class="text-sm font-semibold text-white font-mono"></div>
+            <div id="flaw-tokens-a" class="flex flex-wrap gap-1 pt-1"></div>
+          </div>
+
+          <!-- Câu B -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-rose-500/40 space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-rose-400 font-bold">CÂU B (ĐẢO NGỮ):</span>
+              <span id="flaw-mean-b" class="px-2 py-0.5 bg-rose-950 text-rose-300 rounded text-[11px] font-medium"></span>
+            </div>
+            <div id="flaw-sent-b" class="text-sm font-semibold text-white font-mono"></div>
+            <div id="flaw-tokens-b" class="flex flex-wrap gap-1 pt-1"></div>
+          </div>
+        </div>
+
+        <div class="bg-rose-950/30 border border-rose-700/50 p-4 rounded-xl space-y-2">
+          <div class="flex items-center justify-between text-xs text-rose-300 font-bold">
+            <span>🚨 KẾT QUẢ ĐO ĐỘ TƯƠNG ĐỒNG: Cosine(Vector A, Vector B) = 1.0000 (Trùng Khít 100%!)</span>
+            <span class="px-2 py-0.5 bg-rose-900 text-white rounded text-[10px]">MÔ HÌNH THẤT BẠI</span>
+          </div>
+          <p id="flaw-math-explain" class="text-xs text-slate-300 leading-relaxed"></p>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE WIDGET 4: BỘ MÔ PHỎNG 3 CỔNG LSTM -->
+      <div class="glass-panel p-6 space-y-6 border-slate-800">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded text-xs bg-indigo-500/20 text-indigo-400 font-bold border border-indigo-500/30">INTERACTIVE WIDGET 4</span>
+              <h3 class="text-lg font-bold text-white">Bộ Mô Phỏng 3 Cổng LSTM Từng Bước (LSTM Gate Stepper)</h3>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Xem cách Cell State ghi nhớ và Forget Gate tẩy xóa ký ức khi gặp liên từ chuyển hướng "nhưng"</p>
+          </div>
+
+          <!-- Nút điều khiển -->
+          <div class="flex items-center gap-2">
+            <button id="lstm-prev-btn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded text-xs font-semibold transition">
+              ⏮️ Trước
+            </button>
+            <button id="lstm-play-btn" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-xs font-bold transition">
+              ▶️ Tự Động Chạy
+            </button>
+            <button id="lstm-next-btn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded text-xs font-semibold transition">
+              Tiếp ⏭️
+            </button>
+            <button id="lstm-reset-btn" class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-400 rounded text-xs transition">
+              🔄
+            </button>
+          </div>
+        </div>
+
+        <!-- Thanh từ vựng câu -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-400">Câu thực nghiệm: <em>"Thầy giảng rất nhiệt tình nhưng đề thi quá khó"</em></span>
+            <span id="lstm-step-count" class="font-mono font-bold text-indigo-400"></span>
+          </div>
+          <div id="lstm-sentence-display" class="flex flex-wrap gap-2 p-4 bg-slate-950 rounded-xl border border-slate-800 items-center justify-center"></div>
+        </div>
+
+        <!-- Báo động bước ngoặt từ "nhưng" -->
+        <div id="lstm-special-alert" class="hidden bg-amber-950/60 border-2 border-amber-500 p-4 rounded-xl animate-pulse">
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">⚡</span>
+            <div>
+              <h4 class="text-sm font-bold text-amber-300">BƯỚC NGOẶT: CỔNG QUÊN (FORGET GATE) GIẢM MẠNH XUỐNG 0.25!</h4>
+              <p class="text-xs text-amber-100 mt-1 leading-relaxed">
+                Khi đọc đến từ "nhưng", mạng LSTM hiểu rằng thông tin tích cực phía trước ("nhiệt tình") không còn là kết luận chính nữa. Cổng quên $f_t$ lập tức đóng lại gần hết để "tẩy xóa" ký ức khen ngợi, dọn chỗ cho Cổng vào $i_t$ nạp thông tin tiêu cực ("quá khó") phía sau!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Thanh đo Gate & State -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Forget Gate -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-amber-400">1. Forget Gate $f_t$</span>
+              <span id="lstm-forget-val" class="font-mono font-bold text-slate-200">0.00</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div id="lstm-forget-fill" class="h-full bg-amber-500 transition-all duration-300" style="width: 0%;"></div>
+            </div>
+            <p class="text-[11px] text-slate-400">"Cục tẩy" xóa bỏ thông tin cũ không còn quan trọng.</p>
+          </div>
+
+          <!-- Input Gate -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-emerald-400">2. Input Gate $i_t$</span>
+              <span id="lstm-input-val" class="font-mono font-bold text-slate-200">0.00</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div id="lstm-input-fill" class="h-full bg-emerald-500 transition-all duration-300" style="width: 0%;"></div>
+            </div>
+            <p class="text-[11px] text-slate-400">"Bút dạ quang" chọn lọc thông tin mới từ token nạp vào.</p>
+          </div>
+
+          <!-- Cell State -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-purple-500/40 space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-purple-400">3. Cell State $c_t$</span>
+              <span id="lstm-cell-val" class="font-mono font-bold text-purple-200">0.00</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div id="lstm-cell-fill" class="h-full bg-purple-500 transition-all duration-300" style="width: 50%;"></div>
+            </div>
+            <p class="text-[11px] text-slate-400">"Cuốn sổ tay" lưu giữ ký ức ngữ cảnh dài hạn xuyên suốt.</p>
+          </div>
+
+          <!-- Output Gate & Hidden State -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-sky-400">4. Hidden State $h_t$</span>
+              <span id="lstm-hidden-val" class="font-mono font-bold text-sky-200">0.00</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div id="lstm-output-fill" class="h-full bg-sky-500 transition-all duration-300" style="width: 0%;"></div>
+            </div>
+            <p class="text-[11px] text-slate-400">"Đầu ra tức thời" đưa ra dự đoán tại bước hiện tại.</p>
+          </div>
+        </div>
+
+        <!-- Ghi chú giải thích bước hiện tại -->
+        <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex items-start gap-3 text-xs">
+          <span class="text-indigo-400 text-lg">💡</span>
+          <div class="text-slate-300 leading-relaxed" id="lstm-step-note"></div>
+        </div>
+
+        <!-- BiLSTM Document Vector Formula -->
+        <div class="bg-slate-950 p-4 rounded-xl border border-indigo-500/30 text-xs space-y-2">
+          <div class="font-bold text-indigo-300">BiLSTM (Hai Chiều) Tạo Vector Toàn Văn Bản:</div>
+          <div class="font-mono text-indigo-200">
+            $$\mathbf{v}_D = [\mathbf{h}_T^\rightarrow \,;\, \mathbf{h}_1^\leftarrow] \in \mathbb{R}^{2 \cdot 128} = \mathbb{R}^{256}$$
+          </div>
+          <p class="text-slate-400">
+            Mạng đọc câu theo 2 hướng: từ trái sang phải $\mathbf{h}_T^\rightarrow$ và từ phải sang trái $\mathbf{h}_1^\leftarrow$. Ghép hai vector đầu ra này lại tạo nên vector đại diện toàn văn bản $256$ chiều chứa trọn vẹn ngữ cảnh xuôi ngược trước khi chuyển sang tầng Softmax phân lớp.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         MODULE 4: SELF-ATTENTION & PHOBERT TRANSFORMER SOTA
+         ==================================================================== -->
+    <section id="module-attention" class="learning-module hidden space-y-8">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <span class="text-indigo-400 font-mono text-xs uppercase tracking-wider">Cơ chế Chú ý & Mô hình Ngôn ngữ Tiếng Việt</span>
+          <h2 class="text-2xl font-bold text-white mt-1">4. Nâng Cấp Đột Phá: Self-Attention và PhoBERT SOTA</h2>
+        </div>
+        <label class="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:border-slate-700">
+          <input type="checkbox" class="progress-check rounded text-indigo-600 focus:ring-indigo-500">
+          <span class="text-slate-300 font-medium">Đã hiểu rõ phần này</span>
+        </label>
+      </div>
+
+      <!-- INTERACTIVE WIDGET 5: ATTENTION HEATMAP EXPLORER -->
+      <div class="glass-panel p-6 space-y-6 border-slate-800">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded text-xs bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">INTERACTIVE WIDGET 5</span>
+              <h3 class="text-lg font-bold text-white">Khám Phá Bản Đồ Nhiệt Chú Ý (Attention Heatmap Explorer)</h3>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Xem cách mô hình gán trọng số tự động cho các từ khóa cảm xúc then chốt</p>
+          </div>
+
+          <select id="attention-sample-select" class="bg-slate-900 border border-slate-700 text-white rounded px-3 py-1.5 text-xs max-w-sm"></select>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <!-- Phần hiển thị tương tác câu -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate-400">Trọng số chú ý thích nghi (Attention Weights $\alpha_t$):</span>
+                <span id="attention-pred-badge" class="px-2.5 py-1 bg-emerald-950 text-emerald-300 border border-emerald-800 rounded text-xs font-bold"></span>
+              </div>
+
+              <!-- Từ vựng với sắc độ màu attention -->
+              <div id="attention-words-display" class="p-4 bg-slate-900/80 rounded-lg min-h-[90px] flex flex-wrap items-center"></div>
+
+              <div class="text-[11px] text-slate-400 flex items-center justify-between border-t border-slate-800 pt-2">
+                <span>0% Chú ý (Nhạt)</span>
+                <div class="w-32 h-2 rounded-full bg-gradient-to-r from-rose-950 via-rose-600 to-rose-400"></div>
+                <span>50%+ Chú ý (Đỏ Rực)</span>
+              </div>
+            </div>
+
+            <!-- Giải thích học thuật -->
+            <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
+              <h4 class="text-xs font-bold text-indigo-400 flex items-center gap-1.5">
+                <span>🔍</span> PHÂN TÍCH TÍNH KHẢ GIẢI THÍCH (INTERPRETABILITY):
+              </h4>
+              <p id="attention-comment" class="text-xs text-slate-300 leading-relaxed"></p>
+            </div>
+          </div>
+
+          <!-- Ảnh Attention trích xuất từ thực nghiệm thực tế -->
+          <div class="lg:col-span-5 bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 text-center">
+            <div class="text-xs font-bold text-slate-400">Bản đồ nhiệt gốc trích xuất từ Seaborn (Kết quả đồ án):</div>
+            <div class="overflow-hidden rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-center min-h-[160px]">
+              <img id="attention-real-img" src="" alt="Attention Heatmap Thực Tế" class="w-full h-auto object-contain hover:scale-105 transition-transform duration-300">
+            </div>
+            <div class="text-[10px] text-slate-400">Bấm chuột phải để phóng to hoặc mở ảnh trong tab mới</div>
+          </div>
+        </div>
+
+        <!-- So sánh BiLSTM-Attention vs PhoBERT SOTA -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <div class="bg-slate-900/90 p-4 rounded-xl border border-indigo-500/30 space-y-2">
+            <h4 class="text-sm font-bold text-indigo-300">1. Đột phá của BiLSTM + Self-Attention</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Giải quyết triệt để vấn đề "nén ép thụ động" của LSTM. Vector văn bản là tổ hợp có trọng số $\mathbf{v}_D = \sum \alpha_t \mathbf{h}_t$. Trên tập E-Commerce, mô hình bứt phá <strong>+5.33%</strong> (từ 67.17% lên <strong>72.50%</strong>), đồng thời mang lại khả năng giải thích trực quan minh bạch.
+            </p>
+          </div>
+
+          <div class="bg-slate-900/90 p-4 rounded-xl border border-amber-500/30 space-y-2">
+            <h4 class="text-sm font-bold text-amber-300">2. Kỷ lục vô địch của PhoBERT Base v2</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Mô hình Transformer SOTA được tiền huấn luyện trên <strong>20GB báo chí tiếng Việt (~3 tỷ từ)</strong>. 12 tầng Multi-Head Self-Attention phân tích ngữ cảnh hai chiều động, đạt kỷ lục áp đảo: <strong>95.50% trên UIT-VSFC</strong> và <strong>86.17% trên E-Commerce (+15.84% so với TF-IDF)</strong>!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         MODULE 5: THỰC NGHIỆM ĐA TẬP DỮ LIỆU & PHÂN TÍCH SO SÁNH
+         ==================================================================== -->
+    <section id="module-benchmark" class="learning-module hidden space-y-8">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <span class="text-indigo-400 font-mono text-xs uppercase tracking-wider">Đối chuẩn 6 Mô hình Độc lập</span>
+          <h2 class="text-2xl font-bold text-white mt-1">5. Thực Nghiệm Đa Miền Dữ Liệu: UIT-VSFC vs E-Commerce</h2>
+        </div>
+        <label class="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:border-slate-700">
+          <input type="checkbox" class="progress-check rounded text-indigo-600 focus:ring-indigo-500">
+          <span class="text-slate-300 font-medium">Đã hiểu rõ phần này</span>
+        </label>
+      </div>
+
+      <!-- Bảng đối chuẩn kết quả thực tế -->
+      <div class="glass-panel p-6 space-y-6 border-slate-800">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">Bảng Tổng Hợp Kết Quả Thực Nghiệm 6 Mô Hình Đối Chuẩn</h3>
+            <p class="text-xs text-slate-400 mt-1">Đánh giá độc lập trên tập kiểm thử Test Set (cân bằng 600 mẫu cho mỗi miền dữ liệu)</p>
+          </div>
+          <a href="results/cross_dataset_comparison.png" target="_blank" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-xs font-bold transition flex items-center gap-1.5 self-start">
+            <span>🖼️</span> Xem Biểu Đồ Cột Gốc
+          </a>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 bg-slate-900/80 text-xs uppercase text-slate-400 font-semibold">
+                <th class="p-3">Mô hình / Phương pháp</th>
+                <th class="p-3 text-center text-indigo-400">UIT-VSFC Acc</th>
+                <th class="p-3 text-center text-indigo-400">UIT-VSFC F1</th>
+                <th class="p-3 text-center text-amber-400">E-Com Acc</th>
+                <th class="p-3 text-center text-amber-400">E-Com F1</th>
+                <th class="p-3 text-center">Ma Trận Nhầm Lẫn</th>
+              </tr>
+            </thead>
+            <tbody id="benchmark-table-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Biểu đồ cột Chart.js -->
+        <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-bold text-slate-200">Biểu Đồ Trực Quan So Sánh Độ Chính Xác (%) Giữa 2 Miền Dữ Liệu</h4>
+            <span class="text-xs text-slate-400">Tương tác trực tiếp trên cột để xem số liệu</span>
+          </div>
+          <div class="h-80 w-full">
+            <canvas id="benchmark-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Phân tích không gian vector t-SNE -->
+        <div class="space-y-4 pt-2">
+          <h4 class="text-base font-bold text-white flex items-center gap-2">
+            <span>🧬</span> Sự Tiến Hóa Của Không Gian Biểu Diễn Vector Qua t-SNE 2D
+          </h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Quan sát sự dịch chuyển hình học của các câu Tích cực (màu xanh) và Tiêu cực (màu đỏ) qua 3 thế hệ biểu diễn:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+              <div class="text-xs font-bold text-slate-300 text-center">1. Average Word2Vec (Rời rạc & Trộn lẫn)</div>
+              <img src="results/uit_vsfc/tsne_avg_word2vec.png" alt="t-SNE Avg W2V" class="w-full rounded border border-slate-800 object-contain hover:scale-105 transition">
+              <p class="text-[11px] text-slate-400 leading-relaxed">Do chỉ cộng dồn rồi chia đều, các câu có từ vựng chung bị kéo về vùng trung tâm, ranh giới 2 lớp bị hòa lẫn nhiều.</p>
+            </div>
+
+            <div class="bg-slate-950 p-4 rounded-xl border border-indigo-500/40 space-y-2">
+              <div class="text-xs font-bold text-indigo-300 text-center">2. BiLSTM Representation (Tạo cụm cấu trúc)</div>
+              <img src="results/uit_vsfc/tsne_lstm_representation.png" alt="t-SNE BiLSTM" class="w-full rounded border border-slate-800 object-contain hover:scale-105 transition">
+              <p class="text-[11px] text-slate-400 leading-relaxed">Mạng BiLSTM ánh xạ các câu vào không gian 256 chiều, hai lớp phân tách thành hai cụm rõ rệt theo thứ tự ngữ pháp.</p>
+            </div>
+
+            <div class="bg-slate-950 p-4 rounded-xl border border-amber-500/40 space-y-2">
+              <div class="text-xs font-bold text-amber-300 text-center">3. PhoBERT Contextual (Tách biệt tuyệt đối)</div>
+              <img src="results/uit_vsfc/tsne_phobert_representation.png" alt="t-SNE PhoBERT" class="w-full rounded border border-slate-800 object-contain hover:scale-105 transition">
+              <p class="text-[11px] text-slate-400 leading-relaxed">Các điểm kết tụ thành 2 khối cô đặc với khoảng cách biên siêu không gian cực lớn, phản ánh năng lực phân tách đỉnh cao.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         MODULE 6: GIẢ LẬP VẤN ĐÁP BẢO VỆ & TRỢ LÝ AI HỎI ĐÁP
+         ==================================================================== -->
+    <section id="module-defense" class="learning-module hidden space-y-8">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <span class="text-indigo-400 font-mono text-xs uppercase tracking-wider">Luyện thi vấn đáp đồ án</span>
+          <h2 class="text-2xl font-bold text-white mt-1">6. Giả Lập Vấn Đáp TS. Lê Anh Cường & Trợ Lý Học Tập NLP</h2>
+        </div>
+        <label class="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:border-slate-700">
+          <input type="checkbox" class="progress-check rounded text-indigo-600 focus:ring-indigo-500">
+          <span class="text-slate-300 font-medium">Đã hiểu rõ phần này</span>
+        </label>
+      </div>
+
+      <!-- TRỢ LÝ AI HỎI ĐÁP THÔNG MINH -->
+      <div class="glass-panel p-6 space-y-5 border-indigo-500/40">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-xl shadow-lg shadow-indigo-500/30">
+            🤖
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white">Trợ Lý Ảo Hỏi Đáp Trực Tiếp (Smart NLP Defense Assistant)</h3>
+            <p class="text-xs text-slate-400">Gõ bất kỳ thắc mắc nào về bài giữa kỳ (hoặc bấm câu hỏi gợi ý nhanh)</p>
+          </div>
+        </div>
+
+        <!-- Quick Question Chips -->
+        <div class="flex flex-wrap gap-2 text-xs">
+          <button class="ai-quick-chip px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-indigo-900/60 border border-slate-700 hover:border-indigo-500 text-slate-300 transition" data-q="Tại sao One-Hot Encoding lại gặp bùng nổ số chiều và tính trực giao?">
+            📌 Vì sao One-Hot bị trực giao?
+          </button>
+          <button class="ai-quick-chip px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-indigo-900/60 border border-slate-700 hover:border-indigo-500 text-slate-300 transition" data-q="Phân biệt CBOW và Skip-Gram, trường hợp nào dùng cái nào?">
+            📌 CBOW vs Skip-Gram khác nhau gì?
+          </button>
+          <button class="ai-quick-chip px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-indigo-900/60 border border-slate-700 hover:border-indigo-500 text-slate-300 transition" data-q="Negative Sampling giải quyết vấn đề gì và tại sao lại dùng hàm unigram mũ 3/4?">
+            📌 Negative Sampling số mũ 3/4 là gì?
+          </button>
+          <button class="ai-quick-chip px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-indigo-900/60 border border-slate-700 hover:border-indigo-500 text-slate-300 transition" data-q="Cell State khác Hidden State ở chỗ nào trong mạng LSTM?">
+            📌 Cell State khác gì Hidden State?
+          </button>
+          <button class="ai-quick-chip px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-indigo-900/60 border border-slate-700 hover:border-indigo-500 text-slate-300 transition" data-q="Tại sao điểm F1 trên tập E-Commerce lại sụt giảm mạnh so với UIT-VSFC?">
+            📌 Vì sao E-Commerce điểm sụt giảm?
+          </button>
+          <button class="ai-quick-chip px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-indigo-900/60 border border-slate-700 hover:border-indigo-500 text-slate-300 transition" data-q="Vì sao PhoBERT lại vượt trội áp đảo các mô hình khác?">
+            📌 Vì sao PhoBERT đạt SOTA?
+          </button>
+        </div>
+
+        <!-- Chat history box -->
+        <div id="ai-chat-history" class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-4 max-h-[360px] overflow-y-auto">
+          <div class="flex justify-start">
+            <div class="glass-panel p-4 rounded-2xl rounded-tl-none text-sm max-w-2xl border-gray-800 space-y-2">
+              <div class="flex items-center gap-2 text-indigo-400 font-bold text-xs">
+                <span>🤖</span> NLP DEFENSE TUTOR:
+              </div>
+              <p class="text-slate-300 text-xs leading-relaxed">
+                Chào bạn! Mình được nạp toàn bộ tri thức của bài báo cáo giữa kỳ này (từ lý thuyết Word2Vec, LSTM, Self-Attention, PhoBERT đến số liệu thực nghiệm đa miền). Hãy gõ bất kỳ câu hỏi nào bạn chưa hiểu để mình giải thích từ con số 0, hoặc chọn câu hỏi bên dưới để luyện trả lời trước giảng viên TS. Lê Anh Cường nhé!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input box -->
+        <div class="flex gap-2">
+          <input id="ai-question-input" type="text" placeholder="Gõ câu hỏi thắc mắc của bạn về bài giữa kỳ..." class="flex-grow bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <button id="ai-ask-btn" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-bold transition flex items-center gap-2">
+            <span>Hỏi Ngay</span> <span>🚀</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- NGÂN HÀNG CÂU HỎI VẤN ĐÁP KINH ĐIỂN CỦA GIẢNG VIÊN -->
+      <div class="space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-lg font-bold text-white">Ngân Hàng 10 Câu Hỏi Phản Biện Kinh Điển Của Giảng Viên</h3>
+            <p class="text-xs text-slate-400">Bấm "Xem Lời Giải Chuẩn" để học cả cách nói bình dân lẫn trả lời học thuật A+</p>
+          </div>
+
+          <!-- Bộ lọc topic & tìm kiếm -->
+          <div class="flex items-center gap-2 text-xs">
+            <select id="defense-topic-filter" class="bg-slate-900 border border-slate-700 text-white rounded px-2.5 py-1.5 text-xs">
+              <option value="ALL">Tất cả chủ đề</option>
+            </select>
+            <input id="defense-search-input" type="text" placeholder="Tìm kiếm câu hỏi..." class="bg-slate-900 border border-slate-700 text-white rounded px-2.5 py-1.5 text-xs w-40">
+          </div>
+        </div>
+
+        <div id="defense-questions-list" class="space-y-4"></div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         MODULE 7: TRẮC NGHIỆM TỰ ĐÁNH GIÁ NĂNG LỰC
+         ==================================================================== -->
+    <section id="module-quiz" class="learning-module hidden space-y-8">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <span class="text-indigo-400 font-mono text-xs uppercase tracking-wider">Kiểm tra kiến thức trước giờ G</span>
+          <h2 class="text-2xl font-bold text-white mt-1">7. Trắc Nghiệm Tự Đánh Giá Năng Lực Bảo Vệ Báo Cáo</h2>
+        </div>
+        <div id="quiz-total-score" class="px-3 py-1 bg-slate-800 text-slate-300 border border-slate-700 rounded-full font-bold text-sm">
+          0/100 Điểm (0/10 câu)
+        </div>
+      </div>
+
+      <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 text-xs text-slate-300 leading-relaxed">
+        💡 <strong>Hướng dẫn:</strong> Chọn một đáp án cho từng câu hỏi rồi bấm <strong>"Kiểm Tra Đáp Án"</strong> để xem chấm điểm ngay lập tức cùng phần giải thích chi tiết. Mục tiêu đạt từ <strong>80/100 điểm</strong> trở lên để tự tin đạt điểm A+ khi thuyết trình!
+      </div>
+
+      <div id="quiz-container" class="space-y-6"></div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================================
+       MODAL VIEW HIGH-RES CONFUSION MATRIX
+       ====================================================================== -->
+  <div id="image-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
+    <div class="glass-panel max-w-4xl w-full p-6 space-y-4 border-slate-700 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 id="modal-title" class="text-base font-bold text-white"></h3>
+        <button id="close-modal-btn" class="text-slate-400 hover:text-white text-xl font-bold px-2">✕</button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800 text-center">
+          <div class="text-xs font-semibold text-indigo-400">Tập UIT-VSFC (Giáo dục):</div>
+          <img id="modal-img-1" src="" alt="Confusion Matrix UIT-VSFC" class="w-full h-auto rounded object-contain">
+        </div>
+        <div class="space-y-2 bg-slate-950 p-3 rounded-lg border border-slate-800 text-center">
+          <div class="text-xs font-semibold text-amber-400">Tập E-Commerce (Thương mại):</div>
+          <img id="modal-img-2" src="" alt="Confusion Matrix E-Commerce" class="w-full h-auto rounded object-contain">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       FOOTER & BIBLIOGRAPHY
+       ====================================================================== -->
+  <footer class="border-t border-slate-800 bg-slate-950 mt-16 py-10 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 space-y-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <div class="text-sm font-bold text-slate-300">Đồ Án Xử Lý Ngôn Ngữ Tự Nhiên - Giữa Kỳ</div>
+          <div class="text-xs text-slate-400 mt-0.5">Khoa Khoa học Máy tính - Trường Đại học Sư phạm Thành phố Hồ Chí Minh</div>
+        </div>
+        <div class="text-xs text-slate-400">
+          Giảng viên hướng dẫn: <strong class="text-slate-200">TS. LÊ ANH CƯỜNG</strong>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-800/80 pt-4 space-y-2">
+        <div class="font-semibold text-slate-400">Tài liệu khoa học tham khảo chính:</div>
+        <p class="leading-relaxed">
+          [1] Mikolov et al. (ICLR 2013, NeurIPS 2013) - <em>Word2Vec & Negative Sampling</em>; 
+          [2] Hochreiter & Schmidhuber (1997) - <em>Long Short-Term Memory</em>; 
+          [3] Nguyen et al. (IEEE KSE 2018) - <em>UIT-VSFC Corpus</em>; 
+          [4] Bahdanau et al. (ICLR 2015) - <em>Attention Mechanism</em>; 
+          [5] Nguyen & Nguyen (EMNLP 2020) - <em>PhoBERT Pretrained Model for Vietnamese</em>; 
+          [6] Jurafsky & Martin (2026) - <em>Speech and Language Processing (3rd ed.)</em>.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
