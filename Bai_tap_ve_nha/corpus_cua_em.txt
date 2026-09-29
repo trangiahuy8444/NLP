@@ -1,0 +1,18 @@
+Xử lý ngôn ngữ tự nhiên là một nhánh quan trọng của trí tuệ nhân tạo.
+Mô hình học máy giúp phân loại cảm xúc tích cực và tiêu cực trong văn bản.
+Tập dữ liệu phản hồi của sinh viên chứa nhiều ý kiến đóng góp quý báu.
+Giảng viên hướng dẫn tận tình giúp sinh viên hiểu rõ bản chất của bài toán.
+Word2Vec ánh xạ các từ vào không gian vector nhiều chiều có ngữ nghĩa phong phú.
+Mô hình BiLSTM nắm bắt ngữ cảnh hai chiều từ đầu câu đến cuối câu.
+Cơ chế Self-Attention giúp mô hình tập trung vào các từ khóa mang cảm xúc cốt lõi.
+PhoBERT là mô hình ngôn ngữ lớn tiền huấn luyện cho tiếng Việt đạt hiệu năng cao.
+Độ chính xác và điểm F1 phản ánh khả năng phân loại của mô hình trên tập kiểm thử.
+Học sâu mang lại bước tiến vượt bậc trong xử lý văn bản tự nhiên hiện đại.
+Biểu diễn vector văn bản giữ vai trò quyết định đến chất lượng của bộ phân loại.
+Việc làm sạch dữ liệu và tách từ tiếng Việt giúp nâng cao độ tin cậy.
+Các mô hình tuần tự như RNN và LSTM giải quyết tốt dữ liệu dạng chuỗi văn bản.
+Transformer đã thay đổi hoàn toàn cách tiếp cận trong nghiên cứu ngôn ngữ học tính toán.
+Ứng dụng phân tích cảm xúc giúp nhà trường nâng cao chất lượng đào tạo và giảng dạy.
+Mô hình ngôn ngữ N-gram ước lượng xác suất của từ tiếp theo dựa trên ngữ cảnh đứng trước.
+Làm trơn Laplace và Add-k giải quyết triệt để vấn đề xác suất bằng không với từ hiếm.
+Chỉ số Perplexity càng thấp chứng tỏ mô hình có khả năng dự đoán chuỗi từ càng chính xác.
