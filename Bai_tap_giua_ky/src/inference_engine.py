@@ -399,18 +399,20 @@ class SentimentInferenceEngine:
 
     def _fallback_predict(self, dataset: str, model_id: str, text: str, err_msg: str = "") -> Dict[str, Any]:
         """Động cơ suy luận dự phòng an toàn theo đặc trưng ngữ nghĩa và bộ từ khóa cảm xúc"""
-        tokens = tokenize(text)
-        lower_text = text.lower()
+        tokens = tokenize(text.replace("flim", "film"))
+        lower_text = text.lower().replace("flim", "film")
         pos_kw = [
             "xuất sắc", "hay", "tuyệt", "đẹp", "mãn nhãn", "chân thật", "xúc động", "sâu sắc", 
             "đỉnh cao", "kỳ ảo", "ấn tượng", "10/10", "thích", "tốt", "nhiệt tình", "chu đáo",
-            "dễ hiểu", "êm", "bền", "xịn", "đáng tiền", "wonderful", "brilliant", "stunning", 
-            "masterpiece", "gripping", "excellent", "awesome", "great", "love", "favorite"
+            "dễ hiểu", "êm", "bền", "xịn", "đáng tiền", "cuốn hút", "hấp dẫn",
+            "wonderful", "brilliant", "stunning", "masterpiece", "gripping", "excellent", 
+            "awesome", "great", "love", "favorite", "excited", "exciting", "good", "nice", 
+            "cool", "fun", "enjoy", "enjoyable", "worth", "entertaining", "interesting"
         ]
         neg_kw = [
             "dài dòng", "lê thê", "phi lý", "gượng gạo", "thất vọng", "tệ", "dở", "buồn ngủ", 
             "nhạt nhẽo", "kém", "chán", "khó nghe", "toàn chữ", "lừa đảo", "hỏng", "móp méo",
-            "bể", "nát", "boring", "terrible", "bad", "worst", "poor", "awful", "waste"
+            "bể", "nát", "boring", "terrible", "bad", "worst", "poor", "awful", "waste", "waste of time"
         ]
         
         score = 0

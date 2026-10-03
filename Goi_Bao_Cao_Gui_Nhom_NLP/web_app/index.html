@@ -872,7 +872,7 @@
         "hài lòng", "êm", "bền", "đẹp", "xịn", "chất lượng", "thích", "yêu", "nhanh", "uy tín",
         "10 điểm", "bao đỉnh", "đáng tiền", "ngon", "chuẩn", "ok", "ổn", "hay", "cuốn hút",
         "thực tế", "sát thực tế", "ưu tú", "tiến bộ", "rõ ràng", "chuyên nghiệp", "tận tình", "mãn nhãn", "chân thật", "xúc động", "sâu sắc", "đỉnh cao", "kỳ ảo", "ấn tượng", "lôi cuốn", "hấp dẫn", "tuyệt phẩm", "kiệt tác", "cú twist", "twist", "diễn xuất tốt", "đáng xem", "khen ngợi",
-        "wonderful", "brilliant", "stunning", "masterpiece", "gripping", "gem", "sublime", "breathtaking", "worthwhile", "touching", "excellent", "awesome", "great", "love", "favorite", "fantastic", "superb", "magnificent", "delightful", "flawless", "enjoyed", "pleased", "impressive", "perfect", "best", "entertaining", "outstanding", "must see", "classic", "beautiful", "compelling", "heartwarming", "recommend", "recommended", "charming"
+        "wonderful", "brilliant", "stunning", "masterpiece", "gripping", "gem", "sublime", "breathtaking", "worthwhile", "touching", "excellent", "awesome", "great", "love", "favorite", "fantastic", "superb", "magnificent", "delightful", "flawless", "enjoyed", "pleased", "impressive", "perfect", "best", "entertaining", "outstanding", "must see", "classic", "beautiful", "compelling", "heartwarming", "recommend", "recommended", "charming", "excited", "exciting", "good", "nice", "fun", "enjoy", "cool", "interesting", "worth"
       ];
       const negWords = [
         "khó nghe", "toàn chữ", "quá dài", "không kịp", "kém", "tệ", "dở", "xấu", "lừa đảo",
@@ -883,7 +883,8 @@
       const negations = ["không", "chẳng", "chưa", "kém", "ít", "ko", "k", "not", "no", "never", "hardly", "barely", "without", "isnt", "arent", "wasnt", "werent", "didnt", "dont", "doesnt"];
       const contrasts = ["nhưng", "tuy nhiên", "mặc dù", "bù lại", "song", "đổi lại", "but", "however", "although", "though", "yet", "nevertheless", "nonetheless", "despite"];
 
-      const rawTokens = text.split(/[\s,.;!?()\-"]+/).filter(t => t.length > 0);
+      const cleanText = text.replace(/\bflim\b/gi, "film");
+      const rawTokens = cleanText.split(/[\s,.;!?()\-"]+/).filter(t => t.length > 0);
       let score = 0;
       let attentionMap = [];
 
