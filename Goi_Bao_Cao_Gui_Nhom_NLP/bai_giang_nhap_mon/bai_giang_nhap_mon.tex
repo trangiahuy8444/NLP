@@ -1,0 +1,736 @@
+\documentclass[aspectratio=169, 10pt]{beamer}
+
+% --- GÓI TIẾNG VIỆT VÀ ĐỊNH DẠNG ---
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs, multirow, array}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc, shapes.geometric, arrows.meta, positioning, shadows}
+
+% --- BẢNG MÀU NHẬN DIỆN THƯƠNG HIỆU HCMUE ---
+\definecolor{HCMUEDarkBlue}{RGB}{18, 72, 116}    % #124874 (Xanh ĐH Sư Phạm TP.HCM)
+\definecolor{HCMUECerulean}{RGB}{2, 132, 199}   % #0284C7 (Xanh da trời công nghệ)
+\definecolor{HCMUEGold}{RGB}{217, 119, 6}       % #D97706 (Vàng hổ phách điểm nhấn)
+\definecolor{HCMUELightBlue}{RGB}{241, 247, 254}% Nền khối dịu mắt
+\definecolor{HCMUEDarkText}{RGB}{30, 41, 59}    % Slate 800
+\definecolor{HCMUEGray}{RGB}{100, 116, 139}     % Slate 500
+\definecolor{HCMUEGreen}{RGB}{22, 163, 74}      % Xanh lá tích cực
+\definecolor{HCMUERed}{RGB}{220, 38, 38}        % Đỏ tiêu cực
+
+% --- THIẾT LẬP GIAO DIỆN BEAMER ---
+\useinnertheme{rounded}
+\useoutertheme{infolines}
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamercolor{palette primary}{bg=HCMUEDarkBlue, fg=white}
+\setbeamercolor{palette secondary}{bg=HCMUECerulean, fg=white}
+\setbeamercolor{palette tertiary}{bg=HCMUEDarkBlue!90!black, fg=white}
+\setbeamercolor{palette quaternary}{bg=HCMUEDarkBlue!80!black, fg=white}
+
+\setbeamercolor{structure}{fg=HCMUEDarkBlue}
+\setbeamercolor{titlelike}{parent=palette primary, fg=HCMUEDarkBlue}
+\setbeamercolor{frametitle}{bg=HCMUEDarkBlue, fg=white}
+\setbeamercolor{normal text}{fg=HCMUEDarkText, bg=white}
+\setbeamercolor{item}{fg=HCMUECerulean}
+\setbeamercolor{subitem}{fg=HCMUEGold}
+
+% Định dạng Block
+\setbeamercolor{block title}{bg=HCMUEDarkBlue, fg=white}
+\setbeamercolor{block body}{bg=HCMUELightBlue, fg=HCMUEDarkText}
+
+\setbeamercolor{block title example}{bg=HCMUECerulean, fg=white}
+\setbeamercolor{block body example}{bg=HCMUELightBlue!60!white, fg=HCMUEDarkText}
+
+\setbeamercolor{block title alerted}{bg=HCMUEGold, fg=white}
+\setbeamercolor{block body alerted}{bg=HCMUEGold!12!white, fg=HCMUEDarkText}
+
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+% Header (Frametitle)
+\setbeamertemplate{frametitle}{
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=3.2ex,dp=1.0ex,leftskip=0.8cm,rightskip=0.8cm]{frametitle}
+    \fontsize{11}{13}\selectfont\textbf{\insertframetitle}
+  \end{beamercolorbox}
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.35ex]{palette secondary}\end{beamercolorbox}
+}
+
+% Footer (Footline)
+\setbeamertemplate{footline}{
+  \leavevmode
+  \hbox{
+    \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,leftskip=0.8cm]{palette primary}
+      \usebeamerfont{author in head/foot}\textbf{Nhập Môn NLP} — Nhóm 3 (KHMT K36)
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.416667\paperwidth,ht=2.25ex,dp=1ex,center]{palette secondary}
+      \usebeamerfont{title in head/foot}\textbf{Từ Word2Vec đến BiLSTM \& Cơ Chế Attention}
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.25ex,dp=1ex,rightskip=0.8cm,right]{palette primary}
+      \usebeamerfont{date in head/foot}\textbf{HCMUE} $\mid$ \insertframenumber{} / \inserttotalframenumber
+    \end{beamercolorbox}
+  }
+  \vskip0pt
+}
+
+% --- THÔNG TIN BÀI GIẢNG ---
+\title[Nhập Môn Hiểu Ngôn Ngữ Tự Nhiên]{BÀI GIẢNG NHẬP MÔN XỬ LÝ NGÔN NGỮ TỰ NHIÊN}
+\subtitle{TỪ VECTOR HÓA WORD2VEC ĐẾN MẠNG HỒI QUY LSTM VÀ CƠ CHẾ ATTENTION}
+
+\author[Huy, Ngân, Phát]{
+  \textbf{Giảng viên hướng dẫn: PGS.TS. LÊ ANH CƯỜNG}\\[0.3em]
+  \textbf{Nhóm báo cáo viên (Cao học KHMT K36):}\\
+  Trần Gia Huy $\bullet$ Đỗ Minh Khánh Ngân $\bullet$ Nguyễn Tấn Phát
+}
+
+\institute[HCMUE]{
+  \textbf{TRƯỜNG ĐẠI HỌC SƯ PHẠM THÀNH PHỐ HỒ CHÍ MINH}\\
+  \textbf{KHOA CÔNG NGHỆ THÔNG TIN — CAO HỌC KHOA HỌC MÁY TÍNH K36}
+}
+
+\date{Tháng 10 Năm 2026}
+
+\begin{document}
+
+% ==================== SLIDE 1: TRANG TIÊU ĐỀ BÀI GIẢNG ====================
+{
+\setbeamertemplate{footline}{}
+\setbeamertemplate{frametitle}{}
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[HCMUEDarkBlue] (current page.north west) rectangle ($(current page.north east)+(0,-1.3cm)$);
+    \node[anchor=west] at ($(current page.north west)+(0.8cm,-0.65cm)$) {
+      \includegraphics[height=0.9cm]{images/logo_crest_white.png}
+    };
+    \node[anchor=east, text=white, align=right] at ($(current page.north east)+(-0.8cm,-0.65cm)$) {
+      \fontsize{8.5}{10.5}\selectfont \textbf{TRƯỜNG ĐẠI HỌC SƯ PHẠM TP. HỒ CHÍ MINH}\\
+      \fontsize{7.5}{9.5}\selectfont KHOA CÔNG NGHỆ THÔNG TIN — CAO HỌC KHMT K36
+    };
+    \fill[HCMUEGold] ($(current page.north west)+(0,-1.3cm)$) rectangle ($(current page.north east)+(0,-1.36cm)$);
+  \end{tikzpicture}
+
+  \vspace{0.65cm}
+  \begin{center}
+    {\fontsize{9.5}{11}\selectfont \textbf{\color{HCMUECerulean}BÀI GIẢNG CHUYÊN ĐỀ DÀNH CHO NGƯỜI MỚI BẮT ĐẦU (TỪ CON SỐ 0)}}\\[0.3em]
+    {\fontsize{13}{16}\selectfont \textbf{\color{HCMUEDarkBlue}LÀM THẾ NÀO MÁY TÍNH HIỂU ĐƯỢC NGÔN NGỮ CON NGƯỜI?}}\\[0.25em]
+    {\fontsize{9}{11}\selectfont \color{HCMUEGray}Khám phá Từ Vector Hóa Word2Vec, Mạng Nơ-ron Chuỗi LSTM đến Cơ Chế Attention}
+  \end{center}
+
+  \vspace{0.15cm}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{\small\textbf{Thông Tin Học Phần \& Đơn Vị}}
+        \fontsize{7.5}{9.5}\selectfont
+        \textbf{Học phần}: Xử lý ngôn ngữ tự nhiên (NLP)\\
+        \textbf{Đơn vị}: Trường ĐH Sư phạm TP.HCM (HCMUE)\\
+        \textbf{Giảng viên hướng dẫn}: \textbf{\color{HCMUEDarkBlue}PGS.TS. LÊ ANH CƯỜNG}\\
+        \textbf{Mục tiêu}: Dễ hiểu, trực quan, giải thích bản chất cốt lõi
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{\small\textbf{Người Trình Bày (Nhóm 3 Học Viên)}}
+        \fontsize{7.5}{9.5}\selectfont
+        1. \textbf{Trần Gia Huy} — MSHV: \textbf{KHMT836012}\\
+        2. \textbf{Đỗ Minh Khánh Ngân} — MSHV: \textbf{KHMT836019}\\
+        3. \textbf{Nguyễn Tấn Phát} — MSHV: \textbf{KHMT836026}\\
+        \textbf{Thực hành tương tác}: \url{http://localhost:8501}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+}
+
+% ==================== SLIDE 2: LỘ TRÌNH BÀI HỌC ====================
+\begin{frame}{Lộ Trình Khám Phá: 6 Nấc Thang Nhận Thức}
+  \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \begin{enumerate}
+        \setlength{\itemsep}{0.8em}
+        \item \textbf{\color{HCMUEDarkBlue}Câu hỏi khởi đầu}: Tại sao máy tính không đọc được chữ?
+        \item \textbf{\color{HCMUEDarkBlue}Cách làm cổ điển}: One-Hot và Đếm từ (BoW / TF-IDF) gặp cạm bẫy gì?
+        \item \textbf{\color{HCMUEDarkBlue}Cuộc cách mạng Word2Vec}: Khi từ ngữ trở thành các tọa độ hình học trong không gian.
+      \end{enumerate}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{enumerate}
+        \setcounter{enumi}{3}
+        \setlength{\itemsep}{0.8em}
+        \item \textbf{\color{HCMUEDarkBlue}Từ từ đơn đến cả câu}: Tại sao phép cộng trung bình bị hỏng bởi chữ \textit{''không''}?
+        \item \textbf{\color{HCMUEDarkBlue}Mạng nơ-ron LSTM}: Ba lô trí nhớ thông minh biết quên chuyện cũ, nạp chuyện mới.
+        \item \textbf{\color{HCMUEDarkBlue}Cơ chế Attention}: Cây bút dạ quang giúp AI biết từ nào là chìa khóa cảm xúc.
+      \end{enumerate}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.3cm}
+  \begin{alertblock}{Phương châm bài giảng}
+    \centering\fontsize{8}{10}\selectfont
+    \textbf{Không lạm dụng công thức phức tạp — Tập trung vào trực giác toán học, ví dụ đời thực và ứng dụng!}
+  \end{alertblock}
+\end{frame}
+
+% ==================== PHẦN 1: BẢN CHẤT MÁY TÍNH VỚI CHỮ ====================
+\begin{frame}{1. Câu Hỏi Khởi Đầu: Tại Sao Máy Tính Không Đọc Được Chữ?}
+  \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Thực tế về máy tính}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{itemize}
+          \item Máy tính chỉ biết tính toán trên \textbf{con số thực} (cộng, trừ, nhân ma trận).
+          \item Đối với máy tính, câu \textit{''Trường Sư Phạm rất đẹp''} chỉ là một mớ ký tự vô tri gồm các mã ASCII/Unicode nhị phân (\texttt{010101...}).
+          \item Máy tính không có khái niệm trực giác thế nào là \textit{''đẹp''}, thế nào là \textit{''xấu''}.
+        \end{itemize}
+      \end{block}
+
+      \begin{exampleblock}{Mục tiêu của NLP (Biểu diễn từ)}
+        \fontsize{7.5}{9.5}\selectfont
+        Tìm một chiếc \textbf{cầu nối toán học} để biến mỗi từ ngữ thành một dãy số (vector) sao cho: \textit{Các từ có nghĩa tương tự nhau sẽ có các con số gần nhau!}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \begin{alertblock}{Cách tiếp cận ngây thơ: Đánh số thứ tự (ID)}
+        \fontsize{7.5}{9.5}\selectfont
+        Giả sử ta đánh số từ điển theo thứ tự:
+        \begin{itemize}
+          \item \textit{con\_mèo} = $1$
+          \item \textit{con\_chó} = $2$
+          \item \textit{xe\_tải} = $3$
+        \end{itemize}
+        \textbf{Cạm bẫy toán học xuất hiện}:
+        \begin{itemize}
+          \item Máy tính hiểu: $1 + 2 = 3$ $\implies$ \textit{Mèo + Chó = Xe tải} (?!)
+          \item Khoảng cách giữa \textit{Mèo} và \textit{Xe tải} ($3 - 1 = 2$) lại lớn hơn khoảng cách \textit{Mèo} và \textit{Chó} ($2 - 1 = 1$). Nếu đánh số ngẫu nhiên, trật tự này hoàn toàn sai lệch!
+        \end{itemize}
+        $\implies$ \textbf{Đánh số đơn thuần là ngõ cụt!}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==================== PHẦN 2: ONE-HOT VÀ TF-IDF ====================
+\begin{frame}{2. Cách Làm Cổ Điển: Mã Hóa One-Hot Có Tốt Không?}
+  \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Ý tưởng One-Hot Encoding}
+        \fontsize{7.5}{9.5}\selectfont
+        Nếu từ điển có $|V|$ từ, mỗi từ là một dãy có độ dài $|V|$ với đúng một số $1$ ở vị trí của nó:
+        \begin{align*}
+          \text{giảng\_viên} &= [1, 0, 0, 0, \dots, 0]^T \\
+          \text{thầy\_cô} &= [0, 1, 0, 0, \dots, 0]^T \\
+          \text{xe\_máy} &= [0, 0, 1, 0, \dots, 0]^T
+        \end{align*}
+        \begin{itemize}
+          \item \textit{Ưu điểm}: Không còn phép cộng vô lý như đánh số $1, 2, 3$.
+        \end{itemize}
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \begin{alertblock}{3 Căn bệnh nghiêm trọng của One-Hot}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{enumerate}
+          \item \textbf{Khổng lồ và lãng phí bộ nhớ}: Từ điển tiếng Việt có $50,000$ từ $\to$ Mỗi từ là vector 50,000 chiều toàn số 0.
+          \item \textbf{Căn bệnh ''Mù ngữ nghĩa'' (Tính trực giao)}:
+            $$\mathbf{v}_{\text{giảng\_viên}} \cdot \mathbf{v}_{\text{thầy\_cô}} = 0$$
+            $$\mathbf{v}_{\text{giảng\_viên}} \cdot \mathbf{v}_{\text{xe\_máy}} = 0$$
+            Máy tính thấy \textit{''giảng viên''} xa lạ với \textit{''thầy cô''} y hệt như với \textit{''xe máy''}!
+          \item Không thể đo được độ đồng nghĩa hay trái nghĩa.
+        \end{enumerate}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Đếm Từ Thông Minh Hơn: TF-IDF (Tần Suất \& Nghịch Đảo)}
+  \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Nguyên lý trực giác của TF-IDF}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{itemize}
+          \item \textbf{TF (Term Frequency)}: Từ nào xuất hiện nhiều trong câu đó thì từ đó quan trọng với câu đó.
+          \item \textbf{IDF (Inverse Document Frequency)}: Từ nào câu nào cũng có (như \textit{và, thì, là, của, những}) thì từ đó là \textbf{từ rác}, cần bị phạt điểm nặng!
+        \end{itemize}
+        \vspace{0.1cm}
+        \centering
+        \color{HCMUEDarkBlue}\textbf{Điểm số = Tần suất trong bài $\times$ Độ quý hiếm}
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \begin{alertblock}{Hạn chế cốt tử: Bỏ quên trật tự từ (Bag-of-Words)}
+        \fontsize{7.5}{9.5}\selectfont
+        Vì chỉ gom từ vào một cái ''túi'' để đếm số lượng, TF-IDF hoàn toàn không hiểu thứ tự:
+        \begin{itemize}
+          \item Câu A: \textit{''Thầy dạy \textbf{không khó hiểu} chút nào.''} $\to$ Khen (Tích cực).
+          \item Câu B: \textit{''Thầy dạy \textbf{khó hiểu, không} thích.''} $\to$ Chê (Tiêu cực).
+        \end{itemize}
+        Cả hai câu đều chứa các từ giống hệt nhau $\implies$ \textbf{TF-IDF cho ra hai vector gần như trùng nhau!}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==================== PHẦN 3: WORD2VEC ====================
+\begin{frame}{3. Cuộc Cách Mạng Word2Vec: Từ Ngữ Thành Tọa Độ Không Gian}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+      \begin{block}{Ý tưởng thiên tài của Tomas Mikolov (2013)}
+        \fontsize{7.5}{9.5}\selectfont
+        Dựa trên triết lý ngôn ngữ học của J.R. Firth (1957):\\
+        \centering\textit{''Hãy cho tôi biết bạn bè xung quanh bạn, tôi sẽ nói bạn là ai!''}
+        \vspace{0.2cm}
+        \raggedright
+        \begin{itemize}
+          \item Thay vì dùng vector 50,000 chiều thưa thớt, ta nén mỗi từ thành một vector nhỏ gồm \textbf{100 con số thực dày đặc} ($\mathbb{R}^{100}$).
+          \item 100 con số này đóng vai trò như \textbf{tọa độ GPS} trên một bản đồ ngữ nghĩa đa chiều.
+        \end{itemize}
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.45\textwidth}
+      \begin{exampleblock}{Phép toán vector kỳ diệu}
+        \fontsize{7.5}{9.5}\selectfont
+        Trong không gian Word2Vec, khoảng cách hình học phản ánh quan hệ đời thực:
+        \vspace{-0.2cm}
+        $$\mathbf{v}_{\text{Vua}} - \mathbf{v}_{\text{Đàn\_ông}} + \mathbf{v}_{\text{Phụ\_nữ}} \approx \mathbf{v}_{\text{Nữ\_hoàng}}$$
+        $$\mathbf{v}_{\text{Hà\_Nội}} - \mathbf{v}_{\text{Việt\_Nam}} + \mathbf{v}_{\text{Pháp}} \approx \mathbf{v}_{\text{Paris}}$$
+        \begin{itemize}
+          \item \textit{Từ đồng nghĩa}: \textit{thầy} và \textit{giảng viên} nằm sát cạnh nhau.
+          \item Góc Cosine giữa chúng tiến gần về 1.0!
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Word2Vec Học Như Thế Nào? Hai Trò Chơi Đoán Chữ}
+  \begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{\small\textbf{Trò chơi 1: CBOW (Đoán từ ở giữa)}}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{itemize}
+          \item Nhìn vào các từ hàng xóm xung quanh để đoán từ trung tâm bị che mất.
+        \end{itemize}
+        \vspace{0.1cm}
+        \centering
+        \fbox{\fontsize{8}{10}\selectfont Hôm nay trời \textbf{[ ? ]} và có nắng nhẹ}
+        \vspace{0.1cm}
+        \raggedright
+        $\to$ Mô hình đoán chữ: \textbf{đẹp} / \textbf{ấm}.\\
+        $\to$ Thích hợp học các từ thông dụng, tốc độ huấn luyện rất nhanh.
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \begin{block}{\small\textbf{Trò chơi 2: Skip-Gram (Đoán các từ bạn bè)}}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{itemize}
+          \item Cho một từ trung tâm duy nhất, bắt mô hình đoán các từ thường đi cùng nó.
+        \end{itemize}
+        \vspace{0.1cm}
+        \centering
+        \fbox{\fontsize{8}{10}\selectfont Từ trung tâm: \textbf{giảng\_viên}}
+        \vspace{0.1cm}
+        \raggedright
+        $\to$ Mô hình đoán quanh đó có: \textit{nhiệt\_tình, bài\_tập, slide, điểm}.\\
+        $\to$ Cực kỳ xuất sắc trong việc học các \textbf{từ hiếm gặp}.
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.25cm}
+  \begin{alertblock}{Bí quyết tốc độ: Negative Sampling (SGNS)}
+    \fontsize{7.5}{9.5}\selectfont
+    Thay vì bắt máy tính so sánh với toàn bộ 50,000 từ trong từ điển (rất chậm), ta chỉ bắt nó phân biệt từ đúng với \textbf{5 từ ngẫu nhiên chọn bừa} (mẫu âm). Máy tính học nhanh hơn hàng trăm lần!
+  \end{alertblock}
+\end{frame}
+
+% ==================== PHẦN 4: TỪ TỪ ĐẾN CÂU ====================
+\begin{frame}{4. Từ Vector Từng Từ Đến Cả Câu: Cạm Bẫy Cộng Trung Bình}
+  \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Cách làm đơn giản nhất: Average Word2Vec}
+        \fontsize{7.5}{9.5}\selectfont
+        Lấy các vector của từng từ trong câu rồi tính \textbf{trung bình cộng} lại để thành 1 vector đại diện câu:
+        $$\mathbf{v}_{\text{câu}} = \frac{1}{N} (\mathbf{v}_{w_1} + \mathbf{v}_{w_2} + \dots + \mathbf{v}_{w_N})$$
+        \begin{itemize}
+          \item Dễ cài đặt, chạy cực nhanh, không cần huấn luyện thêm.
+          \item Nhưng tại sao trong thực nghiệm, nó lại cho kết quả kém hơn cả TF-IDF?
+        \end{itemize}
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \begin{alertblock}{Cạm bẫy: Nghịch lý triệt tiêu phủ định}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{enumerate}
+          \item \textbf{Phép cộng có tính giao hoán}: $A + B = B + A$. Câu đảo ngược thứ tự từ vẫn sinh ra vector y hệt nhau!
+          \item \textbf{Chữ ''KHÔNG'' bị hòa tan}:
+            \begin{itemize}\fontsize{7}{8.5}\selectfont
+              \item Từ \textit{''không''} xuất hiện ở mọi nơi, cạnh cả từ khen lẫn chê $\to$ Vector của nó nằm ở chính giữa trung tâm không gian.
+              \item Khi lấy $\mathbf{v}_{\text{tốt}} + \mathbf{v}_{\text{không}}$, vector kết quả chỉ hơi lệch một chút so với \textit{''tốt''}.
+              \item Phép cộng chỉ \textbf{pha loãng} chứ không thể \textbf{lật ngược 180 độ} cực tính từ Tích cực sang Tiêu cực!
+            \end{itemize}
+        \end{enumerate}
+        $\implies$ \textbf{Cần một mô hình biết đọc tuần tự theo thời gian!}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==================== PHẦN 5: MẠNG LSTM ====================
+\begin{frame}{5. Mạng Nơ-ron Hồi Quy LSTM: Chiếc Ba Lô Trí Nhớ Thông Minh}
+  \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Con người đọc câu như thế nào?}
+        \fontsize{7.5}{9.5}\selectfont
+        Chúng ta đọc từng từ một từ trái sang phải. Khi đọc đến từ thứ 5, trong đầu ta vẫn còn lưu giữ thông tin của 4 từ trước đó.\\
+        $\to$ Mạng RNN/LSTM mô phỏng chính xác quá trình này qua \textbf{Trạng thái ẩn (Hidden state $\mathbf{h}_t$)} và \textbf{Ô nhớ dài hạn ($\mathbf{c}_t$)}.
+      \end{block}
+      \vspace{0.1cm}
+      \begin{alertblock}{Tại sao RNN thường bị ''đãng trí''?}
+        \fontsize{7.5}{9.5}\selectfont
+        RNN đơn giản bị hiện tượng tiêu biến gradient (\textit{Vanishing Gradient}): Câu dài trên 10 từ là nó quên sạch những gì đã đọc ở đầu câu!
+      \end{alertblock}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \begin{exampleblock}{Giải pháp của LSTM: 3 Cổng gác thông minh}
+        \fontsize{7.5}{9.5}\selectfont
+        LSTM như một người đi du lịch mang theo chiếc ba lô:
+        \begin{enumerate}
+          \item \textbf{Cổng quên (Forget Gate)}: Bỏ bớt rác cũ trong ba lô không còn dùng đến.
+          \item \textbf{Cổng nạp (Input Gate)}: Chọn lọc những món đồ mới có giá trị nhét vào ba lô.
+          \item \textbf{Cổng ra (Output Gate)}: Quyết định từ những thứ trong ba lô, hiện tại nên nói ra điều gì.
+        \end{enumerate}
+        $\implies$ \textbf{LSTM có thể nhớ ngữ cảnh cách xa hàng chục từ mà không bị quên!}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Mạng BiLSTM: Đọc Xuôi \& Đọc Ngược Cùng Lúc}
+  \begin{columns}[c]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Tại sao một chiều là chưa đủ?}
+        \fontsize{7.5}{9.5}\selectfont
+        Hãy thử đoán nghĩa từ \textbf{''độ''} trong câu:
+        \begin{center}
+          \textit{''Chiếc xe này đã được \textbf{độ} ...''}
+        \end{center}
+        \begin{itemize}
+          \item Nếu chỉ đọc từ trái sang phải, ta chưa rõ là \textit{độ xe} hay \textit{nhiệt độ}.
+          \item Nhưng nếu đọc tiếp phần sau: \textit{''... lên công suất 150 mã lực''}, ta hiểu ngay ngữ cảnh!
+        \end{itemize}
+      \end{block}
+
+      \begin{exampleblock}{BiLSTM (Bidirectional LSTM)}
+        \fontsize{7.5}{9.5}\selectfont
+        Chạy 2 mạng song song:
+        \begin{itemize}
+          \item Một mạng đọc từ trái sang phải ($w_1 \to w_T$).
+          \item Một mạng đọc từ phải sang trái ($w_T \to w_1$).
+          \item Ghép hai góc nhìn lại: $\mathbf{h}_t = [\overrightarrow{\mathbf{h}_t} \,;\, \overleftarrow{\mathbf{h}_t}]$ $\to$ Hiểu trọn vẹn ngữ cảnh hai phía.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Nhưng vẫn còn 1 điểm yếu: Nghẽn cổ chai (Bottleneck)}
+        \fontsize{7.5}{9.5}\selectfont
+        BiLSTM truyền thống gom toàn bộ câu thành vector bước cuối cùng $\mathbf{h}_T$.\\
+        \textbf{Hậu quả}: Giống như bắt bạn đọc cuốn sách 20 trang rồi chỉ được viết đúng 1 dòng tóm tắt. Rất nhiều thông tin chi tiết quý giá ở giữa câu bị rơi rụng!\\
+        \vspace{0.2cm}
+        $\implies$ \textbf{Làm sao để không bỏ sót bất kỳ từ nào?}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==================== PHẦN 6: ATTENTION ====================
+\begin{frame}{6. Cơ Chế Chú Ý (Attention Mechanism): Cây Bút Dạ Quang}
+  \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Ẩn dụ đời thực}
+        \fontsize{7.5}{9.5}\selectfont
+        Khi đọc một câu nhận xét:
+        \begin{center}
+          \textit{''Thầy giảng dạy rất \textbf{nhiệt tình} và bài tập \textbf{dễ hiểu}.''}
+        \end{center}
+        Bộ não chúng ta không ghi nhớ đồng đều từng chữ. Chúng ta cầm một cây \textbf{bút dạ quang} tô sáng vào hai từ: \textbf{nhiệt tình} và \textbf{dễ hiểu}!
+      \end{block}
+
+      \begin{exampleblock}{Toán học hóa cây bút dạ quang}
+        \fontsize{7.5}{9.5}\selectfont
+        Cơ chế Attention tính cho mỗi từ một trọng số $\alpha_t \in [0, 1]$ (tổng các $\alpha = 100\%$):
+        $$\mathbf{v}_{\text{toàn câu}} = \sum_{t=1}^T \alpha_t \mathbf{h}_t$$
+        Từ nào mang cảm xúc mạnh $\to$ nhận $\alpha_t$ lớn!
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Bản đồ nhiệt Attention trong thực tế}
+        \centering
+        \includegraphics[width=\textwidth]{images/attention_sample_pos.png}\\
+        {\fontsize{7}{8.5}\selectfont \textit{Hình: Mô hình tự động dồn trọng số vào từ quyết định.}}
+      \end{block}
+      \begin{alertblock}{Explainable AI (Khả năng giải thích)}
+        \fontsize{7.5}{9}\selectfont
+        Mô hình không còn là chiếc hộp đen bí ẩn. Nhìn vào trọng số $\alpha_t$, con người biết chính xác \textbf{vì sao máy tính lại dự đoán là Tích cực hay Tiêu cực}!
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==================== PHẦN 7: TRANSFORMER & PHOBERT ====================
+\begin{frame}{7. Bước Nhảy Vọt Lên Transformer \& PhoBERT Tiếng Việt SOTA}
+  \begin{columns}[c]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Giới hạn của Word2Vec tĩnh}
+        \fontsize{7.5}{9.5}\selectfont
+        Word2Vec gán mỗi từ đúng 1 vector cố định:
+        \begin{itemize}
+          \item \textit{''Tôi uống \textbf{nước} cam''} (chất lỏng).
+          \item \textit{''Bảo vệ đất \textbf{nước}''} (quốc gia).
+        \end{itemize}
+        Cả hai từ \textit{''nước''} trên đều bị ép chung một tọa độ vector $\implies$ Không chuẩn xác!
+      \end{block}
+
+      \begin{exampleblock}{Cuộc cách mạng Contextual Embedding}
+        \fontsize{7.5}{9.5}\selectfont
+        Mô hình \textbf{PhoBERT (VinAI, 2020)} dựa trên Transformer:
+        \begin{itemize}
+          \item Huấn luyện trên \textbf{20GB báo chí tiếng Việt} (~3 tỷ từ).
+          \item Vector của một từ được sinh ra \textbf{động} tùy theo ngữ cảnh của câu cụ thể.
+          \item Đọc hiểu cấu trúc câu phức tạp và ẩn ý sâu sắc.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Bí kíp trị Teencode: Tokenizer BPE}
+        \fontsize{7.5}{9.5}\selectfont
+        Khi gặp từ lóng hoặc viết tắt trên mạng:
+        \begin{itemize}
+          \item Word2Vec tĩnh: Bó tay, gán thành từ rác \texttt{UNK} (Unknown).
+          \item \textbf{PhoBERT (Byte-Pair Encoding)}: Tự động bẻ nhỏ từ lạ thành các mảnh âm tiết quen thuộc để suy luận.
+        \end{itemize}
+        $\implies$ Giúp PhoBERT đạt độ bền bỉ vượt trội trước ngôn ngữ mạng xã hội đầy nhiễu!
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==================== PHẦN 8: BÀI TOÁN PHÂN LOẠI CẢM XÚC ====================
+\begin{frame}{8. Thực Chiến: Bài Toán Phân Loại Cảm Xúc (Sentiment Analysis)}
+  \fontsize{7.5}{9.5}\selectfont
+  Để kiểm chứng các mô hình trên đời thực, nhóm tiến hành thử nghiệm trên \textbf{3 miền dữ liệu độc lập}:
+
+  \vspace{0.15cm}
+  \resizebox{\textwidth}{!}{
+  \begin{tabular}{p{3.0cm}p{3.8cm}p{3.8cm}p{3.8cm}}
+    \toprule
+    \textbf{Đặc điểm} & \textbf{Miền 1: Giáo Dục (UIT-VSFC)} & \textbf{Miền 2: Mua Sắm (E-Commerce)} & \textbf{Miền 3: Điện Ảnh (Review Phim)} \\
+    \midrule
+    \textbf{Nội dung} & Khảo sát ý kiến sinh viên về giảng viên & Đánh giá chất lượng sản phẩm & Đánh giá diễn xuất, kịch bản phim \\
+    \textbf{Phong cách} & Lịch sự, câu cú chuẩn ngữ pháp & Tiếng lóng, viết tắt, teencode (\textit{sp, ship, auth}) & Câu ghép dài, nhiều tương phản \\
+    \textbf{Độ khó} & Trung bình (Dễ bắt từ khóa) & Rất cao (Nhiều nhiễu, lỗi chính tả, mỉa mai) & Cao (Khen diễn viên nhưng chê kịch bản) \\
+    \bottomrule
+  \end{tabular}
+  }
+
+  \vspace{0.25cm}
+  \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{\small\textbf{Đầu vào (Input)}}
+        Một đoạn văn bản nhận xét của người dùng.
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{\small\textbf{Đầu ra (Output)}}
+        Xác suất nhãn: \textbf{\color{HCMUEGreen}TÍCH CỰC} hay \textbf{\color{HCMUERed}TIÊU CỰC}.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Bảng Đối Chuẩn Kết Quả: Ai Thắng Ai?}
+  \fontsize{7.5}{9.5}\selectfont
+  Kết quả thực nghiệm trên tập kiểm thử độc lập của 3 miền:
+
+  \vspace{0.15cm}
+  \resizebox{\textwidth}{!}{
+  \begin{tabular}{clccc}
+    \toprule
+    \textbf{Cấp độ} & \textbf{Kiến trúc Mô hình} & \textbf{Giáo dục (UIT-VSFC)} & \textbf{TMĐT (E-Commerce)} & \textbf{Review Phim (IMDb)} \\
+    \midrule
+    \textbf{Cổ điển} & 1. TF-IDF + Logistic Regression & 89.83\% & 70.33\% & 89.20\% \\
+    \textbf{Nhúng tĩnh} & 2. Average Word2Vec + Logistic Regression & 87.50\% & 67.33\% & 86.40\% \\
+    \textbf{Chuỗi RNN} & 3. BiLSTM Classifier (Học từ đầu) & 89.17\% & 69.17\% & 88.10\% \\
+    \textbf{Học chuyển giao} & 4. BiLSTM Pretrained Word2Vec & 91.00\% & 67.17\% & 90.80\% \\
+    \textbf{Cơ chế Chú ý} & 5. BiLSTM + Self-Attention (\textbf{Đề xuất XAI}) & \textbf{\color{HCMUEDarkBlue}91.83\%} & \textbf{\color{HCMUEDarkBlue}72.50\%} & \textbf{\color{HCMUEDarkBlue}92.40\%} \\
+    \textbf{Transformer SOTA} & 6. PhoBERT Base v2 (VinAI) & \textbf{\color{HCMUEGold}95.50\%} & \textbf{\color{HCMUEGold}86.17\%} & \textbf{\color{HCMUEGold}94.80\%} \\
+    \bottomrule
+  \end{tabular}
+  }
+
+  \vspace{0.25cm}
+  \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{\small\textbf{Quan sát 1: Attention tạo bứt phá}}
+        \fontsize{7.5}{9}\selectfont
+        Tăng tới \textbf{+5.33\%} trên miền TMĐT nhờ khả năng lọc bỏ từ rác và bắt trúng từ cảm xúc.
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{\small\textbf{Quan sát 2: PhoBERT dẫn đầu toàn diện}}
+        \fontsize{7.5}{9}\selectfont
+        Đạt đỉnh \textbf{95.50\%} trên giáo dục và bền bỉ vượt trội trước tiếng lóng TMĐT (\textbf{86.17\%}).
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Khám Phá Trực Quan: Các Điểm Dữ Liệu Gom Nhóm Như Thế Nào?}
+  \begin{columns}[c]
+    \begin{column}{0.33\textwidth}
+      \centering
+      \includegraphics[width=0.95\textwidth]{images/tsne_avg_word2vec.png}\\[0.2em]
+      {\fontsize{7}{8.5}\selectfont \textbf{1. Average Word2Vec}\\Điểm đỏ (Neg) và xanh (Pos) dính chùm, ranh giới mờ nhạt.}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \centering
+      \includegraphics[width=0.95\textwidth]{images/tsne_lstm_representation.png}\\[0.2em]
+      {\fontsize{7}{8.5}\selectfont \textbf{2. BiLSTM Representation}\\Bắt đầu tách thành 2 nhánh rõ ràng nhờ học chuỗi.}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \centering
+      \includegraphics[width=0.95\textwidth]{images/tsne_phobert_representation.png}\\[0.2em]
+      {\fontsize{7}{8.5}\selectfont \textbf{3. PhoBERT Contextual}\\Tách biệt tuyệt đối thành 2 khối tách rời nhau!}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.25cm}
+  \begin{block}{\small\textbf{Ý nghĩa trực quan}}
+    \fontsize{7.5}{9.5}\selectfont
+    Mô hình càng xịn thì không gian biểu diễn càng tách bạch rõ ràng giữa \textbf{Vui (Tích cực)} và \textbf{Buồn (Tiêu cực)}, giúp việc kẻ một đường phân cách trở nên dễ dàng và chuẩn xác!
+  \end{block}
+\end{frame}
+
+\begin{frame}{Các Ca Khó Kinh Điển Trong Đời Thực Khiến AI Bối Rối}
+  \fontsize{7.5}{9.5}\selectfont
+
+  \begin{block}{Ca khó 1: Cấu trúc câu tương phản lật ngược tình thế}
+    \begin{itemize}
+      \item \textit{''Giao hàng hơi lâu nhưng chất lượng áo thì đỉnh chóp.''} $\to$ \textbf{Thực tế: TÍCH CỰC}.
+      \item \textbf{Mô hình đơn giản}: Thấy chữ \textit{''hơi lâu''} ở đầu câu nên vội vã kết luận Tiêu cực.
+      \item \textbf{Cơ chế Attention / PhoBERT}: Hiểu được từ \textit{''nhưng''} đóng vai trò bản lề, dồn toàn bộ sự chú ý vào vế sau \textit{''chất lượng đỉnh chóp''} để đoán đúng Tích cực!
+    \end{itemize}
+  \end{block}
+
+  \begin{alertblock}{Ca khó 2: Ngôn ngữ mỉa mai, châm biếm (Sarcasm) — Giới hạn của AI hiện nay}
+    \begin{itemize}
+      \item \textit{''Shop phục vụ quá nhiệt tình, nhắn tin 3 ngày mới thèm trả lời.''} $\to$ \textbf{Thực tế: TIÊU CỰC}.
+      \item \textbf{AI hiện nay đều sai}: Nhìn thấy từ \textit{''quá nhiệt tình''} liền mừng rỡ đoán Tích cực!
+      \item \textbf{Vì sao AI bị lừa?}: AI chưa có tri thức đời thực (\textit{World Knowledge}) để hiểu rằng chờ đợi 3 ngày là điều bực mình. Đây là bài toán mở đầy hấp dẫn của NLP tương lai!
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+% ==================== PHẦN 9: TỔNG KẾT & LỜI KHUYÊN ====================
+\begin{frame}{9. Trải Nghiệm Thực Tế Hệ Thống Web Demo}
+  \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Học đi đôi với hành (Interactive Demo)}
+        \fontsize{7.5}{9.5}\selectfont
+        Nhóm đã xây dựng sẵn một ứng dụng Web trực quan:
+        \begin{itemize}
+          \item \textbf{Gõ câu bất kỳ}: Tiếng Việt hoặc tiếng Anh, có teencode, viết tắt.
+          \item \textbf{So sánh 6 mô hình cùng lúc}: Xem mô hình nào đoán đúng, mô hình nào bị lừa.
+          \item \textbf{Xem bản đồ nhiệt Attention}: Rê chuột xem trọng số $\alpha_t$ của từng từ.
+        \end{itemize}
+      \end{block}
+      \begin{exampleblock}{Khởi chạy đơn giản với 1 câu lệnh}
+        \fontsize{7.5}{9.5}\selectfont
+        \texttt{cd Bai\_tap\_giua\_ky \&\& ./run\_app.sh}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/demo_overview.png}\\
+      {\fontsize{7}{8.5}\selectfont \textit{Hình: Giao diện trực quan hoá 6 mô hình đối đầu.}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Tổng Kết: 5 Bài Học Cốt Lõi Cho Người Mới Bắt Đầu}
+  \begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{\small\textbf{1. Biểu diễn từ là nền tảng}}
+        \fontsize{7.5}{9.5}\selectfont
+        Không có vector chất lượng, không mô hình học sâu nào hoạt động tốt. Từ One-Hot rời rạc $\to$ Word2Vec liên tục là bước ngoặt vĩ đại của NLP.
+      \end{block}
+      \begin{block}{\small\textbf{2. Trật tự câu quyết định ý nghĩa}}
+        \fontsize{7.5}{9.5}\selectfont
+        Đừng chỉ cộng trung bình các từ. Hãy dùng mạng xử lý chuỗi như \textbf{LSTM/BiLSTM} để giữ trọn ngữ cảnh xuôi - ngược.
+      \end{block}
+      \begin{block}{\small\textbf{3. Cơ chế Chú ý mở toang hộp đen}}
+        \fontsize{7.5}{9.5}\selectfont
+        \textbf{Self-Attention} không chỉ tăng độ chính xác mà còn cho ta biết lý do tại sao AI đưa ra quyết định đó (\textbf{Explainable AI}).
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \begin{block}{\small\textbf{4. Transformer là tương lai}}
+        \fontsize{7.5}{9.5}\selectfont
+        Các mô hình tiền huấn luyện lớn như \textbf{PhoBERT} giải quyết bài toán đa nghĩa và bền bỉ trước tiếng lóng nhờ cơ chế Tokenizer BPE.
+      \end{block}
+      \begin{exampleblock}{\small\textbf{5. Hiểu dữ liệu quan trọng hơn chỉnh mô hình}}
+        \fontsize{7.5}{9.5}\selectfont
+        Mô hình đạt 95\% ở miền giáo dục có thể tụt xuống 72\% ở miền TMĐT nếu không hiểu về sự dịch chuyển phân phối (\textbf{Domain Gap}).
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==================== SLIDE CUỐI: CẢM ƠN & Q&A ====================
+{
+\setbeamertemplate{footline}{}
+\setbeamertemplate{frametitle}{}
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[HCMUEDarkBlue] (current page.north west) rectangle (current page.south east);
+    \fill[HCMUECerulean!25] ($(current page.south east)+(-2,2)$) circle (3.5cm);
+    \fill[HCMUECerulean!15] ($(current page.north west)+(3,-2)$) circle (2.5cm);
+  \end{tikzpicture}
+
+  \begin{center}
+    \includegraphics[height=1.3cm]{images/logo_crest_white.png}\\[0.5em]
+
+    {\fontsize{13}{16}\selectfont \textbf{\color{white}TRƯỜNG ĐẠI HỌC SƯ PHẠM TP. HỒ CHÍ MINH}}\\[0.2em]
+    {\fontsize{10}{12}\selectfont \color{white!85}KHOA CÔNG NGHỆ THÔNG TIN — LỚP CAO HỌC KHMT K36}\\[0.8em]
+
+    {\fontsize{18}{22}\selectfont \textbf{\color{HCMUEGold}CẢM ƠN CÁC BẠN ĐÃ THEO DÕI BÀI GIẢNG!}}\\[0.3em]
+    {\fontsize{13}{16}\selectfont \textbf{\color{white}CHÚC CÁC BẠN CHINH PHỤC THÀNH CÔNG NLP!}}\\[0.8em]
+
+    \begin{beamercolorbox}[wd=0.72\textwidth,rounded=true,center,sep=0.35em]{palette secondary}
+      \fontsize{9.5}{12}\selectfont
+      \textbf{Giảng viên hướng dẫn: PGS.TS. LÊ ANH CƯỜNG}\\[0.2em]
+      \fontsize{8.5}{11}\selectfont
+      Nhóm 3: Trần Gia Huy $\bullet$ Đỗ Minh Khánh Ngân $\bullet$ Nguyễn Tấn Phát
+    \end{beamercolorbox}
+
+    \vspace{0.4em}
+    {\fontsize{10.5}{13}\selectfont \textbf{\color{white}GÓC THẢO LUẬN \& GIẢI ĐÁP THẮC MẮC (Q\&A)}}\\[0.15em]
+    {\fontsize{8}{10}\selectfont \color{white!70}Mã nguồn bài học \& Web Demo: \url{https://github.com/trangiahuy8444/NLP}}
+  \end{center}
+\end{frame}
+}
+
+\end{document}
