@@ -37,7 +37,7 @@
 
 \setbeamercolor{structure}{fg=HCMUEDarkBlue}
 \setbeamercolor{titlelike}{parent=palette primary, fg=HCMUEDarkBlue}
-\setbeamercolor{frametitle}{bg=HCMUEDarkBlue, fg=white}
+\setbeamercolor{frametitle}{bg=white, fg=HCMUEDarkBlue}
 \setbeamercolor{normal text}{fg=HCMUEDarkText, bg=white}
 \setbeamercolor{item}{fg=HCMUEDarkBlue}
 \setbeamercolor{subitem}{fg=HCMUERed}
@@ -64,7 +64,7 @@
   \end{tikzpicture}%
 }
 
-% Định dạng tiêu đề slide (Frametitle) kèm logo nhận diện thương hiệu trắng sắc nét
+% Định dạng tiêu đề slide (Frametitle) đồng bộ nhận diện thương hiệu HCMUE nguyên bản
 \setbeamertemplate{frametitle}{%
   \nointerlineskip%
   \begin{beamercolorbox}[wd=\paperwidth,ht=0.96cm,dp=0.16cm]{frametitle}%
@@ -72,9 +72,9 @@
       \vfill%
       \hbox to \paperwidth{%
         \hspace{0.55cm}%
-        \parbox[c]{0.68\paperwidth}{\fontsize{10.5}{12.5}\selectfont\textbf{\color{white}\insertframetitle}}%
+        \parbox[c]{0.68\paperwidth}{\fontsize{10.5}{12.5}\selectfont\textbf{\color{HCMUEDarkBlue}\insertframetitle}}%
         \hfill%
-        \includegraphics[height=0.44cm,keepaspectratio]{images/logo_hcmue_kemchu_eng_white.png}%
+        \includegraphics[height=0.50cm,keepaspectratio]{images/logo_hcmue_kemchu_eng.png}%
         \hspace{0.55cm}%
       }%
       \vfill%
@@ -82,7 +82,7 @@
   \end{beamercolorbox}%
   \nointerlineskip%
   {\color{HCMUERed}\hrule height 1.8pt}%
-  \vspace{0.2cm}%
+  \vspace{0.18cm}%
 }
 
 % Định dạng chân trang (Footline)
@@ -138,11 +138,6 @@
     
     \node[anchor=west] at ($(current page.north west)+(0.8cm,-0.82cm)$) {
       \includegraphics[height=0.92cm]{images/logo_hcmue_kemchu_eng.png}
-    };
-    
-    \node[anchor=east, align=right] at ($(current page.north east)+(-0.8cm,-0.82cm)$) {
-      {\fontsize{9.5}{11.5}\selectfont \textbf{\color{HCMUEDarkBlue}KHOA CÔNG NGHỆ THÔNG TIN}}\\[0.2em]
-      {\fontsize{8}{10}\selectfont \textbf{\color{HCMUERed}LỚP CAO HỌC KHMT K36}}
     };
     
     \fill[HCMUERed] ($(current page.north west)+(0,-1.55cm)$) rectangle ($(current page.north east)+(0,-1.61cm)$);
