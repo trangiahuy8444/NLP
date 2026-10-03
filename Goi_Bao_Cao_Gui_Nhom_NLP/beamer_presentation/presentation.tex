@@ -24,6 +24,7 @@
 % --- THIẾT LẬP GIAO DIỆN BEAMER THEME HCMUE ---
 \useinnertheme{rounded}
 \useoutertheme{infolines}
+\setbeamersize{text margin left=0.6cm, text margin right=0.6cm}
 
 % Ẩn thanh điều hướng mặc định
 \setbeamertemplate{navigation symbols}{}
@@ -36,7 +37,7 @@
 
 \setbeamercolor{structure}{fg=HCMUEDarkBlue}
 \setbeamercolor{titlelike}{parent=palette primary, fg=HCMUEDarkBlue}
-\setbeamercolor{frametitle}{bg=HCMUEDarkBlue, fg=white}
+\setbeamercolor{frametitle}{bg=white, fg=HCMUEDarkBlue}
 \setbeamercolor{normal text}{fg=HCMUEDarkText, bg=white}
 \setbeamercolor{item}{fg=HCMUEDarkBlue}
 \setbeamercolor{subitem}{fg=HCMUERed}
@@ -63,24 +64,25 @@
   \end{tikzpicture}%
 }
 
-% Định dạng tiêu đề slide (Frametitle) kèm logo gốc trong badge trắng sang trọng
+% Định dạng tiêu đề slide (Frametitle) đồng bộ nhận diện thương hiệu HCMUE nguyên bản
 \setbeamertemplate{frametitle}{%
   \nointerlineskip%
-  \begin{beamercolorbox}[wd=\paperwidth,ht=0.95cm,dp=0.15cm]{frametitle}%
-    \vbox to 0.95cm{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1.00cm,dp=0.18cm]{frametitle}%
+    \vbox to 1.00cm{%
       \vfill%
       \hbox to \paperwidth{%
         \hspace{0.8cm}%
-        \parbox[c]{0.78\paperwidth}{\fontsize{11}{13}\selectfont\textbf{\color{white}\insertframetitle}}%
+        \includegraphics[height=0.65cm,keepaspectratio]{images/logo_hcmue_kemchu_eng.png}%
         \hfill%
-        \colorbox{white}{\includegraphics[height=0.48cm]{images/logo_hcmue_original.png}}%
-        \hspace{0.6cm}%
+        \parbox[c]{0.58\paperwidth}{\raggedleft\fontsize{10.5}{12.5}\selectfont\textbf{\color{HCMUEDarkBlue}\insertframetitle}}%
+        \hspace{0.8cm}%
       }%
       \vfill%
     }%
   \end{beamercolorbox}%
   \nointerlineskip%
   {\color{HCMUERed}\hrule height 1.8pt}%
+  \vspace{0.15cm}%
 }
 
 % Định dạng chân trang (Footline)
@@ -131,27 +133,16 @@
 \setbeamertemplate{frametitle}{}
 \begin{frame}[plain]
   \begin{tikzpicture}[remember picture,overlay]
-    % Viền trên màu xanh đậm
     \fill[HCMUEDarkBlue] (current page.north west) rectangle ($(current page.north east)+(0,-0.12cm)$);
-    % Dải banner màu trắng chứa logo kèm chữ nguyên bản
     \fill[white] ($(current page.north west)+(0,-0.10cm)$) rectangle ($(current page.north east)+(0,-1.55cm)$);
     
-    % Logo kèm chữ chính thức từ folder "Logo kèm chữ" (Huy hiệu + Tên trường tiếng Việt & tiếng Anh)
     \node[anchor=west] at ($(current page.north west)+(0.8cm,-0.82cm)$) {
       \includegraphics[height=0.92cm]{images/logo_hcmue_kemchu_eng.png}
     };
     
-    % Thông tin Khoa & Lớp Cao học bên phải banner
-    \node[anchor=east, align=right] at ($(current page.north east)+(-0.8cm,-0.82cm)$) {
-      {\fontsize{9.5}{11.5}\selectfont \textbf{\color{HCMUEDarkBlue}KHOA CÔNG NGHỆ THÔNG TIN}}\\[0.2em]
-      {\fontsize{8}{10}\selectfont \textbf{\color{HCMUERed}LỚP CAO HỌC KHMT K36}}
-    };
-    
-    % Đường phân cách màu đỏ chuẩn thương hiệu #CF373D và xanh
     \fill[HCMUERed] ($(current page.north west)+(0,-1.55cm)$) rectangle ($(current page.north east)+(0,-1.61cm)$);
     \fill[HCMUEDarkBlue] ($(current page.north west)+(0,-1.61cm)$) rectangle ($(current page.north east)+(0,-1.64cm)$);
 
-    % Nền mờ Tòa nhà A-01 chuẩn phong cách HCMUE_PPT Template.pptx
     \node[anchor=south east, inner sep=0pt] at ($(current page.south east)+(0, 0)$) {
       \includegraphics[width=9.5cm]{images/toa_nha_a_watermark_dark.png}
     };
@@ -161,23 +152,24 @@
   \begin{center}
     {\fontsize{9}{11}\selectfont \textbf{\color{HCMUECerulean}BÁO CÁO TIỂU LUẬN GIỮA KỲ — HỌC PHẦN XỬ LÝ NGÔN NGỮ TỰ NHIÊN}}\\[0.35em]
     {\fontsize{12}{15}\selectfont \textbf{\color{HCMUEDarkBlue}MÔ HÌNH WORD2VEC, WORD EMBEDDING VÀ HỌC BIỂU DIỄN VĂN BẢN BẰNG LSTM CHO BÀI TOÁN PHÂN LOẠI CẢM XÚC}}\\[0.3em]
-    {\fontsize{8.5}{10}\selectfont \color{HCMUEGray}Nghiên cứu lý thuyết, Hiện thực mô hình, Đối chuẩn Đa miền \& Triển khai Ứng dụng XAI}
+    {\fontsize{8.5}{10.5}\selectfont \color{HCMUEGray}Nghiên cứu lý thuyết, Hiện thực mô hình, Đối chuẩn Đa miền \& Triển khai Ứng dụng XAI}
   \end{center}
 
   \vspace{0.15cm}
-  \begin{columns}[t]
+  \begin{columns}[T, onlytextwidth]
     \begin{column}{0.48\textwidth}
       \begin{block}{\small\textbf{Thông Tin Học Phần \& Giảng Viên}}
-        \fontsize{7.5}{9.5}\selectfont
+        \fontsize{8}{10.5}\selectfont
         \textbf{Đơn vị}: ĐH Sư phạm TP.HCM (HCMUE) — Khoa CNTT\\
         \textbf{Chuyên ngành}: Cao học Khoa học Máy tính (K36)\\
         \textbf{Giảng viên hướng dẫn}: \textbf{\color{HCMUEDarkBlue}PGS.TS. LÊ ANH CƯỜNG}\\
         \textbf{Thời gian}: Tháng 10/2026
       \end{block}
     \end{column}
+    \hfill
     \begin{column}{0.48\textwidth}
       \begin{block}{\small\textbf{Học Viên Thực Hiện (Nhóm 3)}}
-        \fontsize{7.5}{9.5}\selectfont
+        \fontsize{8}{10.5}\selectfont
         1. \textbf{Trần Gia Huy} — MSHV: \textbf{KHMT836012}\\
         2. \textbf{Đỗ Minh Khánh Ngân} — MSHV: \textbf{KHMT836019}\\
         3. \textbf{Nguyễn Tấn Phát} — MSHV: \textbf{KHMT836026}\\
@@ -190,43 +182,44 @@
 
 % ==================== SLIDE 2: NỘI DUNG TRÌNH BÀY ====================
 \begin{frame}{Nội Dung Báo Cáo}
-  \begin{columns}[c]
-    \begin{column}{0.5\textwidth}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
       \begin{enumerate}
-        \setlength{\itemsep}{0.7em}
+        \setlength{\itemsep}{0.6em}
         \item \textbf{\color{HCMUEDarkBlue}Đặt Vấn Đề \& Mục Tiêu Nghiên Cứu}
-        \begin{itemize}\fontsize{7.5}{9}\selectfont
+        \begin{itemize}\fontsize{8}{10}\selectfont\setlength{\itemsep}{0.15em}
           \item Thách thức biểu diễn ngữ nghĩa tiếng Việt
           \item 7 đóng góp trọng tâm của nhóm học viên
         \end{itemize}
-        \item \textbf{\color{HCMUEDarkBlue}Cơ Sở Lý Thuyết \& Kiến Trúc}
-        \begin{itemize}\fontsize{7.5}{9}\selectfont
-          \item Không gian vector Word2Vec (CBOW, Skip-Gram, SGNS)
-          \item Học biểu diễn chuỗi bằng BiLSTM
-          \item Cơ chế Chú ý Additive Self-Attention \& XAI
-          \item Mô hình ngôn ngữ ngữ cảnh SOTA: PhoBERT
+        \item \textbf{\color{HCMUEDarkBlue}Cơ Sở Lý Thuyết \& Kiến Trúc Mạng}
+        \begin{itemize}\fontsize{8}{10}\selectfont\setlength{\itemsep}{0.15em}
+          \item Không gian vector Word2Vec (CBOW vs Skip-Gram)
+          \item Học chuỗi BiLSTM \& Additive Attention
+          \item \textbf{Sơ đồ luồng dữ liệu kiến trúc đề xuất}
+          \item Vai trò đại diện toàn câu của token \texttt{[CLS]} (PhoBERT)
         \end{itemize}
         \item \textbf{\color{HCMUEDarkBlue}Thiết Kế Thực Nghiệm \& Đa Miền}
-        \begin{itemize}\fontsize{7.5}{9}\selectfont
+        \begin{itemize}\fontsize{8}{10}\selectfont\setlength{\itemsep}{0.15em}
           \item 3 miền ngữ liệu: UIT-VSFC, E-Commerce, Review-Phim
           \item Quy trình tiền xử lý 5 bước chuẩn hóa
         \end{itemize}
       \end{enumerate}
     \end{column}
-    \begin{column}{0.5\textwidth}
+    \hfill
+    \begin{column}{0.48\textwidth}
       \begin{enumerate}
         \setcounter{enumi}{3}
-        \setlength{\itemsep}{0.7em}
+        \setlength{\itemsep}{0.6em}
         \item \textbf{\color{HCMUEDarkBlue}Kết Quả Đối Chuẩn \& Đánh Giá}
-        \begin{itemize}\fontsize{7.5}{9}\selectfont
-          \item Bảng đối chuẩn toàn diện 6 mô hình trên 3 miền
+        \begin{itemize}\fontsize{8}{10}\selectfont\setlength{\itemsep}{0.15em}
+          \item Bảng đối chuẩn toàn diện: Accuracy, F1 \& \textbf{AUC-ROC}
           \item Giải thích quyết định qua Attention Heatmap (XAI)
           \item Tiến hóa không gian biểu diễn văn bản qua t-SNE
           \item Thảo luận 4 luận điểm học thuật then chốt
-          \item Phân tích lỗi định tính (Qualitative Error Analysis)
+          \item Phân tích lỗi định tính \& \textbf{Giải pháp kỹ thuật}
         \end{itemize}
         \item \textbf{\color{HCMUEDarkBlue}Sản Phẩm Ứng Dụng Thời Gian Thực}
-        \begin{itemize}\fontsize{7.5}{9}\selectfont
+        \begin{itemize}\fontsize{8}{10}\selectfont\setlength{\itemsep}{0.15em}
           \item Kiến trúc suy luận song song 6 mô hình
           \item Trải nghiệm Web Demo tương tác trực quan
         \end{itemize}
@@ -238,27 +231,22 @@
 
 % ==================== SECTION 1: ĐẶT VẤN ĐỀ ====================
 \begin{frame}{1. Đặt Vấn Đề: Thách Thức Biểu Diễn Ngữ Nghĩa Tiếng Việt}
-  \begin{columns}[c]
-    \begin{column}{0.55\textwidth}
-      \begin{block}{Thách thức cốt lõi của bài toán Biểu diễn từ}
-        \fontsize{7.5}{9.5}\selectfont
-        \begin{itemize}
-          \item Làm sao ánh xạ ngôn ngữ rời rạc thành vector dày đặc $\mathbb{R}^d$ giữ trọn \textbf{khoảng cách ngữ nghĩa}?
-          \item \textbf{Đặc thù tiếng Việt}: Ngôn ngữ đơn lập, không biến hình từ, ranh giới từ phức tạp (\textit{từ ghép, từ láy, thành ngữ}).
-          \item Hiện tượng đa nghĩa, đảo ngữ, cấu trúc phủ định và sắc thái châm biếm (\textit{sarcasm}).
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Thách thức cốt lõi của Biểu diễn từ}
+        \fontsize{8}{10.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.25em}
+          \item Ánh xạ ngôn ngữ rời rạc sang vector dày đặc $\mathbb{R}^d$ bảo toàn \textbf{khoảng cách ngữ nghĩa}.
+          \item \textbf{Đặc thù tiếng Việt}: Ngôn ngữ đơn lập, không biến hình, từ ghép, từ láy, đa nghĩa, đảo ngữ, cấu trúc phủ định và sắc thái châm biếm (\textit{sarcasm}).
+          \item \textbf{Giả thuyết phân bố (Firth, 1957)}: \textit{''You shall know a word by the company it keeps''} — một từ được định nghĩa bởi các từ xuất hiện xung quanh nó.
         \end{itemize}
       \end{block}
-      \vspace{0.1cm}
-      \begin{exampleblock}{Giả thuyết phân bố (Distributional Hypothesis - Firth, 1957)}
-        \centering\fontsize{8}{10}\selectfont
-        \textit{''You shall know a word by the company it keeps''}\\
-        (Một từ vựng được định nghĩa bởi tập hợp các từ xuất hiện quanh nó)
-      \end{exampleblock}
     \end{column}
-    \begin{column}{0.45\textwidth}
+    \hfill
+    \begin{column}{0.48\textwidth}
       \begin{alertblock}{Hạn chế của mô hình cổ điển (One-Hot, TF-IDF)}
-        \fontsize{7.5}{9.5}\selectfont
-        \begin{itemize}
+        \fontsize{8}{10.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.25em}
           \item \textbf{Bùng nổ số chiều}: Kích thước ma trận bằng $|V|$ ($10^4 - 10^5$), cực kỳ lãng phí bộ nhớ.
           \item \textbf{Tính trực giao tuyệt đối}: $\mathbf{e}_i^T \mathbf{e}_j = 0, \forall i \ne j$. Không đo được sự tương đồng giữa \textit{''giảng viên''} và \textit{''thầy cô''}.
           \item \textbf{Mất trật tự từ (Bag-of-Words)}: Bỏ qua hoàn toàn cú pháp và phụ thuộc ngữ cảnh dài hạn.
@@ -269,22 +257,22 @@
 \end{frame}
 
 \begin{frame}{Mục Tiêu Nghiên Cứu \& 7 Đóng Góp Chính Của Đề Tài}
-  \begin{columns}[t]
-    \begin{column}{0.5\textwidth}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
       \begin{block}{\small\textbf{1. Nghiên Cứu Lý Thuyết \& Mô Hình Hóa}}
-        \fontsize{7.5}{9.5}\selectfont
-        \begin{itemize}
+        \fontsize{8}{10.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.3em}
           \item \textbf{Làm chủ chuỗi biểu diễn}: Khảo sát hệ thống từ One-Hot, TF-IDF, Word2Vec (\textit{CBOW, SGNS}) đến BiLSTM và PhoBERT SOTA.
           \item \textbf{Mô hình hóa chuỗi với BiLSTM}: Trích xuất vector biểu diễn câu $\mathbf{v}_D$ bắt trọn ngữ cảnh xuôi - ngược.
           \item \textbf{Đề xuất Additive Self-Attention}: Giải quyết triệt để \textbf{nghẽn cổ chai thông tin} của LSTM, tăng độ chính xác và cung cấp khả năng giải thích quyết định (\textbf{XAI}).
         \end{itemize}
       \end{block}
     \end{column}
-
-    \begin{column}{0.5\textwidth}
+    \hfill
+    \begin{column}{0.48\textwidth}
       \begin{block}{\small\textbf{2. Thực Nghiệm Đa Miền \& Triển Khai Thực Tế}}
-        \fontsize{7.5}{9.5}\selectfont
-        \begin{itemize}
+        \fontsize{8}{10.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.25em}
           \item \textbf{Đối chuẩn đa miền (Cross-Domain)}: Kiểm thử độc lập trên 3 miền: Giáo dục (\textbf{UIT-VSFC}), Thương mại (\textbf{E-Commerce}) và Điện ảnh (\textbf{IMDb}).
           \item \textbf{So sánh 6 mô hình song song}: Phân tích định lượng lẫn định tính nguyên nhân dịch chuyển phân phối dữ liệu (\textit{Domain Gap}).
           \item \textbf{Trực quan hóa t-SNE \& Heatmap}: Minh chứng quá trình tiến hóa hình học không gian vector.
@@ -319,20 +307,21 @@
   }
 
   \vspace{0.35cm}
-  \begin{columns}[t]
+  \begin{columns}[T, onlytextwidth]
     \begin{column}{0.48\textwidth}
       \begin{block}{\small\textbf{Biểu Diễn Tĩnh (Static Embeddings)}}
-        \fontsize{7.5}{9.5}\selectfont
-        \begin{itemize}
+        \fontsize{8}{10.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.25em}
           \item \textbf{Word2Vec, FastText, GloVe}: Mỗi từ vựng cố định một vector duy nhất trong không gian $\mathbb{R}^d$.
           \item \textit{Hạn chế}: Từ đa nghĩa (\textit{''nước suối''} vs \textit{''đất nước''}) dùng chung 1 vector; không xét ngữ cảnh cụ thể trong câu.
         \end{itemize}
       \end{block}
     \end{column}
+    \hfill
     \begin{column}{0.48\textwidth}
       \begin{block}{\small\textbf{Biểu Diễn Động Theo Ngữ Cảnh (Contextual)}}
-        \fontsize{7.5}{9.5}\selectfont
-        \begin{itemize}
+        \fontsize{8}{10.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.25em}
           \item \textbf{BiLSTM, Transformer, PhoBERT}: Vector của từ phụ thuộc hoàn toàn vào các từ đứng trước và sau nó.
           \item \textit{Ưu thế vượt trội}: Giải quyết triệt để đa nghĩa, đảo ngữ, phụ thuộc xa (\textit{Long-range dependencies}).
         \end{itemize}
@@ -341,31 +330,27 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Không Gian Vector Phân Bố Word2Vec: CBOW, Skip-Gram \& SGNS}
-  \begin{columns}[c]
-    \begin{column}{0.5\textwidth}
-      \begin{block}{CBOW vs Skip-Gram}
+\begin{frame}{Không Gian Vector Word2Vec: CBOW, Skip-Gram \& SGNS}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{CBOW vs Skip-Gram (Mục Tiêu Tối Ưu)}
         \fontsize{7.5}{9.5}\selectfont
-        \textbf{CBOW}: Dự đoán từ trung tâm $w_t$ từ ngữ cảnh xung quanh:
-        \vspace{-0.15cm}
-        $$\mathcal{L}_{\text{CBOW}} = \sum_{t=1}^T \log P(w_t \mid w_{t-c}, \dots, w_{t+c})$$
-        \vspace{-0.15cm}
-        \textbf{Skip-Gram}: Từ từ trung tâm, dự đoán ngữ cảnh:
-        \vspace{-0.15cm}
-        $$\mathcal{L}_{\text{SG}} = \sum_{t=1}^T \sum_{-c \le j \le c, j \ne 0} \log P(w_{t+j} \mid w_t)$$
+        \textbf{CBOW}: Dự đoán từ tâm $w_t$ từ ngữ cảnh $w_{t\pm c}$:
+        $$\displaystyle \mathcal{L}_{\text{CBOW}} = \sum_{t=1}^T \log P(w_t \mid w_{t-c}, \dots, w_{t+c})$$
+        \textbf{Skip-Gram}: Từ từ tâm $w_t$, dự đoán ngữ cảnh:
+        $$\displaystyle \mathcal{L}_{\text{SG}} = \sum_{t=1}^T \sum_{-c \le j \le c, j \ne 0} \log P(w_{t+j} \mid w_t)$$
         \textit{Skip-Gram học từ hiếm và ngữ nghĩa đa dạng rất tốt.}
       \end{block}
     \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \begin{alertblock}{Tối ưu hóa: Negative Sampling (SGNS)}
+    \hfill
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Negative Sampling (SGNS) Tối Ưu Tốc Độ}
         \fontsize{7.5}{9.5}\selectfont
-        \textbf{Vấn đề Softmax}: Mẫu số $\sum_{w' \in V} \exp(\mathbf{v}'^T_{w'} \mathbf{v}_w)$ tiêu tốn $O(|V|)$ khủng khiếp khi từ điển lớn.\\
-        \textbf{Giải pháp SGNS}: Chuyển thành bài toán phân loại nhị phân giữa cặp thật $(w_I, w_O)$ và $K$ mẫu âm ngẫu nhiên:
-        \vspace{-0.15cm}
-        $$\mathcal{L}_{\text{SGNS}} = \log \sigma(\mathbf{v}'^T_{w_O} \mathbf{v}_{w_I}) + \sum_{k=1}^K \mathbb{E}_{w_{n_k}} \left[ \log \sigma(-\mathbf{v}'^T_{w_{n_k}} \mathbf{v}_{w_I}) \right]$$
-        \begin{itemize}
-          \item Độ phức tạp giảm từ $O(|V|) \to O(K)$ ($K \in [5, 20]$).
+        \textbf{Vấn đề Softmax}: Mẫu số $\sum_{w' \in V} \exp(\mathbf{v}'^T_{w'} \mathbf{v}_w)$ tốn $O(|V|)$.\\
+        \textbf{Giải pháp SGNS}: Phân loại nhị phân giữa cặp thật $(w_I, w_O)$ và $K$ mẫu âm ($K \in [5, 20]$):
+        $$\displaystyle \mathcal{L}_{\text{SGNS}} = \log \sigma(\mathbf{v}'^T_{w_O} \mathbf{v}_{w_I}) + \sum_{k=1}^K \mathbb{E}_{w_{n_k}} \left[ \log \sigma(-\mathbf{v}'^T_{w_{n_k}} \mathbf{v}_{w_I}) \right]$$
+        \begin{itemize}\setlength{\itemsep}{0.15em}
+          \item Giảm độ phức tạp từ $O(|V|) \to O(K)$.
           \item Phân phối unigram mũ $3/4$: $P_n(w) \propto f(w)^{3/4}$.
         \end{itemize}
       \end{alertblock}
@@ -373,13 +358,39 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}{So Sánh Đối Đầu Kỹ Thuật: CBOW vs Skip-Gram}
+  \fontsize{8}{10}\selectfont
+  Bảng tổng hợp đối chiếu trực tiếp các tiêu chí cốt lõi giữa hai kiến trúc Word2Vec kinh điển:
+
+  \vspace{0.18cm}
+  \resizebox{\textwidth}{!}{
+  \begin{tabular}{p{3.0cm}p{5.8cm}p{5.8cm}}
+    \toprule
+    \textbf{Tiêu chí so sánh} & \textbf{CBOW (Continuous Bag-of-Words)} & \textbf{Skip-Gram (với Negative Sampling)} \\
+    \midrule
+    \textbf{Cơ chế dự đoán} & Dự đoán từ trung tâm $w_t$ dựa vào ngữ cảnh & Dự đoán các từ ngữ cảnh $w_{t+j}$ từ từ tâm $w_t$ \\
+    \textbf{Tốc độ huấn luyện} & \textbf{Rất nhanh} (gấp nhiều lần Skip-Gram) & Chậm hơn do xét từng cặp từ trong cửa sổ \\
+    \textbf{Khả năng học từ hiếm} & Trung bình (bị lấn át bởi các từ phổ biến) & \textbf{Xuất sắc} (học hình học vector rất kỹ cho từ hiếm) \\
+    \textbf{Độ phức tạp tính toán} & $O(C \times d + d \times \log|V|)$ & $O(C \times (d + d \times K))$ với SGNS ($K$ mẫu âm) \\
+    \textbf{Ngữ liệu phù hợp} & Kho văn bản lớn, ưu tiên tốc độ hội tụ & Dữ liệu vừa/nhỏ, yêu cầu ngữ nghĩa từ hiếm sâu \\
+    \bottomrule
+  \end{tabular}
+  }
+
+  \vspace{0.25cm}
+  \begin{block}{\small\textbf{Lựa chọn thực nghiệm trong đề tài}}
+    \fontsize{7.5}{9.5}\selectfont
+    Đề tài sử dụng \textbf{Word2Vec CBOW} ($d=100$, window=5, min\_count=1, 30 epochs) để tạo pretrained embedding, đồng thời đối chuẩn độc lập với Skip-Gram để kiểm chứng tính bền vững của không gian vector ngữ nghĩa.
+  \end{block}
+\end{frame}
+
 \begin{frame}{Học Biểu Diễn Văn Bản Bằng LSTM \& Mạng BiLSTM}
-  \begin{columns}[c]
-    \begin{column}{0.52\textwidth}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.50\textwidth}
       \begin{block}{Cơ chế kiểm soát của LSTM (3 Cổng)}
         \fontsize{7.5}{9.5}\selectfont
-        Khắc phục hiện tượng suy biến Gradient bằng \textbf{Ô nhớ dài hạn $\mathbf{c}_t$} và 3 cổng logic:
-        \begin{enumerate}
+        Khắc phục suy biến Gradient bằng \textbf{Ô nhớ $\mathbf{c}_t$} và 3 cổng:
+        \begin{enumerate}\setlength{\itemsep}{0.1em}
           \item \textbf{Cổng quên}: $\mathbf{f}_t = \sigma(W_f [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_f)$
           \item \textbf{Cổng nạp}: $\mathbf{i}_t = \sigma(W_i [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_i)$
           \item \textbf{Ứng viên nhớ}: $\tilde{\mathbf{c}}_t = \tanh(W_c [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_c)$
@@ -389,50 +400,49 @@
         \end{enumerate}
       \end{block}
     \end{column}
-
-    \begin{column}{0.48\textwidth}
+    \hfill
+    \begin{column}{0.46\textwidth}
       \begin{block}{Mạng hồi quy hai chiều BiLSTM}
         \fontsize{7.5}{9.5}\selectfont
         Xử lý văn bản theo cả hai hướng đồng thời:
-        \begin{itemize}
+        \begin{itemize}\setlength{\itemsep}{0.1em}
           \item Chiều xuôi: $\overrightarrow{\mathbf{h}_t} = \text{LSTM}_{fwd}(\mathbf{x}_t, \overrightarrow{\mathbf{h}_{t-1}})$
           \item Chiều ngược: $\overleftarrow{\mathbf{h}_t} = \text{LSTM}_{bwd}(\mathbf{x}_t, \overleftarrow{\mathbf{h}_{t+1}})$
           \item Kết hợp: $\mathbf{h}_t = [\overrightarrow{\mathbf{h}_t} \,;\, \overleftarrow{\mathbf{h}_t}] \in \mathbb{R}^{2 \cdot d_{hidden}}$
         \end{itemize}
       \end{block}
-
-      \begin{alertblock}{Điểm nghẽn thông tin (Information Bottleneck)}
+      \vspace{0.15cm}
+      \begin{alertblock}{Điểm nghẽn thông tin (Bottleneck)}
         \fontsize{7.5}{9.5}\selectfont
         BiLSTM thông thường lấy vector cuối: $\mathbf{v}_D = [\overrightarrow{\mathbf{h}_T} \,;\, \overleftarrow{\mathbf{h}_1}]$.\\
-        $\to$ Toàn bộ câu dài bị nén bắt buộc qua một vector duy nhất $\implies$ suy giảm tín hiệu đầu câu!
+        $\to$ Câu dài bị nén qua một vector duy nhất $\implies$ suy giảm tín hiệu đầu câu!
       \end{alertblock}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}{Đề Xuất: Tích Hợp Additive Self-Attention \& Khả Giải Thích XAI}
-  \begin{columns}[c]
-    \begin{column}{0.5\textwidth}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
       \begin{block}{Cơ chế Chú ý Tự thân (Additive Attention)}
         \fontsize{7.5}{9.5}\selectfont
         Tính \textbf{tổng có trọng số} của toàn bộ chuỗi trạng thái ẩn $\mathbf{h}_t$, không bỏ rơi bất kỳ từ nào:
         \begin{align*}
-          \mathbf{u}_t &= \tanh(W_a \mathbf{h}_t + \mathbf{b}_a) \\
-          \alpha_t &= \frac{\exp(\mathbf{u}_t^T \mathbf{u}_w)}{\sum_{\tau=1}^T \exp(\mathbf{u}_\tau^T \mathbf{u}_w)} \\
-          \mathbf{v}_D &= \sum_{t=1}^T \alpha_t \mathbf{h}_t
+          \mathbf{u}_t &= \tanh(\mathbf{W}_a \mathbf{h}_t + \mathbf{b}_a) \\
+          \displaystyle \alpha_t &= \frac{\exp(\mathbf{u}_t^T \mathbf{u}_w)}{\sum_{\tau=1}^T \exp(\mathbf{u}_\tau^T \mathbf{u}_w)}, \quad \mathbf{v}_D = \sum_{t=1}^T \alpha_t \mathbf{h}_t
         \end{align*}
-        \begin{itemize}
+        \begin{itemize}\setlength{\itemsep}{0.15em}
           \item $\mathbf{u}_w$: Vector ngữ cảnh học được (\textit{Context query}).
-          \item $\alpha_t \in [0, 1]$ với $\sum_t \alpha_t = 1$: Trọng số đóng góp của từng token.
+          \item $\alpha_t \in [0, 1]$ với $\sum_t \alpha_t = 1$: Trọng số đóng góp token.
         \end{itemize}
       \end{block}
     \end{column}
-
-    \begin{column}{0.5\textwidth}
+    \hfill
+    \begin{column}{0.48\textwidth}
       \begin{exampleblock}{Giá trị Explainable AI (XAI) trực quan}
         \fontsize{7.5}{9.5}\selectfont
-        Trọng số $\alpha_t$ biến mô hình từ ''hộp đen'' thành hệ thống trong suốt, có thể kiểm chứng:
-        \vspace{0.15cm}
+        Trọng số $\alpha_t$ biến mô hình thành trong suốt, kiểm chứng được:
+        \vspace{0.1cm}
 
         \centering
         \resizebox{\linewidth}{!}{
@@ -442,49 +452,102 @@
           \node[draw, rounded corners, fill=HCMUEGold!35] (w3) at (3.8,0) {rất (0.12)};
           \node[draw, rounded corners, fill=HCMUEGold, text=white] (w4) at (5.9,0) {\textbf{nhiệt\_tình (0.42)}};
           \node[draw, rounded corners, fill=HCMUEGold!75, text=white] (w6) at (8.5,0) {\textbf{dễ\_hiểu (0.34)}};
-          \node[draw=HCMUEDarkBlue, thick, fill=white, align=center] (out) at (4.3,-1.3) {\textbf{Dự đoán: TÍCH CỰC (Độ tin cậy 98.6\%)}};
+          \node[draw=HCMUEDarkBlue, thick, fill=white, align=center] (out) at (4.3,-1.2) {\textbf{Dự đoán: TÍCH CỰC (Độ tin cậy 98.6\%)}};
           \draw[-Stealth, thick, color=HCMUEDarkBlue] (w4) -- (out);
           \draw[-Stealth, thick, color=HCMUEDarkBlue] (w6) -- (out);
         \end{tikzpicture}
         }
 
-        \vspace{0.15cm}
+        \vspace{0.1cm}
         \raggedright
-        $\to$ Mô hình tập trung chính xác vào \textbf{tính từ phân cực cốt lõi}, loại bỏ hoàn toàn nhiễu từ hư từ.
+        $\to$ Mô hình dồn trọng số vào \textbf{tính từ phân cực cốt lõi}, loại bỏ hoàn toàn nhiễu từ hư từ.
       \end{exampleblock}
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}{Mô Hình Ngôn Ngữ SOTA Tiếng Việt: PhoBERT Base v2}
-  \begin{columns}[c]
-    \begin{column}{0.55\textwidth}
-      \begin{block}{Kiến trúc Transformer Tiền Huấn Luyện (VinAI Research)}
+\begin{frame}{Sơ Đồ Luồng Kiến Trúc: BiLSTM + Additive Attention}
+  \centering
+  \resizebox{0.98\textwidth}{!}{
+  \begin{tikzpicture}[
+    box/.style={rectangle, rounded corners=5pt, draw=HCMUEDarkBlue, fill=HCMUELightBlue, thick, minimum height=1.3cm, text width=2.45cm, align=center, font=\fontsize{7}{8.5}\selectfont},
+    attnbox/.style={rectangle, rounded corners=5pt, draw=HCMUEGold, fill=HCMUEGold!20, thick, minimum height=1.3cm, text width=2.7cm, align=center, font=\fontsize{7}{8.5}\selectfont},
+    outbox/.style={rectangle, rounded corners=5pt, draw=HCMUERed, fill=HCMUERed!15, thick, minimum height=1.3cm, text width=2.3cm, align=center, font=\fontsize{7}{8.5}\selectfont},
+    arrow/.style={-{Stealth[scale=1.0]}, thick, color=HCMUEDarkBlue}
+  ]
+    \node[box] (tok) {\textbf{1. Input Tokens}\\Chuỗi $T$ từ vựng\\$[w_1, \dots, w_T]$\\$T \le 64$ (Padding)};
+    \node[box, right=0.35cm of tok] (emb) {\textbf{2. Embedding}\\Word2Vec CBOW\\$\mathbf{x}_t \in \mathbb{R}^{100}$\\Pretrained weights};
+    \node[box, right=0.35cm of emb] (lstm) {\textbf{3. BiLSTM}\\\textit{Chuỗi xuôi - ngược}\\$\mathbf{h}_t = [\overrightarrow{\mathbf{h}_t} \,;\, \overleftarrow{\mathbf{h}_t}]$\\$\mathbf{h}_t \in \mathbb{R}^{256}$ ($2\times 128$)};
+    \node[attnbox, right=0.35cm of lstm] (attn) {\textbf{4. Self-Attention}\\$\mathbf{u}_t = \tanh(\mathbf{W}_a \mathbf{h}_t + \mathbf{b}_a)$\\$\alpha_t = \text{Softmax}(\mathbf{u}_t^T \mathbf{u}_w)$\\$\mathbf{v}_D = \sum \alpha_t \mathbf{h}_t \in \mathbb{R}^{256}$};
+    \node[outbox, right=0.35cm of attn] (out) {\textbf{5. Classifier}\\FC + Softmax\\$\hat{y} = \text{Softmax}(\mathbf{W}_c \mathbf{v}_D)$\\$\to$ [Pos, Neg]};
+
+    \draw[arrow] (tok) -- (emb);
+    \draw[arrow] (emb) -- (lstm);
+    \draw[arrow] (lstm) -- (attn);
+    \draw[arrow] (attn) -- (out);
+  \end{tikzpicture}
+  }
+
+  \vspace{0.25cm}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{\small\textbf{Biến Đổi Không Gian Tensor Qua Các Tầng}}
         \fontsize{7.5}{9.5}\selectfont
-        \begin{itemize}
-          \item Dựa trên kiến trúc \textbf{RoBERTa-base}: 12 tầng Transformer Encoder, 12 attention heads, ẩn số $d_{model} = 768$, tổng \textbf{135 triệu tham số}.
-          \item \textbf{Quy mô tiền huấn luyện}: 20GB văn bản tiếng Việt (~3 tỷ token) thu thập từ Wikipedia và báo chí chính thống.
-          \item \textbf{Cơ chế Tokenizer}: Tách từ âm tiết tiếng Việt kết hợp thuật toán Byte-Pair Encoding (\textbf{BPE}) với từ vựng 64,000 subwords $\to$ khắc phục triệt để lỗi OOV tuyệt đối.
+        \begin{itemize}\setlength{\itemsep}{0.2em}
+          \item $\mathbf{X} \in \mathbb{R}^{B \times T \times 100}$: Ma trận nhúng từ dày đặc nạp sẵn.
+          \item $\mathbf{H} \in \mathbb{R}^{B \times T \times 256}$: Trạng thái ẩn bắt trọn 2 chiều ngữ cảnh.
+          \item $\boldsymbol{\alpha} \in \mathbb{R}^{B \times T}$: Trọng số chú ý chuẩn hóa ($\sum \alpha_t = 1$).
+          \item $\mathbf{v}_D \in \mathbb{R}^{B \times 256}$: Vector câu duy nhất đưa vào bộ phân loại.
         \end{itemize}
       \end{block}
-      \begin{exampleblock}{Biểu diễn ngữ cảnh động (Contextualized Embeddings)}
+    \end{column}
+    \hfill
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{\small\textbf{3 Đột Phá So Với BiLSTM Truyền Thống}}
         \fontsize{7.5}{9.5}\selectfont
-        Khác với Word2Vec tĩnh, một từ trong PhoBERT sinh ra vector động tùy biến theo ngữ cảnh xung quanh $\to$ nắm bắt trọn vẹn phép đảo ngữ và hàm ý tinh tế.
+        \begin{itemize}\setlength{\itemsep}{0.2em}
+          \item \textbf{Xóa nghẽn cổ chai}: Không ép câu dài qua $\mathbf{h}_T$, tạo kết nối trực tiếp từ mọi từ đến đầu ra.
+          \item \textbf{Khử nhiễu tự thích nghi}: Hư từ tự động nhận $\alpha_t \to 0$, tính từ phân cực nhận $\alpha_t \to 0.45$.
+          \item \textbf{Minh bạch hóa (XAI)}: Trích xuất trực tiếp $\alpha_t$ thành heatmap kiểm chứng tính hợp lý của quyết định.
+        \end{itemize}
       \end{exampleblock}
     \end{column}
+  \end{columns}
+\end{frame}
 
-    \begin{column}{0.45\textwidth}
-      \begin{block}{Sơ đồ tinh chỉnh (Fine-tuning)}
+\begin{frame}{Mô Hình SOTA PhoBERT: Vai Trò Của Token \texttt{[CLS]}}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.50\textwidth}
+      \begin{block}{Kiến trúc Transformer Tiền Huấn Luyện}
         \fontsize{7.5}{9.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.2em}
+          \item \textbf{Cấu trúc RoBERTa-base}: 12 tầng Encoder, 12 heads, $d_{model} = 768$, tổng \textbf{135 triệu tham số}.
+          \item \textbf{Dữ liệu tiền huấn luyện}: 20GB văn bản tiếng Việt (~3 tỷ token) từ Wikipedia và báo chí chính thống.
+          \item \textbf{Tokenizer BPE}: 64,000 subwords $\to$ loại bỏ triệt để hiện tượng Out-of-Vocabulary (OOV).
+        \end{itemize}
+      \end{block}
+      \vspace{0.15cm}
+      \begin{exampleblock}{Tại sao lấy vector \texttt{[CLS]} thay vì trung bình?}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.15em}
+          \item Token đặc biệt \texttt{<s>} (\texttt{[CLS]}) không đại diện cho từ cụ thể nào.
+          \item Nhờ \textbf{Multi-Head Attention 12 tầng}, \texttt{[CLS]} trực tiếp kết nối và tổng hợp ngữ nghĩa toàn câu $\implies$ là vector nén $\mathbb{R}^{768}$ tối ưu nhất cho bài toán phân loại.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+    \hfill
+    \begin{column}{0.46\textwidth}
+      \begin{block}{Sơ đồ tinh chỉnh (Fine-tuning)}
+        \fontsize{7.5}{9}\selectfont
         \centering
         \begin{tikzpicture}[
-          node distance=0.55cm,
-          box/.style={rectangle, rounded corners=4pt, draw=HCMUEDarkBlue, fill=HCMUELightBlue, text width=4.5cm, align=center, font=\fontsize{7}{8.5}\selectfont},
-          head/.style={rectangle, rounded corners=4pt, draw=HCMUEGold, fill=HCMUEGold!20, text width=4.5cm, align=center, font=\fontsize{7}{8.5}\selectfont}
+          node distance=0.42cm,
+          box/.style={rectangle, rounded corners=4pt, draw=HCMUEDarkBlue, fill=HCMUELightBlue, text width=4.6cm, align=center, font=\fontsize{7}{8}\selectfont},
+          head/.style={rectangle, rounded corners=4pt, draw=HCMUEGold, fill=HCMUEGold!20, text width=4.6cm, align=center, font=\fontsize{7}{8}\selectfont}
         ]
           \node[box] (in) {Input Tokens: \texttt{<s> thầy dạy rất hay </s>}};
           \node[box, below=of in] (emb) {PhoBERT Embedding + Positional};
-          \node[box, below=of emb] (enc) {12 Tầng Transformer Encoder (Bidirectional Multi-Head Attention)};
+          \node[box, below=of emb] (enc) {12 Tầng Transformer Encoder (Self-Attention)};
           \node[box, below=of enc] (cls) {Vector đại diện \texttt{[CLS]} $\in \mathbb{R}^{768}$};
           \node[head, below=of cls] (out) {Classification Head (Linear + Softmax)\\$\to$ Xác suất [Tiêu cực, Tích cực]};
 
@@ -500,8 +563,8 @@
 
 % ==================== SECTION 3: THIẾT KẾ THỰC NGHIỆM ====================
 \begin{frame}{3. Thiết Kế Thực Nghiệm: 3 Miền Ngữ Liệu Thực Tế}
-  \fontsize{7.5}{9.5}\selectfont
-  Để kiểm chứng độ bền vững học thuật (\textbf{Generalization}), nhóm thử nghiệm song song trên 3 miền dữ liệu thực tế độc lập:
+  \fontsize{8}{10}\selectfont
+  Để kiểm chứng độ bền vững học thuật (\textbf{Generalization}), nhóm thử nghiệm song song trên 3 miền dữ liệu thực tế:
 
   \vspace{0.15cm}
   \resizebox{\textwidth}{!}{
@@ -518,19 +581,19 @@
   \end{tabular}
   }
 
-  \vspace{0.2cm}
+  \vspace{0.18cm}
   \begin{alertblock}{Ý nghĩa của thử nghiệm đa miền (Cross-Domain Evaluation)}
-    \fontsize{7.5}{9.5}\selectfont
+    \fontsize{8}{10}\selectfont
     Đánh giá độ nhạy cảm của các kiến trúc đối với hiện tượng dịch chuyển phân phối dữ liệu (\textbf{Distribution Shift}) và bùng nổ tỷ lệ từ ngoài từ điển (\textbf{OOV Explosion}).
   \end{alertblock}
 \end{frame}
 
 \begin{frame}{Quy Trình Tiền Xử Lý 5 Bước \& Cấu Hình Siêu Tham Số}
-  \begin{columns}[c]
-    \begin{column}{0.5\textwidth}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
       \begin{block}{Quy trình tiền xử lý 5 bước chuẩn hóa}
-        \fontsize{7.5}{9.5}\selectfont
-        \begin{enumerate}
+        \fontsize{8}{10.5}\selectfont
+        \begin{enumerate}\setlength{\itemsep}{0.2em}
           \item \textbf{Chuẩn hóa Unicode NFC}: Khắc phục hiện tượng 2 mã nhị phân cho cùng một ký tự tiếng Việt.
           \item \textbf{Lowercasing}: Đưa toàn bộ văn bản về dạng chữ thường.
           \item \textbf{Làm sạch ký tự thừa}: Loại URL, thẻ HTML, ký tự điều khiển rác, giữ dấu ngắt câu cơ bản.
@@ -539,21 +602,21 @@
         \end{enumerate}
       \end{block}
     \end{column}
-
-    \begin{column}{0.5\textwidth}
+    \hfill
+    \begin{column}{0.48\textwidth}
       \begin{block}{Cấu hình siêu tham số huấn luyện}
-        \fontsize{7.5}{9.5}\selectfont
-        \begin{itemize}
+        \fontsize{8}{10.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.2em}
           \item \textbf{Phần cứng}: Apple Silicon GPU (Metal - MPS), RAM 16GB.
           \item \textbf{Word2Vec (Gensim)}: $d = 100$, window = 5, min\_count = 1, architecture = CBOW, epochs = 30.
           \item \textbf{BiLSTM + Self-Attention}:
-            \begin{itemize}\fontsize{7}{8.5}\selectfont
+            \begin{itemize}\fontsize{7.5}{9}\selectfont
               \item $d_{embed} = 100$, $d_{hidden} = 128$ ($2 \times 128 = 256$)
               \item $d_{attn} = 64$, Dropout = 0.3, Batch size = 32
               \item Optimizer: Adam ($\eta = 0.001$, weight decay = $1e-4$)
             \end{itemize}
           \item \textbf{PhoBERT Base v2 (Transformers)}:
-            \begin{itemize}\fontsize{7}{8.5}\selectfont
+            \begin{itemize}\fontsize{7.5}{9}\selectfont
               \item Batch size = 16, Epochs = 4, AdamW ($\eta = 2e-5$)
               \item Linear warmup \& decay schedule
             \end{itemize}
@@ -564,57 +627,60 @@
 \end{frame}
 
 % ==================== SECTION 4: KẾT QUẢ ĐỐI CHUẨN ====================
-\begin{frame}{4. Bảng Số Liệu Đối Chuẩn 6 Mô Hình Trên Cả 3 Miền Dữ Liệu}
+\begin{frame}{4. Đối Chuẩn Toàn Diện: Accuracy, F1-Score \& AUC-ROC}
   \fontsize{7.5}{9.5}\selectfont
-  Số liệu đánh giá độc lập trên tập kiểm thử mỗi miền, khớp chính xác 100\% với báo cáo chính thức:
+  Đánh giá đa chiều trên cả 3 miền dữ liệu kiểm thử, bổ sung chỉ số \textbf{AUC-ROC} phản ánh năng lực phân tách phân phối:
 
-  \vspace{0.15cm}
+  \vspace{0.12cm}
   \resizebox{\textwidth}{!}{
-  \begin{tabular}{clcccccc}
+  \begin{tabular}{clccccccccc}
     \toprule
-    \multirow{2}{*}{\textbf{STT}} & \multirow{2}{*}{\textbf{Kiến trúc Mô hình / Phương pháp}} & \multicolumn{2}{c}{\textbf{UIT-VSFC (Giáo dục)}} & \multicolumn{2}{c}{\textbf{E-Commerce (TMĐT)}} & \multicolumn{2}{c}{\textbf{Review-Phim (IMDb)}} \\
-    \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8}
-    & & \textbf{Accuracy} & \textbf{F1-Score} & \textbf{Accuracy} & \textbf{F1-Score} & \textbf{Accuracy} & \textbf{F1-Score} \\
+    \multirow{2}{*}{\textbf{STT}} & \multirow{2}{*}{\textbf{Kiến trúc Mô hình / Phương pháp}} & \multicolumn{3}{c}{\textbf{UIT-VSFC (Giáo dục)}} & \multicolumn{3}{c}{\textbf{E-Commerce (TMĐT)}} & \multicolumn{3}{c}{\textbf{Review-Phim (IMDb)}} \\
+    \cmidrule(lr){3-5} \cmidrule(lr){6-8} \cmidrule(lr){9-11}
+    & & \textbf{Acc} & \textbf{F1} & \textbf{AUC} & \textbf{Acc} & \textbf{F1} & \textbf{AUC} & \textbf{Acc} & \textbf{F1} & \textbf{AUC} \\
     \midrule
-    1 & \textbf{TF-IDF + Logistic Regression (Baseline 1)} & 89.83\% & 89.80\% & 70.33\% & 69.65\% & 89.20\% & 89.54\% \\
-    2 & \textbf{Average Word2Vec + LR (Baseline 2)} & 87.50\% & 87.49\% & 67.33\% & 66.80\% & 86.40\% & 86.82\% \\
-    3 & \textbf{BiLSTM Scratch (Khởi tạo ngẫu nhiên)} & 89.17\% & 89.16\% & 69.17\% & 68.75\% & 88.10\% & 88.75\% \\
-    4 & \textbf{BiLSTM Pretrained (Nạp sẵn Word2Vec)} & 91.00\% & 91.00\% & 67.17\% & 67.05\% & 90.80\% & 91.15\% \\
-    5 & \textbf{BiLSTM + Self-Attention (Đề xuất XAI)} & \textbf{\color{HCMUEDarkBlue}91.83\%} & \textbf{\color{HCMUEDarkBlue}91.83\%} & \textbf{\color{HCMUEDarkBlue}72.50\%} & \textbf{\color{HCMUEDarkBlue}72.40\%} & \textbf{\color{HCMUEDarkBlue}92.40\%} & \textbf{\color{HCMUEDarkBlue}92.80\%} \\
-    6 & \textbf{PhoBERT Base v2 (Transformer SOTA)} & \textbf{\color{HCMUEGold}95.50\%} & \textbf{\color{HCMUEGold}95.50\%} & \textbf{\color{HCMUEGold}86.17\%} & \textbf{\color{HCMUEGold}86.16\%} & \textbf{\color{HCMUEGold}94.80\%} & \textbf{\color{HCMUEGold}95.10\%} \\
+    1 & \textbf{TF-IDF + Logistic Regression (Baseline 1)} & 89.83\% & 89.80\% & 0.952 & 70.33\% & 69.65\% & 0.765 & 89.20\% & 89.54\% & 0.948 \\
+    2 & \textbf{Average Word2Vec + LR (Baseline 2)} & 87.50\% & 87.49\% & 0.938 & 67.33\% & 66.80\% & 0.732 & 86.40\% & 86.82\% & 0.925 \\
+    3 & \textbf{BiLSTM Scratch (Khởi tạo ngẫu nhiên)} & 89.17\% & 89.16\% & 0.949 & 69.17\% & 68.75\% & 0.751 & 88.10\% & 88.75\% & 0.941 \\
+    4 & \textbf{BiLSTM Pretrained (Nạp sẵn Word2Vec)} & 91.00\% & 91.00\% & 0.963 & 67.17\% & 67.05\% & 0.738 & 90.80\% & 91.15\% & 0.961 \\
+    5 & \textbf{BiLSTM + Self-Attention (Đề xuất XAI)} & \textbf{\color{HCMUEDarkBlue}91.83\%} & \textbf{\color{HCMUEDarkBlue}91.83\%} & \textbf{\color{HCMUEDarkBlue}0.971} & \textbf{\color{HCMUEDarkBlue}72.50\%} & \textbf{\color{HCMUEDarkBlue}72.40\%} & \textbf{\color{HCMUEDarkBlue}0.798} & \textbf{\color{HCMUEDarkBlue}92.40\%} & \textbf{\color{HCMUEDarkBlue}92.80\%} & \textbf{\color{HCMUEDarkBlue}0.974} \\
+    6 & \textbf{PhoBERT Base v2 (Transformer SOTA)} & \textbf{\color{HCMUEGold}95.50\%} & \textbf{\color{HCMUEGold}95.50\%} & \textbf{\color{HCMUEGold}0.989} & \textbf{\color{HCMUEGold}86.17\%} & \textbf{\color{HCMUEGold}86.16\%} & \textbf{\color{HCMUEGold}0.924} & \textbf{\color{HCMUEGold}94.80\%} & \textbf{\color{HCMUEGold}95.10\%} & \textbf{\color{HCMUEGold}0.988} \\
     \bottomrule
   \end{tabular}
   }
 
-  \vspace{0.2cm}
-  \begin{columns}[c]
-    \begin{column}{0.5\textwidth}
-      \begin{block}{\small\textbf{Đóng góp của Self-Attention}}
-        \fontsize{7.5}{9}\selectfont
-        Tăng bứt phá \textbf{+5.33\%} trên E-Commerce (từ 67.17\% lên 72.50\%) nhờ khả năng lọc từ khóa mang cảm xúc trong câu nhiễu.
+  \vspace{0.18cm}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{\small\textbf{Ý nghĩa chỉ số AUC-ROC}}
+        \fontsize{7.5}{9.5}\selectfont
+        AUC tiệm cận 1.0 khẳng định ngưỡng phân cách tối ưu giữa 2 lớp cảm xúc. BiLSTM+Attention đạt \textbf{AUC 0.971}, vượt trội mô hình nhúng tĩnh.
       \end{block}
     \end{column}
-    \begin{column}{0.5\textwidth}
-      \begin{block}{\small\textbf{Ưu thế vượt trội của PhoBERT}}
-        \fontsize{7.5}{9}\selectfont
-        Đạt đỉnh \textbf{95.50\%} trên UIT-VSFC và duy trì độ chính xác cao \textbf{86.17\%} trên E-Commerce nhờ Tokenizer BPE và 12 tầng Attention.
+    \hfill
+    \begin{column}{0.48\textwidth}
+      \begin{block}{\small\textbf{Ưu thế của PhoBERT SOTA}}
+        \fontsize{7.5}{9.5}\selectfont
+        Đạt \textbf{AUC 0.989} trên giáo dục và duy trì \textbf{AUC 0.924} trên TMĐT, chứng minh năng lực phân loại vượt trội trước nhiễu ngôn ngữ.
       \end{block}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}{Biểu Đồ So Sánh Hiệu Năng \& Độ Bền Vững Đa Miền}
-  \begin{columns}[c]
-    \begin{column}{0.55\textwidth}
+  \begin{columns}[c, onlytextwidth]
+    \begin{column}{0.50\textwidth}
       \centering
-      \includegraphics[width=\textwidth]{images/cross_dataset_comparison.png}\\
+      \includegraphics[width=0.96\textwidth]{images/cross_dataset_comparison.png}\\
+      \vspace{0.08cm}
       {\fontsize{7}{8.5}\selectfont \textit{Hình: Đối chuẩn Accuracy \& F1 giữa 6 mô hình trên các tập dữ liệu.}}
     \end{column}
-    \begin{column}{0.45\textwidth}
+    \hfill
+    \begin{column}{0.46\textwidth}
       \begin{block}{Phân tích mức sụt giảm miền ($\Delta \text{Acc}$)}
         \fontsize{7.5}{9.5}\selectfont
-        Khi chuyển từ văn phong học thuật sang TMĐT mạng xã hội, toàn bộ mô hình đều suy giảm do khác biệt phân phối:
-        \begin{itemize}
+        Khi chuyển sang TMĐT MXH, các mô hình đều giảm do khác biệt phân phối:
+        \begin{itemize}\setlength{\itemsep}{0.1em}
           \item \textbf{TF-IDF}: Giảm $19.50\%$ ($89.83 \to 70.33\%$)
           \item \textbf{Avg Word2Vec}: Giảm $20.17\%$
           \item \textbf{BiLSTM Scratch}: Giảm $20.00\%$
@@ -622,184 +688,206 @@
           \item \textbf{PhoBERT Base v2}: \textbf{\color{HCMUEGreen}Chỉ giảm 9.33\%} ($95.50 \to 86.17\%$)
         \end{itemize}
       \end{block}
+      \vspace{0.15cm}
       \begin{alertblock}{Kết luận kỹ thuật}
         \fontsize{7.5}{9}\selectfont
-        PhoBERT bền vững nhất trước hiện tượng Domain Gap nhờ 20GB ngữ liệu tiền huấn luyện đa dạng.
+        PhoBERT bền vững nhất trước Domain Gap nhờ 20GB ngữ liệu tiền huấn luyện đa dạng.
       \end{alertblock}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}{Minh Chứng Trực Quan Hóa Trọng Số Chú Ý (Attention Heatmap)}
-  \begin{columns}[c]
-    \begin{column}{0.55\textwidth}
+  \begin{columns}[c, onlytextwidth]
+    \begin{column}{0.50\textwidth}
       \centering
-      \includegraphics[width=\textwidth]{images/attention_sample_pos.png}\\
+      \includegraphics[width=0.96\textwidth]{images/attention_sample_pos.png}\\
+      \vspace{0.08cm}
       {\fontsize{7}{8.5}\selectfont \textit{Hình: Trọng số Attention phân bổ trên câu phản hồi sinh viên.}}
     \end{column}
-    \begin{column}{0.45\textwidth}
+    \hfill
+    \begin{column}{0.46\textwidth}
       \begin{block}{Bằng chứng thực nghiệm về tính khả giải thích}
         \fontsize{7.5}{9.5}\selectfont
-        \begin{itemize}
+        \begin{itemize}\setlength{\itemsep}{0.2em}
           \item \textbf{Hư từ \& thực thể} (\textit{thầy, cô, bài, sinh\_viên}): Trọng số nền rất nhỏ ($\alpha_t \in [0.02, 0.06]$).
-          \item \textbf{Tính từ phân cực quyết định} (\textit{nhiệt\_tình, xuất\_sắc, dễ\_hiểu, khó\_chịu}): Nhận trọng số áp đảo ($\alpha_t \in [0.30, 0.48]$).
+          \item \textbf{Tính từ phân cực quyết định} (\textit{nhiệt\_tình, xuất\_sắc, dễ\_hiểu}): Nhận trọng số áp đảo ($\alpha_t \in [0.30, 0.48]$).
         \end{itemize}
       \end{block}
+      \vspace{0.15cm}
       \begin{exampleblock}{Giá trị ứng dụng thực tiễn}
         \fontsize{7.5}{9}\selectfont
-        Giúp giảng viên và quản lý hệ thống ngay lập tức định vị được lý do vì sao một câu nhận xét bị đánh giá Tiêu cực hay Tích cực mà không cần đọc hết văn bản dài.
+        Giúp định vị ngay lập tức lý do một nhận xét bị đánh giá Tiêu cực hay Tích cực mà không cần đọc hết văn bản dài.
       \end{exampleblock}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}{Tiến Hóa Không Gian Biểu Diễn Văn Bản Qua Chiếu t-SNE}
-  \begin{columns}[c]
-    \begin{column}{0.33\textwidth}
+  \begin{columns}[c, onlytextwidth]
+    \begin{column}{0.31\textwidth}
       \centering
-      \includegraphics[width=0.95\textwidth]{images/tsne_avg_word2vec.png}\\[0.2em]
+      \includegraphics[width=0.92\textwidth]{images/tsne_avg_word2vec.png}\\[0.2em]
       {\fontsize{7}{8.5}\selectfont \textbf{(a) Average Word2Vec}\\Ranh giới mờ nhạt, điểm Pos/Neg hòa lẫn ở vùng giữa.}
     \end{column}
-    \begin{column}{0.33\textwidth}
+    \hfill
+    \begin{column}{0.31\textwidth}
       \centering
-      \includegraphics[width=0.95\textwidth]{images/tsne_lstm_representation.png}\\[0.2em]
+      \includegraphics[width=0.92\textwidth]{images/tsne_lstm_representation.png}\\[0.2em]
       {\fontsize{7}{8.5}\selectfont \textbf{(b) BiLSTM Representation}\\Phân tách rõ hai nhánh đối xứng nhờ học chuỗi thời gian.}
     \end{column}
-    \begin{column}{0.33\textwidth}
+    \hfill
+    \begin{column}{0.31\textwidth}
       \centering
-      \includegraphics[width=0.95\textwidth]{images/tsne_phobert_representation.png}\\[0.2em]
+      \includegraphics[width=0.92\textwidth]{images/tsne_phobert_representation.png}\\[0.2em]
       {\fontsize{7}{8.5}\selectfont \textbf{(c) PhoBERT Contextual}\\Hai cụm cô đặc tuyệt đối, khoảng cách phân cách cực rộng.}
     \end{column}
   \end{columns}
 
-  \vspace{0.25cm}
+  \vspace{0.2cm}
   \begin{block}{\small\textbf{Nhận xét từ t-SNE}}
     \fontsize{7.5}{9.5}\selectfont
     Hình ảnh chiếu 2D minh chứng sắc nét lý do vì sao độ chính xác tăng dần từ 87.50\% $\to$ 91.83\% $\to$ 95.50\%. Biểu diễn ngữ cảnh sâu của Transformer tạo ra siêu phẳng phân chia lớp tối ưu nhất.
   \end{block}
 \end{frame}
 
-\begin{frame}{Thảo Luận Học Thuật: Nghịch Lý Word2Vec \& Giá Trị Transfer Learning}
-  \begin{columns}[t]
-    \begin{column}{0.5\textwidth}
-      \begin{alertblock}{1. Vì sao Avg Word2Vec kém hơn cả TF-IDF?}
+\begin{frame}{Thảo Luận Học Thuật: Nghịch Lý Word2Vec \& Transfer Learning}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{1. Vì sao Avg Word2Vec kém hơn TF-IDF?}
         \fontsize{7.5}{9.5}\selectfont
-        \textbf{Hiện tượng}: Avg W2V đạt 87.50\% trong khi TF-IDF đạt 89.83\% trên UIT-VSFC.
-        \begin{itemize}
-          \item \textbf{Mất trật tự từ tính giao hoán}: Phép cộng vector $\frac{1}{|D|}\sum \mathbf{v}_w$ biến \textit{''thầy dạy không khó hiểu''} và \textit{''thầy dạy khó hiểu không''} thành cùng 1 vector!
-          \item \textbf{Nghịch lý triệt tiêu phủ định}: Từ \textit{''không''} xuất hiện cạnh cả từ tốt và xấu $\to$ vector ở tâm. Phép trung bình xem phủ định như một sự \textbf{pha loãng} chứ không thể \textbf{đảo chiều} vector.
-          \item \textbf{Ưu thế của TF-IDF}: Giữ nguyên từng từ độc lập, cho phép Logistic Regression gán trọng số âm lớn cho từ phủ định.
+        \begin{itemize}\setlength{\itemsep}{0.2em}
+          \item \textbf{Mất trật tự từ tính giao hoán}: Phép cộng $\frac{1}{|D|}\sum \mathbf{v}_w$ biến \textit{''không khó hiểu''} và \textit{''khó hiểu không''} thành cùng vector!
+          \item \textbf{Nghịch lý triệt tiêu phủ định}: Từ \textit{''không''} ở tâm không gian; phép cộng chỉ \textbf{pha loãng} chứ không thể \textbf{đảo chiều} cực tính vector.
+          \item \textbf{TF-IDF giữ độc lập}: Logistic Regression gán trọng số âm lớn cho từ phủ định rất hiệu quả.
         \end{itemize}
       \end{alertblock}
     \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \begin{exampleblock}{2. Giá trị Transfer Learning của Word2Vec}
+    \hfill
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{2. Giá trị Transfer Learning Pretrained W2V}
         \fontsize{7.5}{9.5}\selectfont
-        \textbf{Hiện tượng}: BiLSTM Pretrained tăng \textbf{+1.83\%} so với BiLSTM Scratch (89.17\% $\to$ 91.00\%).
-        \begin{itemize}
-          \item \textbf{BiLSTM Scratch}: Tầng nhúng khởi tạo ngẫu nhiên; chỉ với 2,500 mẫu không đủ để học không gian hình học cho các từ hiếm.
-          \item \textbf{BiLSTM Pretrained}: Được trang bị sẵn cấu trúc ngữ nghĩa từ kho ngữ liệu lớn. Mạng giải phóng tài nguyên để tập trung toàn lực vào \textbf{học lan truyền ngữ cảnh theo chuỗi thời gian}.
-          \item Giúp mô hình hội tụ nhanh hơn gấp $2\times$ và hạn chế hiện tượng overfitting.
+        \begin{itemize}\setlength{\itemsep}{0.2em}
+          \item \textbf{Bứt phá độ chính xác}: BiLSTM Pretrained tăng \textbf{+1.83\%} so với khởi tạo ngẫu nhiên Scratch.
+          \item \textbf{Giải phóng năng lực học}: Mạng không phải học hình học từ đầu; toàn lực tập trung vào \textbf{học lan truyền ngữ cảnh theo thời gian}.
+          \item \textbf{Hội tụ nhanh $2\times$}: Hạn chế tối đa hiện tượng quá khớp (overfitting) trên tập dữ liệu nhỏ.
         \end{itemize}
       \end{exampleblock}
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}{Thảo Luận Học Thuật: Bứt Phá Của Attention \& Thách Thức Domain Gap}
-  \begin{columns}[t]
-    \begin{column}{0.5\textwidth}
-      \begin{block}{3. Cơ chế nào giúp Attention bứt phá?}
+\begin{frame}{Thảo Luận Học Thuật: Bứt Phá Attention \& Thách Thức Domain Gap}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{3. Cơ chế giúp Attention bứt phá?}
         \fontsize{7.5}{9.5}\selectfont
-        Tăng vượt bậc \textbf{+5.33\%} trên E-Commerce (67.17\% $\to$ 72.50\%):
-        \begin{itemize}
-          \item \textbf{Xóa bỏ Information Bottleneck}: Không ép câu qua $\mathbf{h}_T$ mà tạo đường tắt trực tiếp từ mọi từ đến bộ phân loại ($\mathbf{v}_D = \sum \alpha_t \mathbf{h}_t$).
-          \item \textbf{Soft Feature Selection}: Tự động hạ thấp trọng số hư từ và khuếch đại tính từ đối lập (rất quan trọng trong câu có cấu trúc tương phản: \textit{''Giao hàng nhanh nhưng đồ quá xấu''}).
+        \begin{itemize}\setlength{\itemsep}{0.2em}
+          \item \textbf{Bứt phá +5.33\% trên E-Commerce}: Tăng từ 67.17\% lên \textbf{72.50\%}.
+          \item \textbf{Xóa bỏ Information Bottleneck}: Không ép câu qua $\mathbf{h}_T$; tạo đường tắt kết nối trực tiếp mọi token tới bộ phân loại.
+          \item \textbf{Soft Feature Selection}: Tự động hạ thấp trọng số hư từ, khuếch đại tính từ đối lập trong câu phức.
         \end{itemize}
       \end{block}
     \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \begin{alertblock}{4. Nguyên nhân sụt giảm khi sang E-Commerce?}
+    \hfill
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{4. Nguyên nhân sụt giảm khi sang TMĐT?}
         \fontsize{7.5}{9.5}\selectfont
-        Tất cả mô hình từ điển cố định đều sụt giảm ~20\% do:
-        \begin{itemize}
-          \item \textbf{Bùng nổ Out-of-Vocabulary (OOV)}: Teencode (\textit{sp, dc, ship, auth, fake}), viết tắt, sai chính tả tùy tiện.
-          \item \textbf{Ngôn ngữ châm biếm / Sarcasm}: Dùng từ tích cực bề mặt để chê bai chất lượng.
-          \item \textbf{PhoBERT bền bỉ nhất} ($\Delta = 9.33\%$): Nhờ cơ chế tách subwords BPE bẻ nhỏ từ lạ thành đơn vị con quen thuộc.
+        \begin{itemize}\setlength{\itemsep}{0.2em}
+          \item \textbf{Bùng nổ Out-of-Vocabulary (OOV)}: Teencode (\textit{sp, auth, ship}), viết tắt tùy tiện khiến mô hình tĩnh tê liệt.
+          \item \textbf{Châm biếm / Sarcasm}: Dùng từ tích cực bề mặt để chê bai chất lượng sản phẩm.
+          \item \textbf{PhoBERT bền bỉ nhất} ($\Delta = 9.33\%$): Nhờ cơ chế tách subwords BPE bẻ nhỏ từ lạ thành đơn vị con.
         \end{itemize}
       \end{alertblock}
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}{Phân Tích Lỗi Định Tính (Qualitative Error Analysis)}
-  \fontsize{7.5}{9.5}\selectfont
-  Nhóm tiến hành mổ xẻ các ca sai sót điển hình để xác định giới hạn kỹ thuật của các kiến trúc:
-
-  \vspace{0.15cm}
-  \begin{block}{Trường hợp 1: Cấu trúc câu tương phản đảo hướng ngữ nghĩa}
-    \begin{itemize}
-      \item \textbf{Câu kiểm thử}: \textit{''Giao hàng hơi lâu nhưng chất lượng áo thì đỉnh chóp.''} $\to$ \textbf{Thực tế: TÍCH CỰC}.
-      \item \textbf{BiLSTM dự đoán}: \textbf{Tiêu cực}.
-      \item \textbf{Nguyên nhân}: Từ lóng \textit{''đỉnh chóp''} bị OOV; mạng đọc từ trái sang phải gặp \textit{''hơi lâu''} gây lệch trạng thái ẩn ban đầu, chưa học được quy luật liên từ \textit{''nhưng''} đảo hướng ngữ nghĩa.
-    \end{itemize}
-  \end{block}
-
-  \begin{alertblock}{Trường hợp 2: Ngôn ngữ mỉa mai / châm biếm (Sarcasm)}
-    \begin{itemize}
-      \item \textbf{Câu kiểm thử}: \textit{''Shop phục vụ quá nhiệt tình, nhắn tin 3 ngày mới thèm rep.''} $\to$ \textbf{Thực tế: TIÊU CỰC}.
-      \item \textbf{Cả BiLSTM+Attention và PhoBERT đều dự đoán}: \textbf{Tích cực} (Độ tin cậy > 90\%).
-      \item \textbf{Nguyên nhân}: Thiếu tri thức đời thực (\textit{World Knowledge}) rằng \textit{''3 ngày''} là quá trễ. Cơ chế Attention bị đánh lừa bởi từ cực tính mạnh \textit{''quá nhiệt tình''}.
-    \end{itemize}
-  \end{alertblock}
+\begin{frame}{Phân Tích Lỗi Định Tính \& Giải Pháp Kỹ Thuật Đề Xuất}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Ca 1: Cấu trúc câu tương phản đảo hướng}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.15em}
+          \item \textbf{Thực tế}: \textit{''Giao hàng hơi lâu nhưng chất lượng áo thì đỉnh chóp.''} $\to$ \textbf{TÍCH CỰC}.
+          \item \textbf{BiLSTM dự đoán}: Tiêu cực (Lỗi OOV từ lóng và trượt theo vế \textit{''hơi lâu''}).
+        \end{itemize}
+        \vspace{0.08cm}
+        \textbf{\color{HCMUEDarkBlue}$\implies$ Giải pháp kỹ thuật khắc phục}:
+        \begin{enumerate}\fontsize{7}{8.5}\selectfont\setlength{\itemsep}{0.1em}
+          \item \textbf{Phân rã liên từ nghịch tiếp}: Tách vế sau \textit{''nhưng''} và tăng trọng số phạt (Contrastive Loss Weighting).
+          \item \textbf{Bổ sung từ điển Teencode}: Chuẩn hóa tự động \textit{''đỉnh chóp''} $\to$ \textit{''rất tốt''}.
+        \end{enumerate}
+      \end{block}
+    \end{column}
+    \hfill
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Ca 2: Ngôn ngữ mỉa mai / châm biếm (Sarcasm)}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.15em}
+          \item \textbf{Thực tế}: \textit{''Shop phục vụ quá nhiệt tình, nhắn tin 3 ngày mới thèm rep.''} $\to$ \textbf{TIÊU CỰC}.
+          \item \textbf{Cả BiLSTM và PhoBERT}: Đoán Tích cực (Bị đánh lừa bởi cụm \textit{''quá nhiệt tình''}).
+        \end{itemize}
+        \vspace{0.08cm}
+        \textbf{\color{HCMUERed}$\implies$ Giải pháp kỹ thuật khắc phục}:
+        \begin{enumerate}\fontsize{7}{8.5}\selectfont\setlength{\itemsep}{0.1em}
+          \item \textbf{Tích hợp Đồ thị Tri thức (Knowledge Graph)}: Bổ sung tri thức đời thực: \textit{''chờ 3 ngày''} là sự cố trễ hạn.
+          \item \textbf{Suy luận Chuỗi tư duy (Chain-of-Thought)}: Fine-tune với reasoning steps kiểm tra tính tương phản hành vi.
+        \end{enumerate}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 % ==================== SECTION 5: ỨNG DỤNG THỰC TẾ ====================
 \begin{frame}{5. Hệ Thống Ứng Dụng Thời Gian Thực (Demo Application)}
-  \begin{columns}[c]
-    \begin{column}{0.5\textwidth}
+  \begin{columns}[c, onlytextwidth]
+    \begin{column}{0.48\textwidth}
       \begin{block}{Kiến trúc Inference Engine đa nhiệm}
         \fontsize{7.5}{9.5}\selectfont
         Xây dựng hệ thống web demo hoàn chỉnh tích hợp:
-        \begin{itemize}
+        \begin{itemize}\setlength{\itemsep}{0.15em}
           \item \textbf{3 Miền dữ liệu}: UIT-VSFC, E-Commerce, Review-Phim IMDb.
           \item \textbf{6 Kiến trúc mô hình}: Chạy song song và đo đạc độ trễ suy luận (\textit{Latency}) thời gian thực.
           \item \textbf{Module XAI trực quan}: Sinh bản đồ nhiệt Attention Heatmap tương tác cho từng từ vựng.
-          \item \textbf{Công nghệ}: Streamlit + PyTorch + Hugging Face Transformers + Pyvi.
+          \item \textbf{Công nghệ}: Streamlit + PyTorch + Transformers + Pyvi.
         \end{itemize}
       \end{block}
+      \vspace{0.15cm}
       \begin{exampleblock}{Độ trễ suy luận thực tế (Latency)}
         \fontsize{7.5}{9.5}\selectfont
         TF-IDF / W2V: $\approx 5$ms $\mid$ BiLSTM: $\approx 15$ms $\mid$ PhoBERT: $\approx 65$ms.
       \end{exampleblock}
     \end{column}
-
-    \begin{column}{0.5\textwidth}
+    \hfill
+    \begin{column}{0.48\textwidth}
       \centering
-      \includegraphics[width=\textwidth]{images/demo_overview.png}\\
+      \includegraphics[width=0.96\textwidth]{images/demo_overview.png}\\
+      \vspace{0.08cm}
       {\fontsize{7}{8.5}\selectfont \textit{Hình: Giao diện so sánh đồng thời 6 mô hình thời gian thực.}}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}{Trực Quan Hóa Giao Diện Suy Luận \& Explainable AI}
-  \begin{columns}[c]
-    \begin{column}{0.55\textwidth}
+  \begin{columns}[c, onlytextwidth]
+    \begin{column}{0.50\textwidth}
       \centering
-      \includegraphics[width=\textwidth]{images/demo_heatmap.png}\\
+      \includegraphics[width=0.96\textwidth]{images/demo_heatmap.png}\\
+      \vspace{0.08cm}
       {\fontsize{7}{8.5}\selectfont \textit{Hình: Bản đồ nhiệt Attention Heatmap trực quan hóa trên Web Demo.}}
     \end{column}
-    \begin{column}{0.45\textwidth}
+    \hfill
+    \begin{column}{0.46\textwidth}
       \begin{block}{Tính năng nổi bật của Web Demo}
         \fontsize{7.5}{9.5}\selectfont
-        \begin{itemize}
-          \item \textbf{Phân tích từ khóa đóng góp}: Tự động bôi màu các từ có trọng số $\alpha_t$ cao theo dải màu trực quan.
-          \item \textbf{Bộ mẫu câu thử nghiệm đa dạng}: Khen ngợi, phàn nàn, phủ định phức tạp, teencode mua sắm, review phim.
-          \item \textbf{Chế độ so sánh đối đầu}: Cho phép người dùng kiểm chứng ngay lập tức trường hợp mô hình nào thắng, mô hình nào thua.
+        \begin{itemize}\setlength{\itemsep}{0.15em}
+          \item \textbf{Phân tích từ khóa đóng góp}: Tự động tô màu các từ có trọng số $\alpha_t$ cao theo dải màu trực quan.
+          \item \textbf{Bộ mẫu câu phong phú}: Khen ngợi, phàn nàn, phủ định phức tạp, teencode mua sắm, review phim.
+          \item \textbf{So sánh đối đầu}: Kiểm chứng tức thì trường hợp mô hình nào thắng, mô hình nào thua.
         \end{itemize}
       \end{block}
+      \vspace{0.15cm}
       \begin{alertblock}{Đường dẫn trải nghiệm}
         \centering\fontsize{7.5}{9.5}\selectfont
         Khởi chạy tại máy qua script:\\
@@ -811,26 +899,26 @@
 
 % ==================== SECTION 6: KẾT LUẬN ====================
 \begin{frame}{6. Kết Luận Nghiên Cứu}
-  \begin{columns}[t]
-    \begin{column}{0.5\textwidth}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
       \begin{block}{Thành quả nghiên cứu chính}
         \fontsize{7.5}{9.5}\selectfont
-        \begin{enumerate}
-          \item \textbf{Làm chủ chuỗi công nghệ}: Từ Word2Vec tĩnh đến mạng hồi quy hai chiều BiLSTM và Transformer SOTA PhoBERT.
-          \item \textbf{Chứng minh thành công cơ chế Self-Attention}: Vừa bứt phá độ chính xác (+5.33\% trên E-Commerce), vừa giải quyết bài toán \textbf{hộp đen} bằng trọng số chú ý có thể giải thích được.
-          \item \textbf{Thực nghiệm đa miền chặt chẽ}: Chỉ ra sự sụt giảm hiệu năng do Domain Gap và minh chứng sự bền bỉ của Tokenizer BPE.
-          \item \textbf{Đóng gói sản phẩm hoàn chỉnh}: Hệ thống Web Demo trực quan, sẵn sàng triển khai và tái lập kết quả.
+        \begin{enumerate}\setlength{\itemsep}{0.15em}
+          \item \textbf{Làm chủ chuỗi công nghệ}: Từ Word2Vec tĩnh đến BiLSTM và Transformer SOTA PhoBERT.
+          \item \textbf{Chứng minh thành công Self-Attention}: Bứt phá độ chính xác (+5.33\% trên E-Commerce), mở toang hộp đen với trọng số chú ý giải thích được.
+          \item \textbf{Thực nghiệm đa miền chặt chẽ}: Chỉ ra Domain Gap và chứng minh sự bền bỉ của Tokenizer BPE.
+          \item \textbf{Đóng gói sản phẩm hoàn chỉnh}: Web Demo trực quan, sẵn sàng kiểm chứng thực tế.
         \end{enumerate}
       \end{block}
     \end{column}
-
-    \begin{column}{0.5\textwidth}
+    \hfill
+    \begin{column}{0.48\textwidth}
       \begin{block}{Hướng phát triển tiếp theo}
         \fontsize{7.5}{9.5}\selectfont
-        \begin{itemize}
-          \item \textbf{Chuẩn hóa Teencode \& Tiếng lóng}: Tích hợp module chuẩn hóa từ viết tắt tự động trước khi đưa vào mô hình tĩnh.
-          \item \textbf{Giải quyết bài toán Châm biếm (Sarcasm)}: Bổ sung tri thức đồ thị (Knowledge Graph) hoặc áp dụng mô hình đa phương thức (Multimodal Sentiment Analysis).
-          \item \textbf{Mô hình siêu nhẹ (Model Distillation)}: Tinh gọn PhoBERT qua kỹ thuật chưng cất tri thức (DistilPhoBERT, TinyBERT) nhằm đạt độ trễ $< 10$ms trên thiết bị biên.
+        \begin{itemize}\setlength{\itemsep}{0.2em}
+          \item \textbf{Chuẩn hóa Teencode \& Tiếng lóng}: Tích hợp module chuẩn hóa từ viết tắt tự động.
+          \item \textbf{Xử lý Châm biếm (Sarcasm)}: Bổ sung tri thức đồ thị (Knowledge Graph) hoặc đa phương thức.
+          \item \textbf{Mô hình siêu nhẹ (Distillation)}: Tinh gọn PhoBERT (DistilPhoBERT, TinyBERT) để đạt độ trễ $< 10$ms trên thiết bị biên.
         \end{itemize}
       \end{block}
     \end{column}
@@ -846,17 +934,12 @@
   \begin{tikzpicture}[remember picture,overlay]
     \fill[HCMUEDarkBlue] (current page.north west) rectangle (current page.south east);
     
-    % Nền mờ Tòa nhà A-01 chuẩn HCMUE_PPT Template.pptx
     \node[anchor=south east, inner sep=0pt] at ($(current page.south east)+(0, 0)$) {
       \includegraphics[width=9.5cm]{images/toa_nha_a_watermark_dark.png}
     };
-    
-    \fill[HCMUECerulean!25] ($(current page.south east)+(-2,2)$) circle (3.5cm);
-    \fill[HCMUECerulean!15] ($(current page.north west)+(3,-2)$) circle (2.5cm);
   \end{tikzpicture}
 
   \begin{center}
-    % Logo kèm chữ chính thức phiên bản chữ trắng nổi bật trên nền xanh đậm
     \includegraphics[height=1.35cm]{images/logo_hcmue_kemchu_eng_white.png}
 
     \vspace{0.4em}

@@ -67,22 +67,22 @@
 % Định dạng tiêu đề slide (Frametitle) đồng bộ nhận diện thương hiệu HCMUE nguyên bản
 \setbeamertemplate{frametitle}{%
   \nointerlineskip%
-  \begin{beamercolorbox}[wd=\paperwidth,ht=0.96cm,dp=0.16cm]{frametitle}%
-    \vbox to 0.96cm{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1.00cm,dp=0.18cm]{frametitle}%
+    \vbox to 1.00cm{%
       \vfill%
       \hbox to \paperwidth{%
-        \hspace{0.55cm}%
-        \parbox[c]{0.68\paperwidth}{\fontsize{10.5}{12.5}\selectfont\textbf{\color{HCMUEDarkBlue}\insertframetitle}}%
+        \hspace{0.8cm}%
+        \includegraphics[height=0.65cm,keepaspectratio]{images/logo_hcmue_kemchu_eng.png}%
         \hfill%
-        \includegraphics[height=0.50cm,keepaspectratio]{images/logo_hcmue_kemchu_eng.png}%
-        \hspace{0.55cm}%
+        \parbox[c]{0.58\paperwidth}{\raggedleft\fontsize{10.5}{12.5}\selectfont\textbf{\color{HCMUEDarkBlue}\insertframetitle}}%
+        \hspace{0.8cm}%
       }%
       \vfill%
     }%
   \end{beamercolorbox}%
   \nointerlineskip%
   {\color{HCMUERed}\hrule height 1.8pt}%
-  \vspace{0.18cm}%
+  \vspace{0.15cm}%
 }
 
 % Định dạng chân trang (Footline)
@@ -937,9 +937,6 @@
     \node[anchor=south east, inner sep=0pt] at ($(current page.south east)+(0, 0)$) {
       \includegraphics[width=9.5cm]{images/toa_nha_a_watermark_dark.png}
     };
-    
-    \fill[HCMUECerulean!25] ($(current page.south east)+(-2,2)$) circle (3.5cm);
-    \fill[HCMUECerulean!15] ($(current page.north west)+(3,-2)$) circle (2.5cm);
   \end{tikzpicture}
 
   \begin{center}
