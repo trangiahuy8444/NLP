@@ -358,8 +358,7 @@
         \fbox{\fontsize{7.5}{9.5}\selectfont Hôm nay trời \textbf{[ ? ]} và có nắng nhẹ}
         \vspace{0.08cm}
         \raggedright
-        $\to$ Mô hình đoán chữ: \textbf{đẹp} / \textbf{ấm}.\\
-        $\to$ Thích hợp từ thông dụng, tốc độ huấn luyện nhanh.
+        $\to$ Đoán: \textbf{đẹp} / \textbf{ấm}. Tốc độ học rất nhanh.
       \end{block}
     \end{column}
     \hfill
@@ -374,17 +373,23 @@
         \fbox{\fontsize{7.5}{9.5}\selectfont Từ trung tâm: \textbf{giảng\_viên}}
         \vspace{0.08cm}
         \raggedright
-        $\to$ Đoán quanh đó: \textit{nhiệt\_tình, bài\_tập, slide}.\\
-        $\to$ Cực kỳ xuất sắc trong việc học các \textbf{từ hiếm gặp}.
+        $\to$ Đoán: \textit{nhiệt\_tình, bài\_tập}. Rất giỏi học \textbf{từ hiếm}.
       \end{block}
     \end{column}
   \end{columns}
 
-  \vspace{0.2cm}
-  \begin{alertblock}{Bí quyết tốc độ: Negative Sampling (SGNS)}
-    \fontsize{7.5}{9.5}\selectfont
-    Thay vì so sánh với toàn bộ 50,000 từ trong từ điển (rất chậm), ta chỉ bắt mô hình phân biệt từ đúng với \textbf{5 từ ngẫu nhiên chọn bừa} (mẫu âm). Tốc độ học tăng hàng trăm lần!
-  \end{alertblock}
+  \vspace{0.18cm}
+  \resizebox{\textwidth}{!}{
+  \begin{tabular}{p{2.8cm}p{6.0cm}p{6.0cm}}
+    \toprule
+    \textbf{Tiêu chí} & \textbf{CBOW (Đoán từ tâm)} & \textbf{Skip-Gram (Đoán ngữ cảnh)} \\
+    \midrule
+    \textbf{Tốc độ huấn luyện} & \textbf{Rất nhanh} (phù hợp kho dữ liệu lớn) & Chậm hơn (xét từng cặp trong cửa sổ) \\
+    \textbf{Học từ hiếm gặp} & Trung bình (bị từ phổ biến lấn át) & \textbf{Xuất sắc} (học rất sâu cho từ hiếm) \\
+    \textbf{Tối ưu SGNS} & So sánh với $K$ từ ngẫu nhiên chọn bừa ($K=5$) giúp tăng tốc huấn luyện gấp hàng trăm lần! \\
+    \bottomrule
+  \end{tabular}
+  }
 \end{frame}
 
 % ==================== PHẦN 4: TỪ TỪ ĐẾN CÂU ====================
@@ -532,9 +537,12 @@
         Cả hai từ \textit{''nước''} đều bị ép chung một tọa độ $\implies$ Sai lệch ngữ nghĩa!
       \end{block}
       \vspace{0.15cm}
-      \begin{exampleblock}{Cuộc cách mạng Contextual Embedding}
+      \begin{exampleblock}{Vai trò đại diện của token \texttt{[CLS]}}
         \fontsize{7.5}{9.5}\selectfont
-        Mô hình \textbf{PhoBERT (VinAI, 2020)} dựa trên Transformer: Huấn luyện trên \textbf{20GB báo chí tiếng Việt} (~3 tỷ từ). Vector từ được sinh ra \textbf{động} tùy theo ngữ cảnh câu cụ thể.
+        \begin{itemize}\setlength{\itemsep}{0.1em}
+          \item Token đặc biệt \texttt{<s>} (\texttt{[CLS]}) đứng đầu câu.
+          \item Nhờ \textbf{12 tầng Self-Attention}, \texttt{[CLS]} trực tiếp kết nối với mọi từ khác $\implies$ gom trọn ngữ nghĩa toàn câu vào 1 vector duy nhất $\mathbb{R}^{768}$!
+        \end{itemize}
       \end{exampleblock}
     \end{column}
     \hfill
@@ -654,27 +662,40 @@
   \end{block}
 \end{frame}
 
-\begin{frame}{Các Ca Khó Kinh Điển Trong Đời Thực Khiến AI Bối Rối}
-  \fontsize{8}{10}\selectfont
-
-  \begin{block}{Ca khó 1: Cấu trúc câu tương phản lật ngược tình thế}
-    \fontsize{7.5}{9.5}\selectfont
-    \begin{itemize}\setlength{\itemsep}{0.15em}
-      \item \textit{''Giao hàng hơi lâu nhưng chất lượng áo thì đỉnh chóp.''} $\to$ \textbf{Thực tế: TÍCH CỰC}.
-      \item \textbf{Mô hình đơn giản}: Thấy chữ \textit{''hơi lâu''} ở đầu câu nên vội vã kết luận Tiêu cực.
-      \item \textbf{Cơ chế Attention / PhoBERT}: Hiểu được từ \textit{''nhưng''} đóng vai trò bản lề, dồn sự chú ý vào vế sau \textit{''chất lượng đỉnh chóp''} để đoán đúng Tích cực!
-    \end{itemize}
-  \end{block}
-
-  \vspace{0.18cm}
-  \begin{alertblock}{Ca khó 2: Ngôn ngữ mỉa mai, châm biếm (Sarcasm) — Giới hạn của AI hiện nay}
-    \fontsize{7.5}{9.5}\selectfont
-    \begin{itemize}\setlength{\itemsep}{0.15em}
-      \item \textit{''Shop phục vụ quá nhiệt tình, nhắn tin 3 ngày mới thèm trả lời.''} $\to$ \textbf{Thực tế: TIÊU CỰC}.
-      \item \textbf{AI hiện nay đều sai}: Nhìn thấy từ \textit{''quá nhiệt tình''} liền mừng rỡ đoán Tích cực!
-      \item \textbf{Vì sao AI bị lừa?}: AI chưa có tri thức đời thực (\textit{World Knowledge}) để hiểu rằng chờ đợi 3 ngày là bực mình. Đây là bài toán mở đầy hấp dẫn của NLP tương lai!
-    \end{itemize}
-  \end{alertblock}
+\begin{frame}{Các Ca Khó Kinh Điển Trong Đời Thực \& Giải Pháp Kỹ Thuật}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Ca 1: Cấu trúc câu tương phản ("...nhưng...")}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.15em}
+          \item \textbf{Câu mẫu}: \textit{''Giao hàng hơi lâu nhưng chất lượng áo đỉnh chóp.''} $\to$ \textbf{TÍCH CỰC}.
+          \item \textbf{Thách thức}: Từ lóng lạ + từ tiêu cực ở đầu câu.
+        \end{itemize}
+        \vspace{0.08cm}
+        \textbf{\color{HCMUEDarkBlue}$\implies$ Hướng khắc phục}:
+        \begin{itemize}\fontsize{7}{8.5}\selectfont\setlength{\itemsep}{0.1em}
+          \item Tách vế câu qua liên từ nghịch tiếp (\textit{nhưng, tuy nhiên}) để xét trọng số riêng cho vế kết luận.
+          \item Bổ sung từ điển chuẩn hóa Teencode tự động.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \hfill
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Ca 2: Mỉa mai, châm biếm (Sarcasm)}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.15em}
+          \item \textbf{Câu mẫu}: \textit{''Shop quá nhiệt tình, nhắn tin 3 ngày mới thèm rep.''} $\to$ \textbf{TIÊU CỰC}.
+          \item \textbf{Thách thức}: Khen bề mặt chữ nhưng ngụ ý chê.
+        \end{itemize}
+        \vspace{0.08cm}
+        \textbf{\color{HCMUERed}$\implies$ Hướng khắc phục}:
+        \begin{itemize}\fontsize{7}{8.5}\selectfont\setlength{\itemsep}{0.1em}
+          \item Bổ sung Đồ thị tri thức (Knowledge Graph): \textit{''3 ngày''} là sự cố trễ hạn nghiêm trọng.
+          \item Áp dụng mô hình suy luận chuỗi tư duy (Chain-of-Thought) của các mô hình ngôn ngữ lớn (LLMs).
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 % ==================== PHẦN 9: TỔNG KẾT & LỜI KHUYÊN ====================
