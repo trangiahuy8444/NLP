@@ -9,7 +9,7 @@
 \usepackage{booktabs, multirow, array}
 \usepackage{xcolor}
 \usepackage{tikz}
-\usetikzlibrary{calc, shapes.geometric, arrows.meta, positioning}
+\usetikzlibrary{calc, shapes.geometric, arrows.meta, positioning, shadows}
 
 % --- MÀU SẮC NHẬN DIỆN THƯƠNG HIỆU HCMUE ---
 \definecolor{HCMUEDarkBlue}{RGB}{18, 72, 116}    % #124874 (Xanh ĐH Sư Phạm TP.HCM)
@@ -37,8 +37,6 @@
 \setbeamercolor{structure}{fg=HCMUEDarkBlue}
 \setbeamercolor{titlelike}{parent=palette primary, fg=HCMUEDarkBlue}
 \setbeamercolor{frametitle}{bg=HCMUEDarkBlue, fg=white}
-\setbeamercolor{frametitle right}{bg=HCMUECerulean, fg=white}
-
 \setbeamercolor{normal text}{fg=HCMUEDarkText, bg=white}
 \setbeamercolor{item}{fg=HCMUECerulean}
 \setbeamercolor{subitem}{fg=HCMUEGold}
@@ -56,27 +54,37 @@
 % Bo tròn và đổ bóng cho block
 \setbeamertemplate{blocks}[rounded][shadow=true]
 
-% Định dạng tiêu đề slide (Frametitle)
-\setbeamertemplate{frametitle}{
-  \nointerlineskip
-  \begin{beamercolorbox}[wd=\paperwidth,ht=3.2ex,dp=1.0ex,leftskip=0.8cm,rightskip=0.8cm]{frametitle}
-    \fontsize{11}{13}\selectfont\textbf{\insertframetitle}
-  \end{beamercolorbox}
-  \nointerlineskip
-  \begin{beamercolorbox}[wd=\paperwidth,ht=0.35ex]{palette secondary}\end{beamercolorbox}
+% Định dạng tiêu đề slide (Frametitle) kèm logo gốc trong badge trắng sang trọng
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.95cm,dp=0.15cm]{frametitle}%
+    \vbox to 0.95cm{%
+      \vfill%
+      \hbox to \paperwidth{%
+        \hspace{0.8cm}%
+        \parbox[c]{0.78\paperwidth}{\fontsize{11}{13}\selectfont\textbf{\color{white}\insertframetitle}}%
+        \hfill%
+        \colorbox{white}{\includegraphics[height=0.48cm]{images/logo_hcmue_original.png}}%
+        \hspace{0.6cm}%
+      }%
+      \vfill%
+    }%
+  \end{beamercolorbox}%
+  \nointerlineskip%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.3ex]{palette secondary}\end{beamercolorbox}%
 }
 
 % Định dạng chân trang (Footline)
 \setbeamertemplate{footline}{
   \leavevmode
   \hbox{
-    \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,leftskip=0.8cm]{palette primary}
+    \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.3ex,dp=1ex,leftskip=0.8cm]{palette primary}
       \usebeamerfont{author in head/foot}\textbf{Nhóm 3 Học Viên} — KHMT K36
     \end{beamercolorbox}%
-    \begin{beamercolorbox}[wd=.416667\paperwidth,ht=2.25ex,dp=1ex,center]{palette secondary}
+    \begin{beamercolorbox}[wd=.416667\paperwidth,ht=2.3ex,dp=1ex,center]{palette secondary}
       \usebeamerfont{title in head/foot}\textbf{Mô hình Word2Vec, LSTM \& Phân Loại Cảm Xúc}
     \end{beamercolorbox}%
-    \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.25ex,dp=1ex,rightskip=0.8cm,right]{palette primary}
+    \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.3ex,dp=1ex,rightskip=0.8cm,right]{palette primary}
       \usebeamerfont{date in head/foot}\textbf{HCMUE} $\mid$ \insertframenumber{} / \inserttotalframenumber
     \end{beamercolorbox}
   }
@@ -112,21 +120,28 @@
 \setbeamertemplate{frametitle}{}
 \begin{frame}[plain]
   \begin{tikzpicture}[remember picture,overlay]
-    \fill[HCMUEDarkBlue] (current page.north west) rectangle ($(current page.north east)+(0,-1.3cm)$);
-    \node[anchor=west] at ($(current page.north west)+(0.8cm,-0.65cm)$) {
-      \includegraphics[height=0.9cm]{images/logo_crest_white.png}
+    % Viền trên màu xanh đậm
+    \fill[HCMUEDarkBlue] (current page.north west) rectangle ($(current page.north east)+(0,-0.15cm)$);
+    % Dải banner màu trắng chứa logo nguyên bản đầy đủ màu sắc
+    \fill[white] ($(current page.north west)+(0,-0.15cm)$) rectangle ($(current page.north east)+(0,-1.65cm)$);
+    % Logo HCMUE nguyên bản gốc (Đỏ SP + Xanh huy hiệu)
+    \node[anchor=west] at ($(current page.north west)+(0.8cm,-0.90cm)$) {
+      \includegraphics[height=1.25cm]{images/logo_hcmue_original.png}
     };
-    \node[anchor=east, text=white, align=right] at ($(current page.north east)+(-0.8cm,-0.65cm)$) {
-      \fontsize{8.5}{10.5}\selectfont \textbf{TRƯỜNG ĐẠI HỌC SƯ PHẠM TP. HỒ CHÍ MINH}\\
-      \fontsize{7.5}{9.5}\selectfont KHOA CÔNG NGHỆ THÔNG TIN — LỚP CAO HỌC KHMT K36
+    % Thông tin trường & khoa
+    \node[anchor=east, align=right] at ($(current page.north east)+(-0.8cm,-0.90cm)$) {
+      {\fontsize{9.5}{12}\selectfont \textbf{\color{HCMUEDarkBlue}TRƯỜNG ĐẠI HỌC SƯ PHẠM TP. HỒ CHÍ MINH}}\\[0.2em]
+      {\fontsize{8.5}{10.5}\selectfont \textbf{\color{HCMUECerulean}KHOA CÔNG NGHỆ THÔNG TIN — LỚP CAO HỌC KHMT K36}}
     };
-    \fill[HCMUEGold] ($(current page.north west)+(0,-1.3cm)$) rectangle ($(current page.north east)+(0,-1.36cm)$);
+    % Đường phân cách màu vàng hổ phách và xanh
+    \fill[HCMUEGold] ($(current page.north west)+(0,-1.65cm)$) rectangle ($(current page.north east)+(0,-1.72cm)$);
+    \fill[HCMUEDarkBlue] ($(current page.north west)+(0,-1.72cm)$) rectangle ($(current page.north east)+(0,-1.76cm)$);
   \end{tikzpicture}
 
-  \vspace{0.65cm}
+  \vspace{0.95cm}
   \begin{center}
-    {\fontsize{9.5}{11}\selectfont \textbf{\color{HCMUECerulean}BÁO CÁO TIỂU LUẬN GIỮA KỲ — HỌC PHẦN XỬ LÝ NGÔN NGỮ TỰ NHIÊN}}\\[0.3em]
-    {\fontsize{12.5}{15}\selectfont \textbf{\color{HCMUEDarkBlue}MÔ HÌNH WORD2VEC, WORD EMBEDDING VÀ HỌC BIỂU DIỄN VĂN BẢN BẰNG LSTM CHO BÀI TOÁN PHÂN LOẠI CẢM XÚC}}\\[0.25em]
+    {\fontsize{9}{11}\selectfont \textbf{\color{HCMUECerulean}BÁO CÁO TIỂU LUẬN GIỮA KỲ — HỌC PHẦN XỬ LÝ NGÔN NGỮ TỰ NHIÊN}}\\[0.35em]
+    {\fontsize{12}{15}\selectfont \textbf{\color{HCMUEDarkBlue}MÔ HÌNH WORD2VEC, WORD EMBEDDING VÀ HỌC BIỂU DIỄN VĂN BẢN BẰNG LSTM CHO BÀI TOÁN PHÂN LOẠI CẢM XÚC}}\\[0.3em]
     {\fontsize{8.5}{10}\selectfont \color{HCMUEGray}Nghiên cứu lý thuyết, Hiện thực mô hình, Đối chuẩn Đa miền \& Triển khai Ứng dụng XAI}
   \end{center}
 
@@ -815,13 +830,19 @@
   \end{tikzpicture}
 
   \begin{center}
-    \includegraphics[height=1.3cm]{images/logo_crest_white.png}\\[0.5em]
+    % Khung tròn/card màu trắng nổi bật chứa logo HCMUE nguyên bản gốc
+    \begin{tikzpicture}
+      \node[fill=white, rounded corners=8pt, inner sep=6pt, drop shadow] {
+        \includegraphics[height=1.35cm]{images/logo_hcmue_original.png}
+      };
+    \end{tikzpicture}
 
+    \vspace{0.4em}
     {\fontsize{13}{16}\selectfont \textbf{\color{white}TRƯỜNG ĐẠI HỌC SƯ PHẠM TP. HỒ CHÍ MINH}}\\[0.2em]
-    {\fontsize{10}{12}\selectfont \color{white!85}KHOA CÔNG NGHỆ THÔNG TIN — LỚP CAO HỌC KHMT K36}\\[0.8em]
+    {\fontsize{10}{12}\selectfont \color{white!85}KHOA CÔNG NGHỆ THÔNG TIN — LỚP CAO HỌC KHMT K36}\\[0.7em]
 
     {\fontsize{18}{22}\selectfont \textbf{\color{HCMUEGold}CHÂN THÀNH CẢM ƠN THẦY VÀ CÁC BẠN}}\\[0.3em]
-    {\fontsize{13}{16}\selectfont \textbf{\color{white}ĐÃ LẮNG NGHE BÀI BÁO CÁO!}}\\[0.8em]
+    {\fontsize{13}{16}\selectfont \textbf{\color{white}ĐÃ LẮNG NGHE BÀI BÁO CÁO!}}\\[0.7em]
 
     \begin{beamercolorbox}[wd=0.72\textwidth,rounded=true,center,sep=0.35em]{palette secondary}
       \fontsize{9.5}{12}\selectfont
