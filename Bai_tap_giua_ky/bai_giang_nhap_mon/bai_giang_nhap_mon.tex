@@ -178,7 +178,7 @@
 }
 
 % ==================== SLIDE 2: LỘ TRÌNH BÀI HỌC ====================
-\begin{frame}{Lộ Trình Khám Phá: 6 Nấc Thang Nhận Thức}
+\begin{frame}{Lộ Trình Khám Phá: 6 Nấc Thang Nhận Thức \& Bài Tập Thực Hành}
   \begin{columns}[T, onlytextwidth]
     \begin{column}{0.48\textwidth}
       \begin{enumerate}
@@ -201,9 +201,9 @@
   \end{columns}
 
   \vspace{0.25cm}
-  \begin{alertblock}{Phương châm bài giảng}
-    \centering\fontsize{8}{10.5}\selectfont
-    \textbf{Không lạm dụng công thức phức tạp — Tập trung vào trực giác toán học, ví dụ đời thực và ứng dụng!}
+  \begin{alertblock}{Phương châm bài giảng: Trực quan lý thuyết đi đôi với Giải tay số liệu thực}
+    \centering\fontsize{7.5}{9.5}\selectfont
+    \textbf{Kết hợp ẩn dụ đời thực, trực giác toán học và 3 bài tập giải tay chi tiết từng bước (Word2Vec, LSTM, Attention)!}
   \end{alertblock}
 \end{frame}
 
@@ -549,6 +549,150 @@
           \item \textbf{PhoBERT (Byte-Pair Encoding)}: Tự động bẻ nhỏ từ lạ thành các mảnh âm tiết quen thuộc để suy luận.
         \end{itemize}
         $\implies$ Giúp PhoBERT đạt độ bền bỉ vượt trội trước ngôn ngữ mạng xã hội đầy nhiễu!
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==================== PHẦN 7: BÀI TẬP GIẢI TAY TỪNG BƯỚC ====================
+\begin{frame}{Bài Tập Giải Tay 1: Phép Toán Vector \& Cosine (Word2Vec)}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{\small\textbf{1. Đề bài \& Phép toán Ngữ nghĩa}}
+        \fontsize{7}{8.8}\selectfont
+        Cho không gian vector 2 chiều ($D=2$) đã học được:\\
+        $\mathbf{v}(\text{vua}) = [4, 1]^T, \quad \mathbf{v}(\text{đàn\_ông}) = [3, 1]^T$\\
+        $\mathbf{v}(\text{phụ\_nữ}) = [1, 4]^T, \quad \mathbf{v}(\text{hoàng\_hậu}) = [2, 4]^T$\\
+        $\mathbf{v}(\text{quả\_táo}) = [0, 5]^T$
+        \vspace{0.04cm}
+        
+        \textbf{Yêu cầu}: Tính vector suy luận ngữ nghĩa:\\
+        $\mathbf{v}_{\text{dự\_đoán}} = \mathbf{v}(\text{vua}) - \mathbf{v}(\text{đàn\_ông}) + \mathbf{v}(\text{phụ\_nữ})$
+        \vspace{0.04cm}
+        
+        \textbf{Lời giải}:
+        $$\mathbf{v}_{\text{dự\_đoán}} = \begin{bmatrix} 4 - 3 + 1 \\ 1 - 1 + 4 \end{bmatrix} = \begin{bmatrix} \mathbf{2} \\ \mathbf{4} \end{bmatrix}$$
+        $\implies$ Trùng khít với tọa độ của $\mathbf{v}(\text{hoàng\_hậu})$!
+      \end{block}
+    \end{column}
+    \hfill
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{\small\textbf{2. Tính Độ Tương Đồng Cosine}}
+        \fontsize{7}{8.8}\selectfont
+        Công thức: $\cos(\mathbf{u}, \mathbf{w}) = \frac{\mathbf{u} \cdot \mathbf{w}}{\|\mathbf{u}\|_2 \cdot \|\mathbf{w}\|_2}$
+        \vspace{0.02cm}
+        
+        \textbf{So với hoàng\_hậu} ($\mathbf{w} = [2, 4]^T$):
+        \begin{itemize}\setlength{\itemsep}{0.04em}
+          \item $\mathbf{u} \cdot \mathbf{w} = 2(2) + 4(4) = 20$
+          \item $\|\mathbf{u}\| = \|\mathbf{w}\| = \sqrt{2^2 + 4^2} = \sqrt{20}$
+          \item $\cos = \frac{20}{\sqrt{20}\cdot\sqrt{20}} = \mathbf{1.000}$ (Tương đồng tuyệt đối)
+        \end{itemize}
+        \vspace{0.02cm}
+        \textbf{So với quả\_táo} ($\mathbf{w} = [0, 5]^T$):
+        \begin{itemize}\setlength{\itemsep}{0.04em}
+          \item $\mathbf{u} \cdot \mathbf{w} = 2(0) + 4(5) = 20$
+          \item $\|\mathbf{w}\| = \sqrt{0^2 + 5^2} = 5$
+          \item $\cos = \frac{20}{\sqrt{20}\cdot 5} = \frac{20}{4.472 \times 5} \approx \mathbf{0.894}$
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+  \vspace{0.04cm}
+  \begin{alertblock}{\small\textbf{Ý nghĩa sư phạm cốt lõi}}
+    \centering\fontsize{7}{8.8}\selectfont
+    Mô hình tự động xếp hạng $\text{hoàng\_hậu} (1.000) > \text{quả\_táo} (0.894)$ thuần túy bằng đại số hình học, không cần con người viết bất kỳ dòng luật \texttt{if-else} nào!
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Bài Tập Giải Tay 2: Cổng Quên LSTM (Xóa Bỏ Ký Ức Cũ)}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{\small\textbf{1. Ngữ cảnh \& Dữ liệu bài toán}}
+        \fontsize{7.5}{9.5}\selectfont
+        Mô hình đọc câu tương phản: \textit{''Đồ ăn ngon nhưng phục vụ tệ''}.
+        \begin{itemize}\setlength{\itemsep}{0.12em}
+          \item Tại từ \textit{''ngon''}: Ô nhớ đang tích cực rất cao: $C_{t-1} = \mathbf{+0.90}$.
+          \item Đến từ đảo chiều \textit{''nhưng''}: Ẩn cũ $h_{t-1} = 0.5$, vector nhúng $x_t = -1.2$.
+          \item Trọng số cổng quên: $W_f = [0.8, 1.5]$, hệ số chệch $b_f = -0.5$.
+        \end{itemize}
+      \end{block}
+      \vspace{0.1cm}
+      \begin{exampleblock}{\small\textbf{2. Bước 1: Tính Tổng Tuyến Tính $z_f$}}
+        \fontsize{7.5}{9.5}\selectfont
+        $$z_f = W_f \begin{bmatrix} h_{t-1} \\ x_t \end{bmatrix} + b_f = 0.8(0.5) + 1.5(-1.2) - 0.5$$
+        $$z_f = 0.40 - 1.80 - 0.50 = \mathbf{-1.90}$$
+      \end{exampleblock}
+    \end{column}
+    \hfill
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{\small\textbf{3. Bước 2: Kích Hoạt Cổng Quên $f_t$}}
+        \fontsize{7.5}{9.5}\selectfont
+        Qua hàm Sigmoid $\sigma(z) = \frac{1}{1 + e^{-z}}$:
+        $$f_t = \sigma(-1.90) = \frac{1}{1 + e^{1.90}} = \frac{1}{1 + 6.686} \approx \mathbf{0.130}$$
+        $\implies$ Cổng quên mở chỉ vỏn vẹn \textbf{13\%}!
+      \end{exampleblock}
+      \vspace{0.1cm}
+      \begin{alertblock}{\small\textbf{4. Bước 3: Cập Nhật Trí Nhớ Giữ Lại}}
+        \fontsize{7.5}{9.5}\selectfont
+        Phần ký ức cũ được giữ lại trong ô nhớ:
+        $$C_t^{\text{giữ}} = f_t \times C_{t-1} = 0.130 \times 0.90 = \mathbf{0.117}$$
+        $\implies$ Mức tích cực bị dập tắt giảm tới \textbf{87\%} ngay khi gặp chữ \textit{''nhưng''}, sẵn sàng nạp ý chê tiêu cực tiếp sau!
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Bài Tập Giải Tay 3: Cơ Chế Attention (Softmax \& Vector Câu)}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{\small\textbf{1. Đề bài: Câu Đánh Giá 3 Từ}}
+        \fontsize{7.5}{9.5}\selectfont
+        Xét câu: $w_1 = \textit{''phim''}, w_2 = \textit{''rất''}, w_3 = \textit{''hay''}$.\\
+        Vector ẩn BiLSTM: $\mathbf{h}_1 = [1, 0]^T, \mathbf{h}_2 = [1, 1]^T, \mathbf{h}_3 = [2, 2]^T$\\
+        Vector ngữ cảnh Attention đã học: $\mathbf{u}_w = [1, 1]^T$.
+        \vspace{0.05cm}
+        
+        \textbf{Bước 1: Tính Điểm Số Thô ($e_t = \mathbf{h}_t \cdot \mathbf{u}_w$)}:
+        \begin{itemize}\setlength{\itemsep}{0.05em}
+          \item $e_1 = 1(1) + 0(1) = \mathbf{1}$
+          \item $e_2 = 1(1) + 1(1) = \mathbf{2}$
+          \item $e_3 = 2(1) + 2(1) = \mathbf{4}$
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \hfill
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{\small\textbf{2. Bước 2: Chuẩn Hóa Softmax ($\alpha_t$)}}
+        \fontsize{7.5}{9.5}\selectfont
+        Lũy thừa: $e^1 \approx 2.72, \; e^2 \approx 7.39, \; e^4 \approx 54.60$\\
+        Tổng mẫu số: $\sum = 2.72 + 7.39 + 54.60 = \mathbf{64.71}$
+        \begin{itemize}\setlength{\itemsep}{0.05em}
+          \item $\alpha_1 = 2.72 / 64.71 = \mathbf{4.2\%}$ (\textit{''phim''} - từ trung tính)
+          \item $\alpha_2 = 7.39 / 64.71 = \mathbf{11.4\%}$ (\textit{''rất''} - phó từ)
+          \item $\alpha_3 = 54.60 / 64.71 = \mathbf{84.4\%}$ (\textit{''hay''} - \textbf{áp đảo!})
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.12cm}
+  \begin{columns}[T, onlytextwidth]
+    \begin{column}{0.54\textwidth}
+      \begin{block}{\small\textbf{3. Bước 3: Tổng Hợp Vector Toàn Câu $\mathbf{v}_{\text{doc}}$}}
+        \fontsize{7.5}{9.5}\selectfont
+        $\mathbf{v}_{\text{doc}} = \sum \alpha_t \mathbf{h}_t = 0.042\begin{bmatrix}1\\0\end{bmatrix} + 0.114\begin{bmatrix}1\\1\end{bmatrix} + 0.844\begin{bmatrix}2\\2\end{bmatrix}$
+        $$\mathbf{v}_{\text{doc}} = \begin{bmatrix} 0.042 + 0.114 + 1.688 \\ 0 + 0.114 + 1.688 \end{bmatrix} = \begin{bmatrix} \mathbf{1.844} \\ \mathbf{1.802} \end{bmatrix}$$
+      \end{block}
+    \end{column}
+    \hfill
+    \begin{column}{0.43\textwidth}
+      \begin{alertblock}{\small\textbf{Ý nghĩa sư phạm cốt lõi}}
+        \fontsize{7.5}{9.5}\selectfont
+        \begin{itemize}\setlength{\itemsep}{0.12em}
+          \item Từ \textit{''hay''} gánh trọn \textbf{84.4\%} trọng số, định đoạt nhãn \textbf{\color{HCMUEGreen}TÍCH CỰC}.
+          \item Từ trung tính \textit{''phim''} ($4.2\%$) bị triệt tiêu, không làm loãng quyết định!
+        \end{itemize}
       \end{alertblock}
     \end{column}
   \end{columns}
