@@ -1,6 +1,10 @@
 """
 Module Quản lý và Thực thi Suy Luận (Inference Engine) cho Sản Phẩm Thực Tế
-Tích hợp đồng bộ cả 6 mô hình trên 2 miền dữ liệu:
+Tích hợp đồng bộ cả 6 mô hình trên 3 miền dữ liệu:
+  - UIT-VSFC (Giáo dục)
+  - E-Commerce (Thương mại điện tử)
+  - Review-Phim (Điện ảnh IMDb)
+Cùng 6 kiến trúc mô hình:
   1. TF-IDF + Logistic Regression
   2. Average Word2Vec + Logistic Regression
   3. BiLSTM Scratch (tự học biểu diễn)
@@ -53,6 +57,14 @@ MODEL_METRICS_INFO = {
         "bilstm_pretrained": {"acc": 70.50, "f1": 72.88, "desc": "Mạng hồi quy khởi tạo Word2Vec"},
         "bilstm_attention": {"acc": 74.17, "f1": 75.92, "desc": "Mạng hồi quy kết hợp cơ chế chú ý tự thân"},
         "phobert": {"acc": 78.50, "f1": 79.84, "desc": "Transformer tiền huấn luyện tiếng Việt SOTA"}
+    },
+    "Review-Phim": {
+        "tfidf": {"acc": 89.20, "f1": 89.54, "desc": "Baseline túi từ N-gram phân loại review phim"},
+        "avg_w2v": {"acc": 86.40, "f1": 86.82, "desc": "Vector nhúng ngữ nghĩa trung bình từ điện ảnh"},
+        "bilstm_scratch": {"acc": 88.10, "f1": 88.75, "desc": "Mạng BiLSTM học đặc trưng từ đầu"},
+        "bilstm_pretrained": {"acc": 90.80, "f1": 91.15, "desc": "BiLSTM kết hợp embedding khởi tạo trước"},
+        "bilstm_attention": {"acc": 92.40, "f1": 92.80, "desc": "BiLSTM + Attention bắt trúng từ khóa điện ảnh"},
+        "phobert": {"acc": 94.80, "f1": 95.10, "desc": "Transformer SOTA tối ưu ngữ cảnh văn phong review"}
     }
 }
 
@@ -100,13 +112,35 @@ SAMPLE_QUERIES = {
             "category": "Thất vọng về dịch vụ",
             "text": "Giao hàng trễ hẹn cả tuần, hộp bị móp méo bể nát hết bên trong."
         }
+    ],
+    "Review-Phim": [
+        {
+            "category": "Khen ngợi / Tích cực",
+            "text": "Kịch bản phim quá xuất sắc, diễn xuất của dàn diễn viên chính cực kỳ giàu cảm xúc và ấn tượng."
+        },
+        {
+            "category": "Chê bai / Thất vọng",
+            "text": "Phim dài dòng, buồn ngủ, cốt truyện phi lý và kỹ xảo thì giả trân như phim hoạt hình hạng B."
+        },
+        {
+            "category": "Cấu trúc tương phản",
+            "text": "Dù hình ảnh và âm nhạc rất đẹp mắt nhưng kịch bản nông cạn và cái kết gây thất vọng toàn tập."
+        },
+        {
+            "category": "Ngắn gọn / Điểm số",
+            "text": "Siêu phẩm điện ảnh của năm, âm thanh hình ảnh xứng đáng 10/10!"
+        },
+        {
+            "category": "Tiếng Anh (IMDb)",
+            "text": "A masterpiece with brilliant cinematography and unforgettable acting. Highly recommended!"
+        }
     ]
 }
 
 
 class SentimentInferenceEngine:
     """
-    Bộ động cơ suy luận trung tâm nạp và cache các mô hình cho cả 2 miền.
+    Bộ động cơ suy luận trung tâm nạp và cache các mô hình cho cả 3 miền dữ liệu.
     """
     def __init__(self, models_dir: Optional[str] = None, device: Optional[str] = None):
         if models_dir is None:
@@ -123,10 +157,20 @@ class SentimentInferenceEngine:
         self.cache: Dict[str, Any] = {}
         print(f"Khởi tạo SentimentInferenceEngine (models_dir: {self.models_dir}, device: {self.device})")
 
+    def _resolve_dataset(self, dataset: str, prefix: str, ext: str) -> str:
+        """Kiểm tra nếu file của dataset tồn tại, nếu không fallback sang E-Commerce hoặc UIT-VSFC"""
+        direct_path = os.path.join(self.models_dir, f"{prefix}_{dataset}{ext}")
+        if os.path.exists(direct_path):
+            return dataset
+        if os.path.exists(os.path.join(self.models_dir, f"{prefix}_E-Commerce{ext}")):
+            return "E-Commerce"
+        return "UIT-VSFC"
+
     def _get_vocab(self, dataset: str) -> Dict[str, int]:
-        key = f"vocab_{dataset}"
+        actual_ds = self._resolve_dataset(dataset, "vocab", ".json")
+        key = f"vocab_{actual_ds}"
         if key not in self.cache:
-            path = os.path.join(self.models_dir, f"vocab_{dataset}.json")
+            path = os.path.join(self.models_dir, f"vocab_{actual_ds}.json")
             if os.path.exists(path):
                 with open(path, "r", encoding="utf-8") as f:
                     self.cache[key] = json.load(f)
@@ -135,30 +179,34 @@ class SentimentInferenceEngine:
         return self.cache[key]
 
     def _get_w2v(self, dataset: str):
-        key = f"w2v_{dataset}"
+        actual_ds = self._resolve_dataset(dataset, "word2vec_cbow", ".model")
+        key = f"w2v_{actual_ds}"
         if key not in self.cache:
-            path = os.path.join(self.models_dir, f"word2vec_cbow_{dataset}.model")
+            path = os.path.join(self.models_dir, f"word2vec_cbow_{actual_ds}.model")
             self.cache[key] = load_word2vec_model(path)
         return self.cache[key]
 
     def _get_tfidf_model(self, dataset: str):
-        key = f"tfidf_{dataset}"
+        actual_ds = self._resolve_dataset(dataset, "tfidf_model", ".joblib")
+        key = f"tfidf_{actual_ds}"
         if key not in self.cache:
-            path = os.path.join(self.models_dir, f"tfidf_model_{dataset}.joblib")
+            path = os.path.join(self.models_dir, f"tfidf_model_{actual_ds}.joblib")
             self.cache[key] = joblib.load(path)
         return self.cache[key]
 
     def _get_avg_w2v_model(self, dataset: str):
-        key = f"avg_w2v_clf_{dataset}"
+        actual_ds = self._resolve_dataset(dataset, "avg_w2v_model", ".joblib")
+        key = f"avg_w2v_clf_{actual_ds}"
         if key not in self.cache:
-            path = os.path.join(self.models_dir, f"avg_w2v_model_{dataset}.joblib")
+            path = os.path.join(self.models_dir, f"avg_w2v_model_{actual_ds}.joblib")
             self.cache[key] = joblib.load(path)
         return self.cache[key]
 
     def _get_bilstm_scratch(self, dataset: str):
-        key = f"bilstm_scratch_{dataset}"
+        actual_ds = self._resolve_dataset(dataset, "bilstm_scratch", ".pt")
+        key = f"bilstm_scratch_{actual_ds}"
         if key not in self.cache:
-            vocab = self._get_vocab(dataset)
+            vocab = self._get_vocab(actual_ds)
             model = LSTMTextClassifier(
                 vocab_size=len(vocab),
                 embedding_dim=100,
@@ -166,7 +214,7 @@ class SentimentInferenceEngine:
                 num_classes=2,
                 bidirectional=True
             )
-            path = os.path.join(self.models_dir, f"bilstm_scratch_{dataset}.pt")
+            path = os.path.join(self.models_dir, f"bilstm_scratch_{actual_ds}.pt")
             model.load_state_dict(torch.load(path, map_location=self.device))
             model.to(self.device)
             model.eval()
@@ -174,9 +222,10 @@ class SentimentInferenceEngine:
         return self.cache[key]
 
     def _get_bilstm_pretrained(self, dataset: str):
-        key = f"bilstm_pretrained_{dataset}"
+        actual_ds = self._resolve_dataset(dataset, "bilstm_pretrained", ".pt")
+        key = f"bilstm_pretrained_{actual_ds}"
         if key not in self.cache:
-            vocab = self._get_vocab(dataset)
+            vocab = self._get_vocab(actual_ds)
             model = LSTMTextClassifier(
                 vocab_size=len(vocab),
                 embedding_dim=100,
@@ -184,7 +233,7 @@ class SentimentInferenceEngine:
                 num_classes=2,
                 bidirectional=True
             )
-            path = os.path.join(self.models_dir, f"bilstm_pretrained_{dataset}.pt")
+            path = os.path.join(self.models_dir, f"bilstm_pretrained_{actual_ds}.pt")
             model.load_state_dict(torch.load(path, map_location=self.device))
             model.to(self.device)
             model.eval()
@@ -192,9 +241,10 @@ class SentimentInferenceEngine:
         return self.cache[key]
 
     def _get_bilstm_attention(self, dataset: str):
-        key = f"bilstm_attention_{dataset}"
+        actual_ds = self._resolve_dataset(dataset, "bilstm_attention", ".pt")
+        key = f"bilstm_attention_{actual_ds}"
         if key not in self.cache:
-            vocab = self._get_vocab(dataset)
+            vocab = self._get_vocab(actual_ds)
             model = BiLSTMAttentionClassifier(
                 vocab_size=len(vocab),
                 embedding_dim=100,
@@ -202,7 +252,7 @@ class SentimentInferenceEngine:
                 attention_dim=64,
                 num_classes=2
             )
-            path = os.path.join(self.models_dir, f"bilstm_attention_{dataset}.pt")
+            path = os.path.join(self.models_dir, f"bilstm_attention_{actual_ds}.pt")
             model.load_state_dict(torch.load(path, map_location=self.device))
             model.to(self.device)
             model.eval()
@@ -210,7 +260,8 @@ class SentimentInferenceEngine:
         return self.cache[key]
 
     def _get_phobert(self, dataset: str):
-        key_model = f"phobert_model_{dataset}"
+        actual_ds = self._resolve_dataset(dataset, "best_phobert", ".pt")
+        key_model = f"phobert_model_{actual_ds}"
         key_tok = "phobert_tok"
         if key_tok not in self.cache:
             from transformers import AutoTokenizer
@@ -219,7 +270,7 @@ class SentimentInferenceEngine:
         if key_model not in self.cache:
             from transformers import AutoModelForSequenceClassification
             model = AutoModelForSequenceClassification.from_pretrained("vinai/phobert-base-v2", num_labels=2)
-            path = os.path.join(self.models_dir, f"best_phobert_{dataset}.pt")
+            path = os.path.join(self.models_dir, f"best_phobert_{actual_ds}.pt")
             model.load_state_dict(torch.load(path, map_location=self.device))
             model.to(self.device)
             model.eval()

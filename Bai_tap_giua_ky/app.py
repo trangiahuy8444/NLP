@@ -2,7 +2,7 @@
 """
 Ứng Dụng Web Trực Quan Phân Tích Cảm Xúc Đa Miền (Sentiment Analysis Web App)
 Khởi chạy máy chủ HTTP REST API tích hợp giao diện tương tác người dùng thời gian thực:
-- 2 Miền dữ liệu: UIT-VSFC (Giáo dục) & E-Commerce (Thương mại điện tử)
+- 3 Miền dữ liệu: UIT-VSFC (Giáo dục), E-Commerce (Thương mại điện tử), Review-Phim (Điện ảnh IMDb)
 - 6 Mô hình: TF-IDF, Avg Word2Vec, BiLSTM Scratch, BiLSTM Pretrained, BiLSTM + Self-Attention, PhoBERT Base v2
 """
 
@@ -87,7 +87,7 @@ class SentimentAppRequestHandler(BaseHTTPRequestHandler):
                 "status": "online",
                 "device": str(engine.device),
                 "models_available": list(MODEL_DISPLAY_NAMES.keys()),
-                "datasets": ["UIT-VSFC", "E-Commerce"]
+                "datasets": ["UIT-VSFC", "E-Commerce", "Review-Phim"]
             }
             self.wfile.write(json.dumps(status_data, ensure_ascii=False).encode("utf-8"))
             return

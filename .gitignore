@@ -55,3 +55,6 @@ HCMUE_NLP_Sentiment_Demo/
 *.toc
 *.lot
 *.lof
+
+# Large raw CSV (>50MB)
+*review_phim.csv
