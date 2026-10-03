@@ -830,7 +830,7 @@ window.openCmModal = function(modelName, uitImg, ecomImg) {
 };
 
 /* ==========================================================================
-   9. WIDGET 7: MOCK DEFENSE SIMULATOR (VẤN ĐÁP VỚI TS. LÊ ANH CƯỜNG)
+   9. WIDGET 7: MOCK DEFENSE SIMULATOR (VẤN ĐÁP VỚI PGS.TS. LÊ ANH CƯỜNG)
    ========================================================================== */
 function initDefenseSimulator() {
   const container = document.getElementById("defense-questions-list");

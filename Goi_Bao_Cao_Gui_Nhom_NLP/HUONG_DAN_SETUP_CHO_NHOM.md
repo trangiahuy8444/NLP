@@ -1,7 +1,7 @@
 # 🎓 GÓI TÀI LIỆU TIỂU LUẬN & ỨNG DỤNG PHÂN TÍCH CẢM XÚC TIẾNG VIỆT
 ### TRƯỜNG ĐẠI HỌC SƯ PHẠM TP. HỒ CHÍ MINH — KHOA KHOA HỌC MÁY TÍNH
 **Học phần:** Xử Lý Ngôn Ngữ Tự Nhiên (NLP) • Khóa 36 (2025 - 2027)  
-**Giảng viên hướng dẫn:** **TS. LÊ ANH CƯỜNG**  
+**Giảng viên hướng dẫn:** **PGS.TS. LÊ ANH CƯỜNG**  
 **Nhóm sinh viên thực hiện:**  
 1. **Trần Gia Huy** — MSSV: **KHMT836012**  
 2. **Đỗ Minh Khánh Ngân** — MSSV: **KHMT836019**  

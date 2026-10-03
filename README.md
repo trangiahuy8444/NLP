@@ -1,7 +1,7 @@
 # 🎓 HỌC PHẦN: XỬ LÝ NGÔN NGỮ TỰ NHIÊN (NATURAL LANGUAGE PROCESSING)
 ### TRƯỜNG ĐẠI HỌC SƯ PHẠM THÀNH PHỐ HỒ CHÍ MINH (HCMUE) — KHOA KHOA HỌC MÁY TÍNH
 **Lớp:** Cao học Khoa học Máy tính — Khóa 36 (2025 – 2027)  
-**Giảng viên hướng dẫn:** **TS. LÊ ANH CƯỜNG**  
+**Giảng viên hướng dẫn:** **PGS.TS. LÊ ANH CƯỜNG**  
 
 **Nhóm học viên thực hiện (Nhóm 3 thành viên):**  
 1. **Trần Gia Huy** — MSSV: **KHMT836012**  

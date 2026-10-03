@@ -3,7 +3,7 @@
 **Môn học:** Xử lý ngôn ngữ tự nhiên (Natural Language Processing)  
 **Đơn vị đào tạo:** Trường Đại học Sư phạm Thành phố Hồ Chí Minh (HCMUE) — Khoa Khoa học Máy tính  
 **Lớp:** Cao học Khoa học Máy tính — Khóa 36 (2025 – 2027)  
-**Giảng viên hướng dẫn:** **TS. LÊ ANH CƯỜNG**  
+**Giảng viên hướng dẫn:** **PGS.TS. LÊ ANH CƯỜNG**  
 
 ---
 

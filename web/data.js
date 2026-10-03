@@ -1,5 +1,5 @@
 // Dữ liệu tri thức và mô phỏng cho Web Interactive Báo Cáo Giữa Kỳ NLP
-// Giảng viên hướng dẫn: TS. Lê Anh Cường - ĐH Sư Phạm TP.HCM
+// Giảng viên hướng dẫn: PGS.TS. Lê Anh Cường - ĐH Sư Phạm TP.HCM
 // Nhóm sinh viên: Trần Gia Huy (KHMT836012), Đỗ Minh Khánh Ngân (KHMT836019), Nguyễn Tấn Phát (KHMT836026)
 
 const NLP_DATA = {
@@ -8,7 +8,7 @@ const NLP_DATA = {
     subtitle: "Nghiên cứu đối chuẩn 6 mô hình trên Đa tập dữ liệu Thực tế (UIT-VSFC & E-Commerce), nâng cấp BiLSTM-Attention và PhoBERT SOTA",
     institution: "Trường Đại học Sư phạm Thành phố Hồ Chí Minh - Khoa Khoa học Máy tính",
     course: "Xử lý ngôn ngữ tự nhiên (Natural Language Processing) - Khóa 36 (2025-2027)",
-    instructor: "TS. LÊ ANH CƯỜNG",
+    instructor: "PGS.TS. LÊ ANH CƯỜNG",
     students: [
       { name: "Trần Gia Huy", id: "KHMT836012", role: "Trưởng nhóm - BiLSTM & Self-Attention, Báo cáo & Thuyết trình" },
       { name: "Đỗ Minh Khánh Ngân", id: "KHMT836019", role: "Thành viên - Tiền xử lý dữ liệu, Huấn luyện Word2Vec & Đối chuẩn TF-IDF" },
@@ -355,7 +355,7 @@ const NLP_DATA = {
     }
   ],
 
-  // 7. Ngân hàng câu hỏi Vấn đáp bảo vệ (Mock Defense with TS. Lê Anh Cường)
+  // 7. Ngân hàng câu hỏi Vấn đáp bảo vệ (Mock Defense with PGS.TS. Lê Anh Cường)
   defenseQuestions: [
     {
       id: "q1",
