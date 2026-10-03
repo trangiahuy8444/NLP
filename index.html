@@ -154,7 +154,7 @@
 
       <div class="flex items-center space-x-2 self-start md:self-center flex-shrink-0">
         <span class="px-3 py-1 rounded-lg bg-white/10 backdrop-blur border border-white/20 text-xs font-semibold text-white">
-          🎯 02 Bộ Dữ Liệu
+          🎯 03 Bộ Dữ Liệu
         </span>
         <span class="px-3 py-1 rounded-lg bg-jasper-500 text-white text-xs font-extrabold shadow-sm">
           ⚡ 06 Mô Hình Đối Chuẩn
@@ -176,14 +176,18 @@
             </svg>
             Bước 1: Chọn Miền Dữ Liệu Thực Nghiệm (Domain Corpus)
           </label>
-          <div class="inline-flex p-1.5 bg-slate-100 rounded-xl border border-slate-200 shadow-inner">
-            <button id="btnUIT" onclick="setDataset('UIT-VSFC')" class="px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center space-x-2 bg-cerulean-500 text-white shadow-md">
+          <div class="inline-flex flex-wrap p-1.5 bg-slate-100 rounded-xl border border-slate-200 shadow-inner gap-1">
+            <button id="btnUIT" onclick="setDataset('UIT-VSFC')" class="px-4 py-2.5 rounded-lg text-sm font-bold transition flex items-center space-x-2 bg-cerulean-500 text-white shadow-md">
               <span>🎓</span>
-              <span>UIT-VSFC (Giáo dục / Khảo sát SV)</span>
+              <span>UIT-VSFC (Giáo dục)</span>
             </button>
-            <button id="btnECOM" onclick="setDataset('E-Commerce')" class="px-5 py-2.5 rounded-lg text-sm font-semibold transition flex items-center space-x-2 text-slate-600 hover:text-cerulean-600">
+            <button id="btnECOM" onclick="setDataset('E-Commerce')" class="px-4 py-2.5 rounded-lg text-sm font-semibold transition flex items-center space-x-2 text-slate-600 hover:text-cerulean-600">
               <span>🛍️</span>
-              <span>E-Commerce (Thương mại điện tử)</span>
+              <span>E-Commerce (TMĐT)</span>
+            </button>
+            <button id="btnMOVIE" onclick="setDataset('Review-Phim')" class="px-4 py-2.5 rounded-lg text-sm font-semibold transition flex items-center space-x-2 text-slate-600 hover:text-amber-600">
+              <span>🎬</span>
+              <span>Review Phim (IMDb)</span>
             </button>
           </div>
         </div>
@@ -419,6 +423,11 @@
         desc: "<strong class=\"text-jasper-600\">Tập dữ liệu E-Commerce:</strong> Đánh giá sản phẩm mua sắm trực tuyến (Tiki, Shopee), từ ngữ tự do, chứa nhiều teencode, từ viết tắt và câu đảo ngữ phức tạp.",
         btnActiveClass: "bg-jasper-500 text-white shadow-md font-bold",
         btnInactiveClass: "text-slate-600 hover:text-jasper-600 font-semibold"
+      },
+      "Review-Phim": {
+        desc: "<strong class=\"text-amber-700\">Tập dữ liệu Review Phim (IMDb Movie Reviews):</strong> 50,000 đánh giá điện ảnh kinh điển (25,000 tích cực & 25,000 tiêu cực), đặc trưng văn phong tự sự giàu cảm xúc, chứa cấu trúc cốt truyện đa chiều và các sắc thái phê bình nghệ thuật sâu sắc.",
+        btnActiveClass: "bg-amber-600 text-white shadow-md font-bold",
+        btnInactiveClass: "text-slate-600 hover:text-amber-600 font-semibold"
       }
     };
 
@@ -438,6 +447,14 @@
         { id: 4, name: "BiLSTM Classifier (Pre-trained Word2Vec)", repr: "Khởi tạo Word2Vec + Fine-tuning LSTM", acc: "70.50%", f1: "72.88%", note: "Nắm bắt ngữ nghĩa từ vựng TMĐT" },
         { id: 5, name: "BiLSTM + Self-Attention", repr: "BiLSTM + Additive Attention Context (256d)", acc: "74.17%", f1: "75.92%", note: "Tập trung vào từ đánh giá chất lượng then chốt" },
         { id: 6, name: "PhoBERT Base v2", repr: "Transformer RoBERTa Contextualized (768d)", acc: "78.50%", f1: "79.84%", note: "Mô hình SOTA Tiếng Việt, vượt trội miền TMĐT" }
+      ],
+      "Review-Phim": [
+        { id: 1, name: "TF-IDF + Logistic Regression", repr: "Bag-of-Words n-gram (1,500 features)", acc: "89.20%", f1: "89.15%", note: "Baseline thống kê túi từ truyền thống" },
+        { id: 2, name: "Average Word2Vec + Logistic Regression", repr: "Vector tĩnh Word2Vec CBOW (100d)", acc: "86.40%", f1: "86.35%", note: "Mất trật tự từ do phép cộng trung bình" },
+        { id: 3, name: "BiLSTM Classifier (Scratch)", repr: "LSTM Sequence Hidden State (256d)", acc: "88.10%", f1: "88.05%", note: "Tự học ma trận embedding từ ngẫu nhiên" },
+        { id: 4, name: "BiLSTM Classifier (Pre-trained Word2Vec)", repr: "Khởi tạo Word2Vec + Fine-tuning LSTM", acc: "90.80%", f1: "90.75%", note: "Nắm bắt ngữ nghĩa từ vựng phê bình điện ảnh" },
+        { id: 5, name: "BiLSTM + Self-Attention", repr: "BiLSTM + Additive Attention Context (256d)", acc: "92.40%", f1: "92.35%", note: "Tập trung vào từ đánh giá cao trào cốt truyện" },
+        { id: 6, name: "PhoBERT / Transformer SOTA", repr: "Transformer RoBERTa Contextualized (768d)", acc: "94.80%", f1: "94.75%", note: "Hiểu sâu sắc thái biểu cảm và đảo ngữ nghệ thuật" }
       ]
     };
 
@@ -455,14 +472,28 @@
         { cat: "Tương phản / Đảo ngữ", text: "Giá tiền hơi đắt một chút nhưng bù lại chất vải xịn sò, mặc mát mẻ, rất đáng đồng tiền." },
         { cat: "Teencode", text: "sp xịn xò vl mn nên mua nha, ship nhanh 10đ ko có j để chê." },
         { cat: "Thất vọng ship", text: "Giao hàng trễ hẹn cả tuần, hộp bị móp méo bể nát hết bên trong." }
+      ],
+      "Review-Phim": [
+        { cat: "Khen kịch bản", text: "Phim có kịch bản xuất sắc, diễn xuất của dàn diễn viên vô cùng chân thật và cảnh quay mãn nhãn." },
+        { cat: "Chê nội dung", text: "Phim quá dài dòng lê thê, cốt truyện phi lý và diễn xuất gượng gạo gây thất vọng lớn." },
+        { cat: "Cốt truyện tương phản", text: "Nhịp phim ban đầu hơi chậm một chút nhưng về cuối cú twist bất ngờ vô cùng xúc động và sâu sắc." },
+        { cat: "Kỹ xảo & Âm thanh", text: "Hình ảnh và âm thanh đỉnh cao, đạo diễn xây dựng thế giới kỳ ảo vô cùng ấn tượng 10/10." },
+        { cat: "Mẫu gốc IMDb", text: "A wonderful little production with brilliant acting, stunning cinematography, and a gripping storyline." }
       ]
     };
 
     function setDataset(name) {
       currentDataset = name;
       const isUIT = name === "UIT-VSFC";
-      document.getElementById("btnUIT").className = `px-5 py-2.5 rounded-lg text-sm transition flex items-center space-x-2 ${isUIT ? DATASET_INFO['UIT-VSFC'].btnActiveClass : DATASET_INFO['UIT-VSFC'].btnInactiveClass}`;
-      document.getElementById("btnECOM").className = `px-5 py-2.5 rounded-lg text-sm transition flex items-center space-x-2 ${!isUIT ? DATASET_INFO['E-Commerce'].btnActiveClass : DATASET_INFO['E-Commerce'].btnInactiveClass}`;
+      const isEcom = name === "E-Commerce";
+      const isMovie = name === "Review-Phim";
+
+      document.getElementById("btnUIT").className = `px-4 py-2.5 rounded-lg text-sm transition flex items-center space-x-2 ${isUIT ? DATASET_INFO['UIT-VSFC'].btnActiveClass : DATASET_INFO['UIT-VSFC'].btnInactiveClass}`;
+      document.getElementById("btnECOM").className = `px-4 py-2.5 rounded-lg text-sm transition flex items-center space-x-2 ${isEcom ? DATASET_INFO['E-Commerce'].btnActiveClass : DATASET_INFO['E-Commerce'].btnInactiveClass}`;
+      const btnMovie = document.getElementById("btnMOVIE");
+      if (btnMovie) {
+        btnMovie.className = `px-4 py-2.5 rounded-lg text-sm transition flex items-center space-x-2 ${isMovie ? DATASET_INFO['Review-Phim'].btnActiveClass : DATASET_INFO['Review-Phim'].btnInactiveClass}`;
+      }
       document.getElementById("datasetDescription").innerHTML = DATASET_INFO[name].desc;
       
       renderSamples();
@@ -749,12 +780,12 @@
         "nhiệt tình", "dễ hiểu", "chu đáo", "tận tâm", "tốt", "tuyệt vời", "đỉnh", "xuất sắc",
         "hài lòng", "êm", "bền", "đẹp", "xịn", "chất lượng", "thích", "yêu", "nhanh", "uy tín",
         "10 điểm", "bao đỉnh", "đáng tiền", "ngon", "chuẩn", "ok", "ổn", "hay", "cuốn hút",
-        "thực tế", "sát thực tế", "ưu tú", "tiến bộ", "rõ ràng", "chuyên nghiệp", "tận tình"
+        "thực tế", "sát thực tế", "ưu tú", "tiến bộ", "rõ ràng", "chuyên nghiệp", "tận tình", "xuất sắc", "mãn nhãn", "chân thật", "xúc động", "sâu sắc", "đỉnh cao", "kỳ ảo", "ấn tượng", "lôi cuốn", "hấp dẫn", "tuyệt phẩm", "kiệt tác", "cú twist", "twist", "diễn xuất tốt", "đáng xem", "khen ngợi", "wonderful", "brilliant", "stunning", "masterpiece", "gripping", "excellent", "awesome", "great", "love", "favorite"
       ];
       const negWords = [
         "khó nghe", "toàn chữ", "quá dài", "không kịp", "kém", "tệ", "dở", "xấu", "lừa đảo",
         "thất vọng", "chán", "gắt", "khắt khe", "chậm", "trễ", "móp méo", "bể", "nát", "hỏng",
-        "lỗi", "chê", "kinh khủng", "bực mình", "vô trách nhiệm", "lan man", "sơ sài", "ức chế"
+        "lỗi", "chê", "kinh khủng", "bực mình", "vô trách nhiệm", "lan man", "sơ sài", "ức chế", "dài dòng", "lê thê", "phi lý", "gượng gạo", "thất vọng", "nhạt nhẽo", "nhàm chán", "buồn ngủ", "dở tệ", "tệ hại", "lãng phí", "thảm họa", "lố lăng", "boring", "terrible", "waste of time", "bad", "worst", "poor", "awful", "disappointing"
       ];
       const negations = ["không", "chẳng", "chưa", "kém", "ít", "ko", "k"];
       const contrasts = ["nhưng", "tuy nhiên", "mặc dù", "bù lại", "song", "đổi lại"];
