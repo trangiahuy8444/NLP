@@ -1,5 +1,5 @@
 // Dữ liệu tri thức và mô phỏng cho Web Interactive Báo Cáo Giữa Kỳ NLP
-// Giảng viên hướng dẫn: PGS.TS. Lê Anh Cường - ĐH Sư Phạm TP.HCM
+// Giảng viên hướng dẫn: PGS.TS. LÊ ANH CƯỜNG - ĐH Sư Phạm TP.HCM
 // Nhóm sinh viên: Trần Gia Huy (KHMT836012), Đỗ Minh Khánh Ngân (KHMT836019), Nguyễn Tấn Phát (KHMT836026)
 
 const NLP_DATA = {
@@ -355,7 +355,7 @@ const NLP_DATA = {
     }
   ],
 
-  // 7. Ngân hàng câu hỏi Vấn đáp bảo vệ (Mock Defense with PGS.TS. Lê Anh Cường)
+  // 7. Ngân hàng câu hỏi Vấn đáp bảo vệ (Mock Defense with PGS.TS. LÊ ANH CƯỜNG)
   defenseQuestions: [
     {
       id: "q1",
