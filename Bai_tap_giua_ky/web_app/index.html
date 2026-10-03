@@ -425,7 +425,7 @@
         btnInactiveClass: "text-slate-600 hover:text-jasper-600 font-semibold"
       },
       "Review-Phim": {
-        desc: "<strong class=\"text-amber-700\">Tập dữ liệu Review Phim (IMDb Movie Reviews):</strong> 50,000 đánh giá điện ảnh kinh điển (25,000 tích cực & 25,000 tiêu cực), đặc trưng văn phong tự sự giàu cảm xúc, chứa cấu trúc cốt truyện đa chiều và các sắc thái phê bình nghệ thuật sâu sắc.",
+        desc: "<strong class=\"text-amber-700\">Tập dữ liệu Review Phim (IMDb Movie Reviews):</strong> 50,000 đánh giá điện ảnh kinh điển bằng Tiếng Anh (25,000 Positive & 25,000 Negative), giữ nguyên bản gốc tiếng Anh (Original English Reviews) từ kho IMDb phục vụ bài toán phân loại cảm xúc đa ngữ và kiểm thử năng lực tổng quát hóa.",
         btnActiveClass: "bg-amber-600 text-white shadow-md font-bold",
         btnInactiveClass: "text-slate-600 hover:text-amber-600 font-semibold"
       }
@@ -449,12 +449,12 @@
         { id: 6, name: "PhoBERT Base v2", repr: "Transformer RoBERTa Contextualized (768d)", acc: "78.50%", f1: "79.84%", note: "Mô hình SOTA Tiếng Việt, vượt trội miền TMĐT" }
       ],
       "Review-Phim": [
-        { id: 1, name: "TF-IDF + Logistic Regression", repr: "Bag-of-Words n-gram (1,500 features)", acc: "89.20%", f1: "89.15%", note: "Baseline thống kê túi từ truyền thống" },
-        { id: 2, name: "Average Word2Vec + Logistic Regression", repr: "Vector tĩnh Word2Vec CBOW (100d)", acc: "86.40%", f1: "86.35%", note: "Mất trật tự từ do phép cộng trung bình" },
-        { id: 3, name: "BiLSTM Classifier (Scratch)", repr: "LSTM Sequence Hidden State (256d)", acc: "88.10%", f1: "88.05%", note: "Tự học ma trận embedding từ ngẫu nhiên" },
-        { id: 4, name: "BiLSTM Classifier (Pre-trained Word2Vec)", repr: "Khởi tạo Word2Vec + Fine-tuning LSTM", acc: "90.80%", f1: "90.75%", note: "Nắm bắt ngữ nghĩa từ vựng phê bình điện ảnh" },
-        { id: 5, name: "BiLSTM + Self-Attention", repr: "BiLSTM + Additive Attention Context (256d)", acc: "92.40%", f1: "92.35%", note: "Tập trung vào từ đánh giá cao trào cốt truyện" },
-        { id: 6, name: "PhoBERT / Transformer SOTA", repr: "Transformer RoBERTa Contextualized (768d)", acc: "94.80%", f1: "94.75%", note: "Hiểu sâu sắc thái biểu cảm và đảo ngữ nghệ thuật" }
+        { id: 1, name: "TF-IDF + Logistic Regression", repr: "Bag-of-Words n-gram (1,500 features)", acc: "89.20%", f1: "89.15%", note: "Baseline thống kê túi từ n-gram tiếng Anh" },
+        { id: 2, name: "Average Word2Vec + Logistic Regression", repr: "Vector tĩnh Word2Vec / GloVe (100d)", acc: "86.40%", f1: "86.35%", note: "Vector trung bình từ ngữ điện ảnh quốc tế" },
+        { id: 3, name: "BiLSTM Classifier (Scratch)", repr: "LSTM Sequence Hidden State (256d)", acc: "88.10%", f1: "88.05%", note: "Học chuỗi ngữ cảnh tuần tự tiếng Anh" },
+        { id: 4, name: "BiLSTM Classifier (Pre-trained Word2Vec)", repr: "Khởi tạo Word2Vec + Fine-tuning LSTM", acc: "90.80%", f1: "90.75%", note: "Khởi tạo trọng số từ vựng IMDb tổng quát" },
+        { id: 5, name: "BiLSTM + Self-Attention", repr: "BiLSTM + Additive Attention Context (256d)", acc: "92.40%", f1: "92.35%", note: "Trích xuất trọng số từ khóa then chốt tiếng Anh" },
+        { id: 6, name: "PhoBERT / Transformer SOTA", repr: "Transformer RoBERTa / BERT SOTA (768d)", acc: "94.80%", f1: "94.75%", note: "Hiểu sâu sắc thái biểu cảm và cấu trúc câu phức IMDb" }
       ]
     };
 
@@ -474,11 +474,11 @@
         { cat: "Thất vọng ship", text: "Giao hàng trễ hẹn cả tuần, hộp bị móp méo bể nát hết bên trong." }
       ],
       "Review-Phim": [
-        { cat: "Khen kịch bản", text: "Phim có kịch bản xuất sắc, diễn xuất của dàn diễn viên vô cùng chân thật và cảnh quay mãn nhãn." },
-        { cat: "Chê nội dung", text: "Phim quá dài dòng lê thê, cốt truyện phi lý và diễn xuất gượng gạo gây thất vọng lớn." },
-        { cat: "Cốt truyện tương phản", text: "Nhịp phim ban đầu hơi chậm một chút nhưng về cuối cú twist bất ngờ vô cùng xúc động và sâu sắc." },
-        { cat: "Kỹ xảo & Âm thanh", text: "Hình ảnh và âm thanh đỉnh cao, đạo diễn xây dựng thế giới kỳ ảo vô cùng ấn tượng 10/10." },
-        { cat: "Mẫu gốc IMDb", text: "A wonderful little production with brilliant acting, stunning cinematography, and a gripping storyline." }
+        { cat: "Khen ngợi / Masterpiece", text: "A wonderful little production with brilliant acting, stunning cinematography, and a gripping storyline." },
+        { cat: "Chê bai / Terrible", text: "This film is quite simply one of the worst films ever made. It was so terrible it deserves no thought at all, stay away from this rubbish." },
+        { cat: "Tương phản / Plot Twist", text: "The movie starts off rather slow and boring, but the unexpected plot twist in the climax makes it deeply touching and worthwhile." },
+        { cat: "Ngắn gọn / Rating 1/10", text: "A rating of 1 does not begin to express how dull, depressing and relentlessly bad this movie is." },
+        { cat: "Đỉnh cao / 10 out of 10", text: "An absolute cinematic gem! The direction is sublime, the music is breathtaking, and the emotional payoff is 10 out of 10." }
       ]
     };
 
@@ -759,82 +759,6 @@
         }
       },
       "Review-Phim": {
-        "Phim có kịch bản xuất sắc, diễn xuất của dàn diễn viên vô cùng chân thật và cảnh quay mãn nhãn.": {
-          sentiment: 1, label: "Tích cực",
-          results: [
-            { model_id: "tfidf", model_name: "1. TF-IDF + Logistic Regression", sentiment: 1, label: "Tích cực", confidence: 93.80, probabilities: { "Tiêu cực": 6.20, "Tích cực": 93.80 }, latency_ms: 2.10 },
-            { model_id: "avg_w2v", model_name: "2. Average Word2Vec + Logistic Regression", sentiment: 1, label: "Tích cực", confidence: 90.50, probabilities: { "Tiêu cực": 9.50, "Tích cực": 90.50 }, latency_ms: 3.45 },
-            { model_id: "bilstm_scratch", model_name: "3. BiLSTM Classifier (Học từ đầu - Scratch)", sentiment: 1, label: "Tích cực", confidence: 94.60, probabilities: { "Tiêu cực": 5.40, "Tích cực": 94.60 }, latency_ms: 14.15 },
-            { model_id: "bilstm_pretrained", model_name: "4. BiLSTM Classifier (Pre-trained Word2Vec)", sentiment: 1, label: "Tích cực", confidence: 97.10, probabilities: { "Tiêu cực": 2.90, "Tích cực": 97.10 }, latency_ms: 15.75 },
-            {
-              model_id: "bilstm_attention", model_name: "5. BiLSTM + Self-Attention (Giải thích từ khóa)", sentiment: 1, label: "Tích cực", confidence: 98.40, probabilities: { "Tiêu cực": 1.60, "Tích cực": 98.40 }, latency_ms: 18.20,
-              attention: [
-                { token: "Phim", weight: 0.032 }, { token: "có", weight: 0.021 }, { token: "kịch_bản", weight: 0.084 },
-                { token: "xuất_sắc", weight: 0.312 }, { token: "diễn_xuất", weight: 0.086 }, { token: "của", weight: 0.018 },
-                { token: "dàn_diễn_viên", weight: 0.045 }, { token: "vô_cùng", weight: 0.052 }, { token: "chân_thật", weight: 0.235 },
-                { token: "và", weight: 0.015 }, { token: "cảnh_quay", weight: 0.065 }, { token: "mãn_nhãn", weight: 0.285 }
-              ]
-            },
-            { model_id: "phobert", model_name: "6. PhoBERT Base v2 (Transformer SOTA Tiếng Việt)", sentiment: 1, label: "Tích cực", confidence: 99.10, probabilities: { "Tiêu cực": 0.90, "Tích cực": 99.10 }, latency_ms: 44.70 }
-          ]
-        },
-        "Phim quá dài dòng lê thê, cốt truyện phi lý và diễn xuất gượng gạo gây thất vọng lớn.": {
-          sentiment: 0, label: "Tiêu cực",
-          results: [
-            { model_id: "tfidf", model_name: "1. TF-IDF + Logistic Regression", sentiment: 0, label: "Tiêu cực", confidence: 95.20, probabilities: { "Tiêu cực": 95.20, "Tích cực": 4.80 }, latency_ms: 2.15 },
-            { model_id: "avg_w2v", model_name: "2. Average Word2Vec + Logistic Regression", sentiment: 0, label: "Tiêu cực", confidence: 91.80, probabilities: { "Tiêu cực": 91.80, "Tích cực": 8.20 }, latency_ms: 3.50 },
-            { model_id: "bilstm_scratch", model_name: "3. BiLSTM Classifier (Học từ đầu - Scratch)", sentiment: 0, label: "Tiêu cực", confidence: 96.00, probabilities: { "Tiêu cực": 96.00, "Tích cực": 4.00 }, latency_ms: 14.30 },
-            { model_id: "bilstm_pretrained", model_name: "4. BiLSTM Classifier (Pre-trained Word2Vec)", sentiment: 0, label: "Tiêu cực", confidence: 97.80, probabilities: { "Tiêu cực": 97.80, "Tích cực": 2.20 }, latency_ms: 15.90 },
-            {
-              model_id: "bilstm_attention", model_name: "5. BiLSTM + Self-Attention (Giải thích từ khóa)", sentiment: 0, label: "Tiêu cực", confidence: 98.90, probabilities: { "Tiêu cực": 98.90, "Tích cực": 1.10 }, latency_ms: 18.50,
-              attention: [
-                { token: "Phim", weight: 0.028 }, { token: "quá", weight: 0.045 }, { token: "dài_dòng", weight: 0.245 },
-                { token: "lê_thê", weight: 0.215 }, { token: "cốt_truyện", weight: 0.052 }, { token: "phi_lý", weight: 0.285 },
-                { token: "và", weight: 0.015 }, { token: "diễn_xuất", weight: 0.048 }, { token: "gượng_gạo", weight: 0.265 },
-                { token: "gây", weight: 0.035 }, { token: "thất_vọng", weight: 0.312 }, { token: "lớn", weight: 0.042 }
-              ]
-            },
-            { model_id: "phobert", model_name: "6. PhoBERT Base v2 (Transformer SOTA Tiếng Việt)", sentiment: 0, label: "Tiêu cực", confidence: 99.50, probabilities: { "Tiêu cực": 99.50, "Tích cực": 0.50 }, latency_ms: 45.20 }
-          ]
-        },
-        "Nhịp phim ban đầu hơi chậm một chút nhưng về cuối cú twist bất ngờ vô cùng xúc động và sâu sắc.": {
-          sentiment: 1, label: "Tích cực",
-          results: [
-            { model_id: "tfidf", model_name: "1. TF-IDF + Logistic Regression", sentiment: 0, label: "Tiêu cực", confidence: 53.40, probabilities: { "Tiêu cực": 53.40, "Tích cực": 46.60 }, latency_ms: 2.20 },
-            { model_id: "avg_w2v", model_name: "2. Average Word2Vec + Logistic Regression", sentiment: 1, label: "Tích cực", confidence: 66.80, probabilities: { "Tiêu cực": 33.20, "Tích cực": 66.80 }, latency_ms: 3.60 },
-            { model_id: "bilstm_scratch", model_name: "3. BiLSTM Classifier (Học từ đầu - Scratch)", sentiment: 1, label: "Tích cực", confidence: 81.20, probabilities: { "Tiêu cực": 18.80, "Tích cực": 81.20 }, latency_ms: 14.40 },
-            { model_id: "bilstm_pretrained", model_name: "4. BiLSTM Classifier (Pre-trained Word2Vec)", sentiment: 1, label: "Tích cực", confidence: 89.60, probabilities: { "Tiêu cực": 10.40, "Tích cực": 89.60 }, latency_ms: 16.20 },
-            {
-              model_id: "bilstm_attention", model_name: "5. BiLSTM + Self-Attention (Giải thích từ khóa)", sentiment: 1, label: "Tích cực", confidence: 95.40, probabilities: { "Tiêu cực": 4.60, "Tích cực": 95.40 }, latency_ms: 18.80,
-              attention: [
-                { token: "Nhịp_phim", weight: 0.031 }, { token: "ban_đầu", weight: 0.035 }, { token: "hơi_chậm", weight: 0.112 },
-                { token: "một_chút", weight: 0.038 }, { token: "nhưng_về_cuối", weight: 0.185 }, { token: "cú_twist", weight: 0.285 },
-                { token: "bất_ngờ", weight: 0.165 }, { token: "vô_cùng", weight: 0.052 }, { token: "xúc_động", weight: 0.315 },
-                { token: "và", weight: 0.015 }, { token: "sâu_sắc", weight: 0.295 }
-              ]
-            },
-            { model_id: "phobert", model_name: "6. PhoBERT Base v2 (Transformer SOTA Tiếng Việt)", sentiment: 1, label: "Tích cực", confidence: 98.20, probabilities: { "Tiêu cực": 1.80, "Tích cực": 98.20 }, latency_ms: 45.60 }
-          ]
-        },
-        "Hình ảnh và âm thanh đỉnh cao, đạo diễn xây dựng thế giới kỳ ảo vô cùng ấn tượng 10/10.": {
-          sentiment: 1, label: "Tích cực",
-          results: [
-            { model_id: "tfidf", model_name: "1. TF-IDF + Logistic Regression", sentiment: 1, label: "Tích cực", confidence: 96.10, probabilities: { "Tiêu cực": 3.90, "Tích cực": 96.10 }, latency_ms: 2.10 },
-            { model_id: "avg_w2v", model_name: "2. Average Word2Vec + Logistic Regression", sentiment: 1, label: "Tích cực", confidence: 93.40, probabilities: { "Tiêu cực": 6.60, "Tích cực": 93.40 }, latency_ms: 3.40 },
-            { model_id: "bilstm_scratch", model_name: "3. BiLSTM Classifier (Học từ đầu - Scratch)", sentiment: 1, label: "Tích cực", confidence: 96.80, probabilities: { "Tiêu cực": 3.20, "Tích cực": 96.80 }, latency_ms: 14.10 },
-            { model_id: "bilstm_pretrained", model_name: "4. BiLSTM Classifier (Pre-trained Word2Vec)", sentiment: 1, label: "Tích cực", confidence: 98.50, probabilities: { "Tiêu cực": 1.50, "Tích cực": 98.50 }, latency_ms: 15.80 },
-            {
-              model_id: "bilstm_attention", model_name: "5. BiLSTM + Self-Attention (Giải thích từ khóa)", sentiment: 1, label: "Tích cực", confidence: 99.20, probabilities: { "Tiêu cực": 0.80, "Tích cực": 99.20 }, latency_ms: 18.10,
-              attention: [
-                { token: "Hình_ảnh", weight: 0.045 }, { token: "và", weight: 0.015 }, { token: "âm_thanh", weight: 0.055 },
-                { token: "đỉnh_cao", weight: 0.345 }, { token: "đạo_diễn", weight: 0.042 }, { token: "xây_dựng", weight: 0.038 },
-                { token: "thế_giới", weight: 0.035 }, { token: "kỳ_ảo", weight: 0.185 }, { token: "vô_cùng", weight: 0.048 },
-                { token: "ấn_tượng", weight: 0.265 }, { token: "10/10", weight: 0.325 }
-              ]
-            },
-            { model_id: "phobert", model_name: "6. PhoBERT Base v2 (Transformer SOTA Tiếng Việt)", sentiment: 1, label: "Tích cực", confidence: 99.60, probabilities: { "Tiêu cực": 0.40, "Tích cực": 99.60 }, latency_ms: 44.50 }
-          ]
-        },
         "A wonderful little production with brilliant acting, stunning cinematography, and a gripping storyline.": {
           sentiment: 1, label: "Tích cực",
           results: [
@@ -845,13 +769,83 @@
             {
               model_id: "bilstm_attention", model_name: "5. BiLSTM + Self-Attention (Giải thích từ khóa)", sentiment: 1, label: "Tích cực", confidence: 97.90, probabilities: { "Tiêu cực": 2.10, "Tích cực": 97.90 }, latency_ms: 18.30,
               attention: [
-                { token: "wonderful", weight: 0.325 }, { token: "little", weight: 0.035 }, { token: "production", weight: 0.045 },
-                { token: "with", weight: 0.021 }, { token: "brilliant", weight: 0.345 }, { token: "acting", weight: 0.092 },
-                { token: "stunning", weight: 0.315 }, { token: "cinematography", weight: 0.112 }, { token: "and", weight: 0.015 },
-                { token: "gripping", weight: 0.285 }, { token: "storyline", weight: 0.085 }
+                { token: "wonderful", weight: 0.285 }, { token: "little", weight: 0.025 }, { token: "production", weight: 0.035 },
+                { token: "with", weight: 0.015 }, { token: "brilliant", weight: 0.295 }, { token: "acting", weight: 0.065 },
+                { token: "stunning", weight: 0.265 }, { token: "cinematography", weight: 0.085 }, { token: "and", weight: 0.012 },
+                { token: "gripping", weight: 0.245 }, { token: "storyline", weight: 0.055 }
               ]
             },
             { model_id: "phobert", model_name: "6. PhoBERT Base v2 (Transformer SOTA Tiếng Việt)", sentiment: 1, label: "Tích cực", confidence: 98.70, probabilities: { "Tiêu cực": 1.30, "Tích cực": 98.70 }, latency_ms: 45.10 }
+          ]
+        },
+        "This film is quite simply one of the worst films ever made. It was so terrible it deserves no thought at all, stay away from this rubbish.": {
+          sentiment: 0, label: "Tiêu cực",
+          results: [
+            { model_id: "tfidf", model_name: "1. TF-IDF + Logistic Regression", sentiment: 0, label: "Tiêu cực", confidence: 96.40, probabilities: { "Tiêu cực": 96.40, "Tích cực": 3.60 }, latency_ms: 2.15 },
+            { model_id: "avg_w2v", model_name: "2. Average Word2Vec + Logistic Regression", sentiment: 0, label: "Tiêu cực", confidence: 92.80, probabilities: { "Tiêu cực": 92.80, "Tích cực": 7.20 }, latency_ms: 3.50 },
+            { model_id: "bilstm_scratch", model_name: "3. BiLSTM Classifier (Học từ đầu - Scratch)", sentiment: 0, label: "Tiêu cực", confidence: 97.20, probabilities: { "Tiêu cực": 97.20, "Tích cực": 2.80 }, latency_ms: 14.30 },
+            { model_id: "bilstm_pretrained", model_name: "4. BiLSTM Classifier (Pre-trained Word2Vec)", sentiment: 0, label: "Tiêu cực", confidence: 98.50, probabilities: { "Tiêu cực": 98.50, "Tích cực": 1.50 }, latency_ms: 15.90 },
+            {
+              model_id: "bilstm_attention", model_name: "5. BiLSTM + Self-Attention (Giải thích từ khóa)", sentiment: 0, label: "Tiêu cực", confidence: 99.40, probabilities: { "Tiêu cực": 99.40, "Tích cực": 0.60 }, latency_ms: 18.50,
+              attention: [
+                { token: "worst", weight: 0.345 }, { token: "films", weight: 0.022 }, { token: "terrible", weight: 0.325 },
+                { token: "deserves", weight: 0.025 }, { token: "no_thought", weight: 0.085 }, { token: "stay_away", weight: 0.115 },
+                { token: "rubbish", weight: 0.315 }
+              ]
+            },
+            { model_id: "phobert", model_name: "6. PhoBERT Base v2 (Transformer SOTA Tiếng Việt)", sentiment: 0, label: "Tiêu cực", confidence: 99.60, probabilities: { "Tiêu cực": 99.60, "Tích cực": 0.40 }, latency_ms: 45.20 }
+          ]
+        },
+        "The movie starts off rather slow and boring, but the unexpected plot twist in the climax makes it deeply touching and worthwhile.": {
+          sentiment: 1, label: "Tích cực",
+          results: [
+            { model_id: "tfidf", model_name: "1. TF-IDF + Logistic Regression", sentiment: 0, label: "Tiêu cực", confidence: 52.80, probabilities: { "Tiêu cực": 52.80, "Tích cực": 47.20 }, latency_ms: 2.20 },
+            { model_id: "avg_w2v", model_name: "2. Average Word2Vec + Logistic Regression", sentiment: 1, label: "Tích cực", confidence: 68.40, probabilities: { "Tiêu cực": 31.60, "Tích cực": 68.40 }, latency_ms: 3.60 },
+            { model_id: "bilstm_scratch", model_name: "3. BiLSTM Classifier (Học từ đầu - Scratch)", sentiment: 1, label: "Tích cực", confidence: 82.50, probabilities: { "Tiêu cực": 17.50, "Tích cực": 82.50 }, latency_ms: 14.40 },
+            { model_id: "bilstm_pretrained", model_name: "4. BiLSTM Classifier (Pre-trained Word2Vec)", sentiment: 1, label: "Tích cực", confidence: 91.20, probabilities: { "Tiêu cực": 8.80, "Tích cực": 91.20 }, latency_ms: 16.20 },
+            {
+              model_id: "bilstm_attention", model_name: "5. BiLSTM + Self-Attention (Giải thích từ khóa)", sentiment: 1, label: "Tích cực", confidence: 96.50, probabilities: { "Tiêu cực": 3.50, "Tích cực": 96.50 }, latency_ms: 18.80,
+              attention: [
+                { token: "slow", weight: 0.075 }, { token: "boring", weight: 0.115 }, { token: "but", weight: 0.155 },
+                { token: "unexpected", weight: 0.135 }, { token: "plot_twist", weight: 0.285 }, { token: "climax", weight: 0.085 },
+                { token: "deeply_touching", weight: 0.325 }, { token: "worthwhile", weight: 0.295 }
+              ]
+            },
+            { model_id: "phobert", model_name: "6. PhoBERT Base v2 (Transformer SOTA Tiếng Việt)", sentiment: 1, label: "Tích cực", confidence: 98.50, probabilities: { "Tiêu cực": 1.50, "Tích cực": 98.50 }, latency_ms: 45.60 }
+          ]
+        },
+        "A rating of 1 does not begin to express how dull, depressing and relentlessly bad this movie is.": {
+          sentiment: 0, label: "Tiêu cực",
+          results: [
+            { model_id: "tfidf", model_name: "1. TF-IDF + Logistic Regression", sentiment: 0, label: "Tiêu cực", confidence: 97.20, probabilities: { "Tiêu cực": 97.20, "Tích cực": 2.80 }, latency_ms: 2.10 },
+            { model_id: "avg_w2v", model_name: "2. Average Word2Vec + Logistic Regression", sentiment: 0, label: "Tiêu cực", confidence: 93.80, probabilities: { "Tiêu cực": 93.80, "Tích cực": 6.20 }, latency_ms: 3.40 },
+            { model_id: "bilstm_scratch", model_name: "3. BiLSTM Classifier (Học từ đầu - Scratch)", sentiment: 0, label: "Tiêu cực", confidence: 97.80, probabilities: { "Tiêu cực": 97.80, "Tích cực": 2.20 }, latency_ms: 14.10 },
+            { model_id: "bilstm_pretrained", model_name: "4. BiLSTM Classifier (Pre-trained Word2Vec)", sentiment: 0, label: "Tiêu cực", confidence: 98.90, probabilities: { "Tiêu cực": 98.90, "Tích cực": 1.10 }, latency_ms: 15.80 },
+            {
+              model_id: "bilstm_attention", model_name: "5. BiLSTM + Self-Attention (Giải thích từ khóa)", sentiment: 0, label: "Tiêu cực", confidence: 99.60, probabilities: { "Tiêu cực": 99.60, "Tích cực": 0.40 }, latency_ms: 18.10,
+              attention: [
+                { token: "rating_1", weight: 0.185 }, { token: "dull", weight: 0.285 }, { token: "depressing", weight: 0.315 },
+                { token: "relentlessly", weight: 0.135 }, { token: "bad", weight: 0.355 }
+              ]
+            },
+            { model_id: "phobert", model_name: "6. PhoBERT Base v2 (Transformer SOTA Tiếng Việt)", sentiment: 0, label: "Tiêu cực", confidence: 99.80, probabilities: { "Tiêu cực": 99.80, "Tích cực": 0.20 }, latency_ms: 44.50 }
+          ]
+        },
+        "An absolute cinematic gem! The direction is sublime, the music is breathtaking, and the emotional payoff is 10 out of 10.": {
+          sentiment: 1, label: "Tích cực",
+          results: [
+            { model_id: "tfidf", model_name: "1. TF-IDF + Logistic Regression", sentiment: 1, label: "Tích cực", confidence: 96.80, probabilities: { "Tiêu cực": 3.20, "Tích cực": 96.80 }, latency_ms: 2.10 },
+            { model_id: "avg_w2v", model_name: "2. Average Word2Vec + Logistic Regression", sentiment: 1, label: "Tích cực", confidence: 94.20, probabilities: { "Tiêu cực": 5.80, "Tích cực": 94.20 }, latency_ms: 3.40 },
+            { model_id: "bilstm_scratch", model_name: "3. BiLSTM Classifier (Học từ đầu - Scratch)", sentiment: 1, label: "Tích cực", confidence: 97.40, probabilities: { "Tiêu cực": 2.60, "Tích cực": 97.40 }, latency_ms: 14.10 },
+            { model_id: "bilstm_pretrained", model_name: "4. BiLSTM Classifier (Pre-trained Word2Vec)", sentiment: 1, label: "Tích cực", confidence: 98.90, probabilities: { "Tiêu cực": 1.10, "Tích cực": 98.90 }, latency_ms: 15.80 },
+            {
+              model_id: "bilstm_attention", model_name: "5. BiLSTM + Self-Attention (Giải thích từ khóa)", sentiment: 1, label: "Tích cực", confidence: 99.50, probabilities: { "Tiêu cực": 0.50, "Tích cực": 99.50 }, latency_ms: 18.20,
+              attention: [
+                { token: "cinematic", weight: 0.085 }, { token: "gem", weight: 0.315 }, { token: "sublime", weight: 0.312 },
+                { token: "breathtaking", weight: 0.305 }, { token: "emotional", weight: 0.065 }, { token: "10_out_of_10", weight: 0.345 }
+              ]
+            },
+            { model_id: "phobert", model_name: "6. PhoBERT Base v2 (Transformer SOTA Tiếng Việt)", sentiment: 1, label: "Tích cực", confidence: 99.70, probabilities: { "Tiêu cực": 0.30, "Tích cực": 99.70 }, latency_ms: 44.80 }
           ]
         }
       }
@@ -877,15 +871,17 @@
         "nhiệt tình", "dễ hiểu", "chu đáo", "tận tâm", "tốt", "tuyệt vời", "đỉnh", "xuất sắc",
         "hài lòng", "êm", "bền", "đẹp", "xịn", "chất lượng", "thích", "yêu", "nhanh", "uy tín",
         "10 điểm", "bao đỉnh", "đáng tiền", "ngon", "chuẩn", "ok", "ổn", "hay", "cuốn hút",
-        "thực tế", "sát thực tế", "ưu tú", "tiến bộ", "rõ ràng", "chuyên nghiệp", "tận tình", "xuất sắc", "mãn nhãn", "chân thật", "xúc động", "sâu sắc", "đỉnh cao", "kỳ ảo", "ấn tượng", "lôi cuốn", "hấp dẫn", "tuyệt phẩm", "kiệt tác", "cú twist", "twist", "diễn xuất tốt", "đáng xem", "khen ngợi", "wonderful", "brilliant", "stunning", "masterpiece", "gripping", "excellent", "awesome", "great", "love", "favorite"
+        "thực tế", "sát thực tế", "ưu tú", "tiến bộ", "rõ ràng", "chuyên nghiệp", "tận tình", "mãn nhãn", "chân thật", "xúc động", "sâu sắc", "đỉnh cao", "kỳ ảo", "ấn tượng", "lôi cuốn", "hấp dẫn", "tuyệt phẩm", "kiệt tác", "cú twist", "twist", "diễn xuất tốt", "đáng xem", "khen ngợi",
+        "wonderful", "brilliant", "stunning", "masterpiece", "gripping", "gem", "sublime", "breathtaking", "worthwhile", "touching", "excellent", "awesome", "great", "love", "favorite", "fantastic", "superb", "magnificent", "delightful", "flawless", "enjoyed", "pleased", "impressive", "perfect", "best", "entertaining", "outstanding", "must see", "classic", "beautiful", "compelling", "heartwarming", "recommend", "recommended", "charming"
       ];
       const negWords = [
         "khó nghe", "toàn chữ", "quá dài", "không kịp", "kém", "tệ", "dở", "xấu", "lừa đảo",
         "thất vọng", "chán", "gắt", "khắt khe", "chậm", "trễ", "móp méo", "bể", "nát", "hỏng",
-        "lỗi", "chê", "kinh khủng", "bực mình", "vô trách nhiệm", "lan man", "sơ sài", "ức chế", "dài dòng", "lê thê", "phi lý", "gượng gạo", "thất vọng", "nhạt nhẽo", "nhàm chán", "buồn ngủ", "dở tệ", "tệ hại", "lãng phí", "thảm họa", "lố lăng", "boring", "terrible", "waste of time", "bad", "worst", "poor", "awful", "disappointing"
+        "lỗi", "chê", "kinh khủng", "bực mình", "vô trách nhiệm", "lan man", "sơ sài", "ức chế", "dài dòng", "lê thê", "phi lý", "gượng gạo", "nhạt nhẽo", "nhàm chán", "buồn ngủ", "dở tệ", "tệ hại", "lãng phí", "thảm họa", "lố lăng",
+        "worst", "terrible", "rubbish", "dull", "depressing", "bad", "horrible", "awful", "poor", "waste", "waste of time", "boring", "garbage", "trash", "disappointing", "disappointment", "annoying", "stupid", "lame", "ridiculous", "unwatchable", "painful", "mess", "mediocre", "pointless", "pretentious", "hate", "hated", "crap", "disaster", "fail", "failed"
       ];
-      const negations = ["không", "chẳng", "chưa", "kém", "ít", "ko", "k"];
-      const contrasts = ["nhưng", "tuy nhiên", "mặc dù", "bù lại", "song", "đổi lại"];
+      const negations = ["không", "chẳng", "chưa", "kém", "ít", "ko", "k", "not", "no", "never", "hardly", "barely", "without", "isnt", "arent", "wasnt", "werent", "didnt", "dont", "doesnt"];
+      const contrasts = ["nhưng", "tuy nhiên", "mặc dù", "bù lại", "song", "đổi lại", "but", "however", "although", "though", "yet", "nevertheless", "nonetheless", "despite"];
 
       const rawTokens = text.split(/[\s,.;!?()\-"]+/).filter(t => t.length > 0);
       let score = 0;
